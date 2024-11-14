@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import "../styles/login.css"
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -16,16 +17,17 @@ const Login = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', width: '300px' }}>
-        <h2>Login</h2>
+    <div className="wholething">
+    <div className="login">
+      <form className="form" onSubmit={handleLogin} >
+        <h1 className="heading">Log In</h1>
         <input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          style={{ marginBottom: '10px', padding: '8px' }}
+          className = "input"
         />
         <input
           type="password"
@@ -33,10 +35,11 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          style={{ marginBottom: '10px', padding: '8px' }}
+          className = "input"
         />
-        <button type="submit" style={{ padding: '10px', cursor: 'pointer' }}>Login</button>
+        <button className = "button" type="submit" >Continue</button>
       </form>
+    </div>
     </div>
   );
 };
