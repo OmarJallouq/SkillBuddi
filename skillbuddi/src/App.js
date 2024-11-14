@@ -4,11 +4,13 @@ import PrivateRoutes from './utils/PrivateRoutes';
 import { AuthProvider } from './utils/AuthContext';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Header from './components/Header';
 
 const App = () => {
   return (
     <Router>
       <AuthProvider>
+        <Header />
         <Routes>
           <Route path="/login" element={<Login />} />
 
