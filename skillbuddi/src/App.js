@@ -1,6 +1,6 @@
 // src/App.js
 import React from 'react';
-import Login from './Login';
+import Login from './pages/Login';
 
 const App = () => {
   return (
