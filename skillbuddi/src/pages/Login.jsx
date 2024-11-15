@@ -1,7 +1,7 @@
 import "../styles/login.css"
 import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../utils/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -49,6 +49,11 @@ const Login = () => {
           className = "input"
         />
         <button className = "button" type="submit" >Continue</button>
+        <div className = "registerer" type="register">
+            <Link className = "registerer" to="/register">
+              No Account? Register
+            </Link>
+          </div>
       </form>
     </div>
     </div>
