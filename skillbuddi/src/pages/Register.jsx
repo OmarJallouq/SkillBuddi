@@ -112,7 +112,6 @@ const Register = () => {
             onChange={(e) => setFirstName(e.target.value)}
             placeholder="Enter your First Name"
           />
-          {errors.firstName && <p className="error">{errors.firstName}</p>}
         </div>
         <div className="form-field">
           <label>Last Name</label>
@@ -123,7 +122,6 @@ const Register = () => {
             onChange={(e) => setLastName(e.target.value)}
             placeholder="Enter your Last Name"
           />
-          {errors.lastName && <p className="error">{errors.lastName}</p>}
         </div>
         <div className="form-field">
           <label>Username</label>
@@ -134,7 +132,6 @@ const Register = () => {
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter your username"
           />
-          {errors.username && <p className="error">{errors.username}</p>}
         </div>
 
         <div className="form-field">
@@ -146,7 +143,6 @@ const Register = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
           />
-          {errors.email && <p className="error">{errors.email}</p>}
         </div>
 
         <div className="form-field">
@@ -158,7 +154,6 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
           />
-          {errors.password && <p className="error">{errors.password}</p>}
         </div>
 
         <div className="form-field">
@@ -170,9 +165,6 @@ const Register = () => {
             onChange={(e) => setPasswordConfirm(e.target.value)}
             placeholder="Confirm your password"
           />
-          {errors.passwordConfirm && (
-            <p className="error">{errors.passwordConfirm}</p>
-          )}
         </div>
 
         <button type="submit">Sign Up</button>

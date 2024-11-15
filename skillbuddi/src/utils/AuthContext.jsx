@@ -22,19 +22,26 @@ export const AuthProvider = ({ children }) => {
       );
       let accountDetails = await account.get();
       setUser(accountDetails);
+
+      return { success: true };
     } catch (error) {
-      console.log(error);
+      setError(error.message || "Something went wrong");
+      return { success: false, error: error.message || "Something went wrong" };
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const logoutUser = async () => {
     try {
       await account.deleteSessions("current");
+      return { success: true };
     } catch (error) {
-      console.log(error);
+      setError(error.message || "Something went wrong");
+      return { success: false, error: error.message || "Something went wrong" };
+    } finally {
+      setUser(null);
     }
-    setUser(null);
   };
 
   const registerUser = async (userInfo) => {
