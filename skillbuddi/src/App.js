@@ -1,7 +1,7 @@
 import React from 'react';
-import Login from './page/Login';
-import Register from './page/Register';
-import Home from './page/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Home from './pages/Home';
 import Header from './components/Header';
 import { Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthContext';
