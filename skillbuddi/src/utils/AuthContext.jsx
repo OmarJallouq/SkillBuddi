@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
         ID.unique(),
         userInfo.email,
         userInfo.password,
-        userInfo.firstName + userInfo.lastName
+        userInfo.firstName + " " + userInfo.lastName
       );
 
       await account.createEmailPasswordSession(

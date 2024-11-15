@@ -1,5 +1,11 @@
 import React from 'react';
-import Login from './Login';
+import Login from './page/Login';
+import Register from './page/Register';
+import Home from './page/Home';
+import Header from './components/Header';
+import { Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './utils/AuthContext';
+import PrivateRoutes from './utils/PrivateRoutes'
 
 const App = () => {
   return (
