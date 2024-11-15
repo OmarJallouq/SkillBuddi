@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../utils/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -29,7 +32,7 @@ const Register = () => {
     passwordConfirm: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const firstName = registerForm.current.firstName.value;
     const lastName = registerForm.current.lastName.value;
@@ -77,7 +80,7 @@ const Register = () => {
       alert("Please Check the Form");
       return;
     }
-    alert("Sign up successful!");
+
     const userInfo = {
       firstName,
       lastName,
@@ -86,7 +89,14 @@ const Register = () => {
       password,
       passwordConfirm,
     };
-    registerUser(userInfo);
+
+    const response = await registerUser(userInfo);
+    console.log(response);
+    if (response.success) {
+      toast.success("Registration Successful!");
+    } else {
+      toast.error(response.error);
+    }
   };
 
   return (

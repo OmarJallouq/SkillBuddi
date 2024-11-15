@@ -1,10 +1,12 @@
 import { useContext, useState, useEffect, createContext } from "react";
 import { account } from "../appwriteConfig";
 import { ID } from "appwrite";
+import { toast, ToastContainer } from "react-toastify";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -51,10 +53,14 @@ export const AuthProvider = ({ children }) => {
       );
       let accountDetails = await account.get();
       setUser(accountDetails);
+
+      return { success: true };
     } catch (error) {
-      console.error(error);
+      setError(error.message || "Something went wrong");
+      return { success: false, error: error.message || "Something went wrong" };
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const checkUserStatus = async () => {
@@ -73,9 +79,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={contextData}>
-      {loading ? <p>Loading...</p> : children}
-    </AuthContext.Provider>
+    <>
+      <AuthContext.Provider value={contextData}>
+        {loading ? <p>Loading...</p> : children}
+      </AuthContext.Provider>
+    </>
   );
 };
 
