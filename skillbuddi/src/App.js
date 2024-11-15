@@ -3,7 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Header from './components/Header';
-import { Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
 
