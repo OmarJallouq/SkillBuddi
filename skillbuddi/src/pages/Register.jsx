@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../utils/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { useNavigate } from "react-router-dom";
+import "../styles/register.css";
 
 const Register = () => {
   const registerForm = useRef(null);
@@ -46,7 +46,7 @@ const Register = () => {
     if (firstName.trim() === "") {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        firstName: "Please enter a first name",
+        firstName: "Please enter a first name.",
       }));
       isValid = false;
     } else {
@@ -60,7 +60,7 @@ const Register = () => {
     if (lastName.trim() === "") {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        lastName: "Please enter a last name",
+        lastName: "Please enter a last name.",
       }));
       isValid = false;
     } else {
@@ -74,13 +74,13 @@ const Register = () => {
     if (username.trim() === "") {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        username: "Username can only contain letters and numbers.",
+        username: "Please enter a username.",
       }));
       isValid = false;
     } else if (!/^[a-zA-Z0-9]+$/.test(username)) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        username: "Please enter a username"
+        username: "Username can only contain letters and numbers."
       }))
    } else {
       setErrors((prevErrors) => ({
@@ -140,7 +140,7 @@ const Register = () => {
 
     if (!isValid) {
       //not valid
-      alert("Please Check the Form");
+      alert("Registration Unsuccessful");
       return;
     }
 
@@ -163,12 +163,14 @@ const Register = () => {
   };
 
   return (
-    <div className="signup-form">
-      <h2>Sign Up</h2>
-      <form ref={registerForm} onSubmit={handleSubmit}>
+    <div className="registration-box">
+      <h2 className="signup-text">Sign Up</h2>
+      <div className="i-hate-css"> {/* this exists so that i can place the logo to the side of the form */}
+      <form className="registration-form" ref={registerForm} onSubmit={handleSubmit}>
         <div className="form-field">
-          <label>First Name</label>
+          {/*<label>First Name</label>*/}
           <input
+            className = "register-box"
             type="text"
             value={firstName}
             name="firstName"
@@ -178,8 +180,9 @@ const Register = () => {
           {errors.firstName && <p className="registration-error">{errors.firstName}</p>}
         </div>
         <div className="form-field">
-          <label>Last Name</label>
+          {/*<label>Last Name</label>*/}
           <input
+            className = "register-box"
             type="text"
             value={lastName}
             name="lastName"
@@ -189,8 +192,9 @@ const Register = () => {
           {errors.lastName && <p className="registration-error">{errors.lastName}</p>}
         </div>
         <div className="form-field">
-          <label>Username</label>
+          {/*<label>Username</label>*/}
           <input
+            className = "register-box"
             type="text"
             value={username}
             name="username"
@@ -201,8 +205,9 @@ const Register = () => {
         </div>
 
         <div className="form-field">
-          <label>Email</label>
+          {/*<label>Email</label>*/}
           <input
+            className = "register-box"
             type="email"
             name="email"
             value={email}
@@ -213,8 +218,9 @@ const Register = () => {
         </div>
 
         <div className="form-field">
-          <label>Password</label>
+          {/*<label>Password</label>*/}
           <input
+            className = "register-box"
             type="password"
             name="password"
             value={password}
@@ -225,8 +231,9 @@ const Register = () => {
         </div>
 
         <div className="form-field">
-          <label>Confirm Password</label>
+          {/*<label>Confirm Password</label>*/}
           <input
+            className = "register-box"
             type="password"
             name="password2"
             value={passwordConfirm}
@@ -236,8 +243,15 @@ const Register = () => {
           {errors.passwordConfirm && <p className="registration-error">{errors.passwordConfirm}</p>}
         </div>
 
-        <button type="submit">Sign Up</button>
+        <button className="register-button" type="submit">Create SkillBuddi Account</button>
       </form>
+      <div className="registration-img">
+        <img
+          className="registration-img"
+          src="https://i.ibb.co/Zdv59dK/omer.jpg"
+        ></img>
+      </div>
+      </div>
     </div>
   );
 };
