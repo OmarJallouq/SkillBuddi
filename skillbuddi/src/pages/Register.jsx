@@ -43,12 +43,51 @@ const Register = () => {
 
     let isValid = true;
 
-    if (!/^[a-zA-Z0-9]+$/.test(username)) {
+    if (firstName.trim() === "") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        firstName: "Please enter a first name",
+      }));
+      isValid = false;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        firstName: "",
+      }));
+      isValid = true;
+    }
+
+    if (lastName.trim() === "") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        lastName: "Please enter a last name",
+      }));
+      isValid = false;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        lastName: "",
+      }));
+      isValid = true;
+    }
+
+    if (username.trim() === "") {
       setErrors((prevErrors) => ({
         ...prevErrors,
         username: "Username can only contain letters and numbers.",
       }));
       isValid = false;
+    } else if (!/^[a-zA-Z0-9]+$/.test(username)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        username: "Please enter a username"
+      }))
+   } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        username: "",
+      }));
+      isValid = true;
     }
 
     if (!email.includes("@")) {
@@ -57,22 +96,46 @@ const Register = () => {
         email: "Email must contain @.",
       }));
       isValid = false;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: "",
+      }));
+      isValid = true;
     }
 
     if (password.length < 6) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        password: "Password must be at least 6 characters long.",
+        password: "Minimum 6 characters required.",
       }));
       isValid = false;
+    } else if (!/[a-zA-z]/.test(password) || !/\d/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        password: "Must contain at least one letter, number, and special character.",
+      }));
+      isValid = false;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        password: "",
+      }));
+      isValid = true;
     }
 
     if (password !== passwordConfirm) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        passwordConfirm: "Password confirmation must match password.",
+        passwordConfirm: "Passwords do not match.",
       }));
       isValid = false;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        passwordConfirm: "",
+      }));
+      isValid = true;
     }
 
     if (!isValid) {
@@ -112,6 +175,7 @@ const Register = () => {
             onChange={(e) => setFirstName(e.target.value)}
             placeholder="Enter your First Name"
           />
+          {errors.firstName && <p className="registration-error">{errors.firstName}</p>}
         </div>
         <div className="form-field">
           <label>Last Name</label>
@@ -122,6 +186,7 @@ const Register = () => {
             onChange={(e) => setLastName(e.target.value)}
             placeholder="Enter your Last Name"
           />
+          {errors.lastName && <p className="registration-error">{errors.lastName}</p>}
         </div>
         <div className="form-field">
           <label>Username</label>
@@ -132,6 +197,7 @@ const Register = () => {
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Enter your username"
           />
+          {errors.username && <p className="registration-error">{errors.username}</p>}
         </div>
 
         <div className="form-field">
@@ -143,6 +209,7 @@ const Register = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
           />
+          {errors.email && <p className="registration-error">{errors.email}</p>}
         </div>
 
         <div className="form-field">
@@ -154,6 +221,7 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
           />
+          {errors.password && <p className="registration-error">{errors.password}</p>}
         </div>
 
         <div className="form-field">
@@ -165,6 +233,7 @@ const Register = () => {
             onChange={(e) => setPasswordConfirm(e.target.value)}
             placeholder="Confirm your password"
           />
+          {errors.passwordConfirm && <p className="registration-error">{errors.passwordConfirm}</p>}
         </div>
 
         <button type="submit">Sign Up</button>
