@@ -80,9 +80,9 @@ const Register = () => {
     } else if (!/^[a-zA-Z0-9]+$/.test(username)) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        username: "Username can only contain letters and numbers."
-      }))
-   } else {
+        username: "Username can only contain letters and numbers.",
+      }));
+    } else {
       setErrors((prevErrors) => ({
         ...prevErrors,
         username: "",
@@ -110,10 +110,15 @@ const Register = () => {
         password: "Minimum 6 characters required.",
       }));
       isValid = false;
-    } else if (!/[a-zA-z]/.test(password) || !/\d/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    } else if (
+      !/[a-zA-z]/.test(password) ||
+      !/\d/.test(password) ||
+      !/[!@#$%^&*(),.?":{}|<>]/.test(password)
+    ) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        password: "Must contain at least one letter, number, and special character.",
+        password:
+          "Must contain at least one letter, number, and special character.",
       }));
       isValid = false;
     } else {
@@ -165,92 +170,112 @@ const Register = () => {
   return (
     <div className="registration-box">
       <h2 className="signup-text">Sign Up</h2>
-      <div className="i-hate-css"> {/* this exists so that i can place the logo to the side of the form */}
-      <form className="registration-form" ref={registerForm} onSubmit={handleSubmit}>
-        <div className="form-field">
-          {/*<label>First Name</label>*/}
-          <input
-            className = "register-box"
-            type="text"
-            value={firstName}
-            name="firstName"
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="Enter your First Name"
-          />
-          {errors.firstName && <p className="registration-error">{errors.firstName}</p>}
-        </div>
-        <div className="form-field">
-          {/*<label>Last Name</label>*/}
-          <input
-            className = "register-box"
-            type="text"
-            value={lastName}
-            name="lastName"
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder="Enter your Last Name"
-          />
-          {errors.lastName && <p className="registration-error">{errors.lastName}</p>}
-        </div>
-        <div className="form-field">
-          {/*<label>Username</label>*/}
-          <input
-            className = "register-box"
-            type="text"
-            value={username}
-            name="username"
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username"
-          />
-          {errors.username && <p className="registration-error">{errors.username}</p>}
-        </div>
+      <div className="i-hate-css">
+        {" "}
+        {/* this exists so that i can place the logo to the side of the form */}
+        <form
+          className="registration-form"
+          ref={registerForm}
+          onSubmit={handleSubmit}
+        >
+          <div className="form-field">
+            {/*<label>First Name</label>*/}
+            <input
+              className="register-box"
+              type="text"
+              value={firstName}
+              name="firstName"
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="Enter your First Name"
+            />
+            {errors.firstName && (
+              <p className="registration-error">{errors.firstName}</p>
+            )}
+          </div>
+          <div className="form-field">
+            {/*<label>Last Name</label>*/}
+            <input
+              className="register-box"
+              type="text"
+              value={lastName}
+              name="lastName"
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Enter your Last Name"
+            />
+            {errors.lastName && (
+              <p className="registration-error">{errors.lastName}</p>
+            )}
+          </div>
+          <div className="form-field">
+            {/*<label>Username</label>*/}
+            <input
+              className="register-box"
+              type="text"
+              value={username}
+              name="username"
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
+            />
+            {errors.username && (
+              <p className="registration-error">{errors.username}</p>
+            )}
+          </div>
 
-        <div className="form-field">
-          {/*<label>Email</label>*/}
-          <input
-            className = "register-box"
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-          />
-          {errors.email && <p className="registration-error">{errors.email}</p>}
-        </div>
+          <div className="form-field">
+            {/*<label>Email</label>*/}
+            <input
+              className="register-box"
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+            />
+            {errors.email && (
+              <p className="registration-error">{errors.email}</p>
+            )}
+          </div>
 
-        <div className="form-field">
-          {/*<label>Password</label>*/}
-          <input
-            className = "register-box"
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-          />
-          {errors.password && <p className="registration-error">{errors.password}</p>}
-        </div>
+          <div className="form-field">
+            {/*<label>Password</label>*/}
+            <input
+              className="register-box"
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+            />
+            {errors.password && (
+              <p className="registration-error">{errors.password}</p>
+            )}
+          </div>
 
-        <div className="form-field">
-          {/*<label>Confirm Password</label>*/}
-          <input
-            className = "register-box"
-            type="password"
-            name="password2"
-            value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
-            placeholder="Confirm your password"
-          />
-          {errors.passwordConfirm && <p className="registration-error">{errors.passwordConfirm}</p>}
-        </div>
+          <div className="form-field">
+            {/*<label>Confirm Password</label>*/}
+            <input
+              className="register-box"
+              type="password"
+              name="password2"
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              placeholder="Confirm your password"
+            />
+            {errors.passwordConfirm && (
+              <p className="registration-error">{errors.passwordConfirm}</p>
+            )}
+          </div>
 
-        <button className="register-button" type="submit">Create SkillBuddi Account</button>
-      </form>
-      <div className="registration-img">
+          <button className="register-button" type="submit">
+            Create SkillBuddi Account
+          </button>
+        </form>
+        {/* <div className="registration-img">
         <img
           className="registration-img"
           src="https://i.ibb.co/Zdv59dK/omer.jpg"
         ></img>
-      </div>
+      </div> */}
       </div>
     </div>
   );

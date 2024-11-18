@@ -60,7 +60,6 @@ export const AuthProvider = ({ children }) => {
       );
       let accountDetails = await account.get();
       setUser(accountDetails);
-
       return { success: true };
     } catch (error) {
       setError(error.message || "Something went wrong");
