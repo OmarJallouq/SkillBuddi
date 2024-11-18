@@ -20,10 +20,10 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/Matching" element={<Matching />} />
-          <Route path="/MyProfile" element={<MyProfile />} />
-          <Route path="/Messaging" element={<Messaging />} />
-          <Route path="/Register" element={<Register />} />
+          <Route path="/matching" element={<Matching />} />
+          <Route path="/myprofile" element={<MyProfile />} />
+          <Route path="/messaging" element={<Messaging />} />
+          <Route path="/register" element={<Register />} />
           {/* PUT THE ROUTES HERE THAT SHOULD ONLY BE ACCESSED IF THE USER IS LOGGED IN */}
           <Route path="/" element={<Home />} />
         </Routes>
