@@ -1,27 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 
-const SignUp = () => {
-
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+const Register = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
 
   const [errors, setErrors] = useState({
-    username: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
+    username: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     setErrors({
-      username: '',
-      email: '',
-      password: '',
-      passwordConfirm: '',
+      username: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
     });
 
     let isValid = true;
@@ -29,15 +28,15 @@ const SignUp = () => {
     if (!/^[a-zA-Z0-9]+$/.test(username)) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        username: 'Username can only contain letters and numbers.',
+        username: "Username can only contain letters and numbers.",
       }));
       isValid = false;
     }
 
-    if (!email.includes('@')) {
+    if (!email.includes("@")) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        email: 'Email must contain @.',
+        email: "Email must contain @.",
       }));
       isValid = false;
     }
@@ -45,7 +44,7 @@ const SignUp = () => {
     if (password.length < 6) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        password: 'Password must be at least 6 characters long.',
+        password: "Password must be at least 6 characters long.",
       }));
       isValid = false;
     }
@@ -53,14 +52,13 @@ const SignUp = () => {
     if (password !== passwordConfirm) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        passwordConfirm: 'Password confirmation must match password.',
+        passwordConfirm: "Password confirmation must match password.",
       }));
       isValid = false;
     }
 
     if (isValid) {
-      alert('Sign up successful!');
-    
+      alert("Sign up successful!");
     }
   };
 
@@ -109,7 +107,9 @@ const SignUp = () => {
             onChange={(e) => setPasswordConfirm(e.target.value)}
             placeholder="Confirm your password"
           />
-          {errors.passwordConfirm && <p className="error">{errors.passwordConfirm}</p>}
+          {errors.passwordConfirm && (
+            <p className="error">{errors.passwordConfirm}</p>
+          )}
         </div>
 
         <button type="submit">Sign Up</button>
@@ -117,6 +117,5 @@ const SignUp = () => {
     </div>
   );
 };
-
 
 export default Register;

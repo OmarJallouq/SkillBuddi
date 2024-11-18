@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import './Messaging.css';
+import React, { useState } from "react";
+import "../styles/Messaging.css";
 
 const Messaging = () => {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (message.trim()) {
       setMessages([...messages, message]);
-      setMessage('');
+      setMessage("");
     }
   };
 
@@ -37,7 +37,9 @@ const Messaging = () => {
           placeholder="Type your message..."
           className="message-input"
         />
-        <button type="submit" className="send-button">Send</button>
+        <button type="submit" className="send-button">
+          Send
+        </button>
       </form>
     </div>
   );

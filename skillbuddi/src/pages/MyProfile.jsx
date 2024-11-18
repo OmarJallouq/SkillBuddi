@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import './MyProfile.css';
+import React, { useState, useEffect } from "react";
+import "../styles/MyProfile.css";
 
 const MyProfile = () => {
   // State to store the user's profile data
@@ -9,11 +9,11 @@ const MyProfile = () => {
   useEffect(() => {
     const fetchUserData = () => {
       const userData = {
-        name: 'John Doe',
-        username: 'johndoe',
-        email: 'johndoe@example.com',
-        avatar: 'https://www.w3schools.com/w3images/avatar2.png', // Placeholder image
-        skills: ['JavaScript', 'React', 'Node.js', 'CSS', 'HTML'] // Example skills
+        name: "John Doe",
+        username: "johndoe",
+        email: "johndoe@example.com",
+        avatar: "https://www.w3schools.com/w3images/avatar2.png", // Placeholder image
+        skills: ["JavaScript", "React", "Node.js", "CSS", "HTML"], // Example skills
       };
       setUser(userData);
     };
@@ -82,10 +82,7 @@ const MyProfile = () => {
                 </button>
                 <button
                   onClick={() => {
-                    const newSkill = prompt(
-                      'Edit skill:',
-                      skill
-                    ); // Simple prompt to edit the skill
+                    const newSkill = prompt("Edit skill:", skill); // Simple prompt to edit the skill
                     if (newSkill) {
                       handleEditSkill(skill, newSkill);
                     }
@@ -100,7 +97,7 @@ const MyProfile = () => {
         )}
         <button
           onClick={() => {
-            const newSkill = prompt('Enter a new skill:'); // Prompt to add a new skill
+            const newSkill = prompt("Enter a new skill:"); // Prompt to add a new skill
             if (newSkill) {
               handleAddSkill(newSkill);
             }
