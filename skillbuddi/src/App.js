@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Header from './components/Header';
+import MergedBar from './components/MergedBar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
@@ -17,7 +18,7 @@ const App = () => {
 
       <Router>
         <AuthProvider>
-          <Header />
+          <MergedBar />
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
