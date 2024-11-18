@@ -5,7 +5,7 @@ export const updateUserData = async (userId, updatedData) => {
   try {
     await databases.updateDocument(
       process.env.REACT_APP_DATABASE_ID,
-      process.env.REACT_APP_COLLECTIONID,
+      process.env.REACT_APP_COLLECTION_ID,
       userId,
       updatedData
     );
