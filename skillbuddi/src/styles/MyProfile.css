@@ -1,0 +1,62 @@
+/* General styling for the profile container */
+.profile-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Profile Header */
+  .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  
+  .profile-info h1 {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .profile-info p {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  /* Skills Section */
+  .skills-section {
+    margin-bottom: 30px;
+  }
+  
+  .skills-section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .skills-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .skill-item {
+    font-size: 16px;
+    margin: 5px 0;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .skill-item:hover {
+    background-color: #f0f0f0;
+  }
+  

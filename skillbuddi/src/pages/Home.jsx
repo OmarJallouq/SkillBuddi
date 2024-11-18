@@ -1,9 +1,9 @@
 import React from "react";
 import NavBar from "../components/NavBar.jsx";
 
-import "./Homepage.css";
+import "../styles/Home.css";
 
-const Homepage = () => {
+const Home = () => {
   return (
     <div className="homepage-container">
       {/* Side Navigation Bar */}
@@ -19,4 +19,4 @@ const Homepage = () => {
   );
 };
 
-export default Homepage;
+export default Home;
