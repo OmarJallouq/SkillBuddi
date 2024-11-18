@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Matching from './pages/Matching';
 import MyProfile from './pages/MyProfile';
+import Profile from './pages/Profile';
 import Messaging from './pages/Messaging';
 import Register from './pages/Register';
 
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/myprofile" element={<MyProfile />} />
           <Route path="/messaging" element={<Messaging />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
           {/* PUT THE ROUTES HERE THAT SHOULD ONLY BE ACCESSED IF THE USER IS LOGGED IN */}
           <Route path="/" element={<Home />} />
         </Routes>
