@@ -270,12 +270,12 @@ const Register = () => {
             Create SkillBuddi Account
           </button>
         </form>
-        {/* <div className="registration-img">
+         <div className="registration-img">
         <img
           className="registration-img"
           src="https://i.ibb.co/Zdv59dK/omer.jpg"
         ></img>
-      </div> */}
+      </div> 
       </div>
     </div>
   );
