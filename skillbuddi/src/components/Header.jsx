@@ -27,7 +27,7 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="links--wrapper">
+      <div className="links-wrapper">
         {user ? (
           <>
             <Link to="/" className="header-link">
