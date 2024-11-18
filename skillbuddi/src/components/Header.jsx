@@ -6,7 +6,6 @@ import "../styles/header.css";
 
 const Header = () => {
   const { user, logoutUser } = useAuth();
-
   const handleLogout = async () => {
     const response = await logoutUser();
     if (response.success) {
@@ -17,38 +16,47 @@ const Header = () => {
   };
 
   return (
-    <div className="header">
-      <div className="header-logo">
-        <Link id="header-logo" to="/">
-          <img
-            src="https://i.ibb.co/Zdv59dK/omer.jpg"
-            className="logo-img"
-          ></img>
-        </Link>
-      </div>
+    <>
+      {user ? (
+        <nav className="header-bar">
+          <div className="header-logo">
+            <Link to="/">
+              <img
+                className="logo-img"
+                src="https://i.ibb.co/Zdv59dK/omer.jpg"
+              ></img>
+            </Link>
+          </div>
 
-      <div className="links-wrapper">
-        {user ? (
-          <>
-            <Link to="/" className="header-link">
-              Matching (Home)
+          <div className="links-container">
+            <Link className="header-link" to="/">
+              Matching
             </Link>
-            <Link to="/profile" className="header-link">
-              Profile
+            <Link className="header-link" to="/">
+              My Profile
             </Link>
-            <Link to="/messages" className="header-link">
+            <Link className="header-link" to="/">
               Messages
             </Link>
+          </div>
 
-            <button className="logout-button" onClick={handleLogout}>
-              Log Out
-            </button>
-          </>
-        ) : (
-          <></>
-        )}
-      </div>
-    </div>
+          <button className="logout-button" onClick={handleLogout}>
+            Log Out
+          </button>
+        </nav>
+      ) : (
+        <nav className="header-bar">
+          <div className="header-logo">
+            <Link to="/">
+              <img
+                className="logo-img"
+                src="https://i.ibb.co/Zdv59dK/omer.jpg"
+              ></img>
+            </Link>
+          </div>
+        </nav>
+      )}
+    </>
   );
 };
 
