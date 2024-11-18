@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/SkillCard.css";
+import "../styles/skillTag.css";
 
 
 

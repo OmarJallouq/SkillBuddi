@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/UserCard.css"; // Optional: Add styles here
+import "../styles/userCard.css"; // Optional: Add styles here
 
 const UserCard = ({ key, username, skills, profilePic }) => {
   return (

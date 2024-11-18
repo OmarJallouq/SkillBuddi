@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SkillTag from "../components/SkillTag";
-import "../styles/MyProfile.css";
+import "../styles/myProfile.css";
 
 const MyProfile = () => {
   // State to store the user's profile data
