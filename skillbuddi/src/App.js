@@ -26,7 +26,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route element={<PrivateRoutes />}>
               {/* PUT THE ROUTES HERE THAT SHOULD ONLY BE ACCESSED IF THE USER IS LOGGED IN */}s
-              <Route path="/home" element={<Home />} />
+              <Route path="/" element={<Home />} />
               <Route path="/messaging" element={<Messaging />} />
               <Route path="/myProfile" element={<MyProfile />} />
               <Route path="/profile" element={<Profile />} />
