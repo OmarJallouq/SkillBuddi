@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+.tag {
+    height: 10vh;
+    /*width: 10vw;*/
+    margin: 1vw;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    background-color: #e8c766;
+
+    border: 5px solid #e8af30;
+    border-radius: 17px; 
+
+}
+
+.skill-name {
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 24px;
+}
+
+.x-button {
+    height: 4vh;
+    width: 4vh;
+    margin-left: 0.5vw;
+    margin-right: 0.5vw;
+
+    background-color: #e8af30;
+    color: #3361ac;
+
+    border: 1px solid #e8af30; /* this is to prevent css putting weird color shit on account of border-radius */
+    border-radius: 15px;
+
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+.x-button:hover {
+    background-color: #3361ac;
+    color: #e8af30;
+    border-color: #3361ac;
+}

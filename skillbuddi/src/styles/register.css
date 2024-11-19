@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+.registration-box {
+    /* the background */
+    display: flex;
+    flex-direction: column;
+
+    height: 96vh;
+    margin: 0px;
+    padding: 0px;
+
+    background: linear-gradient(to right, #e8c766, #e8c766, #ffffff);
+}
+
+.i-hate-css {
+    /* this contains the registration form and the logo */
+    display: flex;
+    flex-direction: row;
+}
+
+.registration-form {
+    /* the white box that contains the form*/
+
+    width: 50vw;
+    height: 75vh;
+    margin-left: 10vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: left;
+
+    background-color: white;
+    border-radius: 20px;
+}
+
+.form-field {
+    /* contains input box, error message, and (if someone enables it) a title */
+    margin-left: 3vw;
+
+    display:flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.register-box {
+    /* input boxes for text */
+
+    height: 3vw;
+    width: 25vw;
+    margin-left: 1vw;
+
+    background-color: #e7e6dd;
+    color: #0f2043;
+
+    border: 3px solid #0f2403;
+    border-radius: 4px;
+
+    font-family: 'Rubik', sans-serif;
+}
+
+.registration-error {
+    /* error messages for invalidated form inputs */
+    width: 17vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+
+    color: #e53030;
+
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.signup-text {
+    height: 3vh;
+    margin-left: 10vh;
+
+    color: #0f2043;
+
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    font-size: 50px;
+}
+
+.register-button {
+    height: 8vh;
+    width: 25vw;
+    margin: 0 auto;
+
+    background-color: #e8c766;
+    color: #0f2043;
+
+    border: 4px solid #3361ac;
+    border-radius: 10px;
+
+    font-family: 'Rubik', sans-serif;
+
+    cursor: pointer;
+}
+
+.register-button:hover {
+    background-color: #e8af30;
+}
+
+.registration-img {
+    width: 30vw;
+    height: 30vw;
+    margin-top: 2vw;
+    margin-left: 4vw;
+
+}
