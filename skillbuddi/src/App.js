@@ -2,7 +2,6 @@ import React from 'react';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
-import MergedBar from './components/Header';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
