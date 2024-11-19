@@ -5,7 +5,8 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Messaging from './pages/Messaging';
 import MyProfile from './pages/MyProfile';
-import Profile from './pages/Profile'
+import Profile from './pages/Profile';
+import About from './pages/About';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
@@ -31,6 +32,7 @@ const App = () => {
               <Route path="/messages" element={<Messaging />} />
               <Route path="/myProfile" element={<MyProfile />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/about" element={<About />} />
             </Route>
           </Routes>
         </AuthProvider>

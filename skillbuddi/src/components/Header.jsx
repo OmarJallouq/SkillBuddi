@@ -30,14 +30,17 @@ const Header = () => {
           </div>
 
           <div className="links-container">
-            <Link className="header-link" to="/">
+            <Link className="header-link" to="/Matching">
               Matching
             </Link>
-            <Link className="header-link" to="/">
+            <Link className="header-link" to="/MyProfile">
               My Profile
             </Link>
-            <Link className="header-link" to="/">
+            <Link className="header-link" to="/Messaging">
               Messages
+            </Link>
+            <Link className="header-link" to="/About">
+              About Us
             </Link>
           </div>
 
