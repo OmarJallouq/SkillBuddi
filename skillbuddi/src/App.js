@@ -16,7 +16,7 @@ const App = () => {
 
       <Router>
         <AuthProvider>
-          <MergedBar />
+          <Header />
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
