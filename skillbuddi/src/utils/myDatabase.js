@@ -4,8 +4,8 @@ import { databases } from "../appwriteConfig";
 export const updateUserData = async (userId, updatedData) => {
   try {
     await databases.updateDocument(
-      process.env.REACT_APP_DATABASE_ID,
-      process.env.REACT_APP_COLLECTIONID,
+      process.env.REACT_APP_APPWRITE_DATABASE, // Replace with your database ID
+      process.env.REACT_APP_APPWRITE_COLLECTION, // Replace with your collection ID
       userId,
       updatedData
     );
