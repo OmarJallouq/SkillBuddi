@@ -3,12 +3,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-} 
+}
 
 /* Layout for the container */
 .homepage-container {
     display: flex;
-    height: 100vh; 
+    height: 100vh;
     font-family: Arial, sans-serif;
 }
 
