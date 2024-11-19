@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect, createContext } from "react";
 import { account, databases, storage } from "../appwriteConfig";
 import { ID } from "appwrite";
-import { toast, ToastContainer } from "react-toastify";
 
 const AuthContext = createContext();
 
