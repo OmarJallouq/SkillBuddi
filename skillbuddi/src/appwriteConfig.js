@@ -1,7 +1,7 @@
 import { Client, Account, Databases, Storage } from 'appwrite';
 
 const client = new Client();
-client.setProject(`${process.env.REACT_APP_APPWRITE_PROJECT}`);
+client.setProject(`${process.env.REACT_APP_APPWRITE_AUTH}`);
 
 export const account = new Account(client);
 
