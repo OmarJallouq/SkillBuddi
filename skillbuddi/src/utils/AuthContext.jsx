@@ -1,8 +1,4 @@
-/*import { useContext, useState, useEffect, createContext } from "react";
-import { account } from "../appwriteConfig";
-import { ID } from "appwrite";
-import { toast, ToastContainer } from "react-toastify";
-const AuthContext = createContext();
+/*
 
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -101,6 +97,7 @@ export default AuthContext;*/
 import { useContext, useState, useEffect, createContext } from "react";
 import { account, databases, storage } from "../appwriteConfig";
 import { ID } from "appwrite";
+import { toast, ToastContainer } from "react-toastify";
 
 const AuthContext = createContext();
 
@@ -108,6 +105,7 @@ const AuthContext = createContext();
 const DATABASE_ID = "673ba5e5003626b2e2da";
 const COLLECTION_ID = "673ba600001967a66f67";
 const BUCKET_ID = "673bb76a0033fd6581b5";
+//FIXME: DO NOT DO THIS EVER!
 
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -121,7 +119,10 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (userInfo) => {
     setLoading(true);
     try {
-      await account.createEmailPasswordSession(userInfo.email, userInfo.password);
+      await account.createEmailPasswordSession(
+        userInfo.email,
+        userInfo.password
+      );
       const accountDetails = await account.get();
       setUser(accountDetails);
 
@@ -151,8 +152,16 @@ export const AuthProvider = ({ children }) => {
     try {
       // Create user in Appwrite authentication
       const userId = ID.unique();
-      await account.create(userId, userInfo.email, userInfo.password, `${userInfo.firstName} ${userInfo.lastName}`);
-      await account.createEmailPasswordSession(userInfo.email, userInfo.password);
+      await account.create(
+        userId,
+        userInfo.email,
+        userInfo.password,
+        `${userInfo.firstName} ${userInfo.lastName}`
+      );
+      await account.createEmailPasswordSession(
+        userInfo.email,
+        userInfo.password
+      );
 
       const accountDetails = await account.get();
       setUser(accountDetails);
@@ -185,7 +194,12 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (userId, updates) => {
     try {
-      await databases.updateDocument(DATABASE_ID, COLLECTION_ID, userId, updates);
+      await databases.updateDocument(
+        DATABASE_ID,
+        COLLECTION_ID,
+        userId,
+        updates
+      );
       return { success: true };
     } catch (error) {
       return { success: false, error: error.message };
@@ -233,4 +247,3 @@ export const useAuth = () => {
 };
 
 export default AuthContext;
-
