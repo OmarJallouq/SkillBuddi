@@ -8,7 +8,7 @@
 /* Layout for the container */
 .homepage-container {
     display: flex;
-    height: 100vh;
+    height: 100vh; 
     font-family: Arial, sans-serif;
 }
 
