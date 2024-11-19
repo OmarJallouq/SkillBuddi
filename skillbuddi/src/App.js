@@ -2,6 +2,10 @@ import React from 'react';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
+import Home from './pages/Home';
+import Messaging from './pages/Messaging';
+import MyProfile from './pages/MyProfile';
+import Profile from './pages/Profile'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
@@ -22,6 +26,10 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route element={<PrivateRoutes />}>
               {/* PUT THE ROUTES HERE THAT SHOULD ONLY BE ACCESSED IF THE USER IS LOGGED IN */}s
+              <Route path="/home" element={<Home />} />
+              <Route path="/messaging" element={<Messaging />} />
+              <Route path="/myProfile" element={<MyProfile />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
           </Routes>
         </AuthProvider>
