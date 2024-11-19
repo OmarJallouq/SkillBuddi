@@ -23,6 +23,7 @@ const Header = () => {
             <Link to="/">
               <img
                 className="logo-img"
+                alt="logo"
                 src="https://i.ibb.co/Zdv59dK/omer.jpg"
               ></img>
             </Link>
@@ -50,6 +51,7 @@ const Header = () => {
             <Link to="/">
               <img
                 className="logo-img"
+                alt="logo"
                 src="https://i.ibb.co/Zdv59dK/omer.jpg"
               ></img>
             </Link>

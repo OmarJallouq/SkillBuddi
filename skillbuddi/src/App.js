@@ -5,7 +5,7 @@ import Header from './components/Header';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
 
