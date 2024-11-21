@@ -12,10 +12,26 @@
     background: linear-gradient(to right, #e8c766, #e8c766, #ffffff);
 }
 
+.signup-text {
+    height: 3vh;
+    margin-top: 2vh;
+    margin-left: 6vw;
+    margin-bottom: 1vh;
+
+    color: #0f2043;
+
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    font-size: 50px;
+}
+
 .i-hate-css {
     /* this contains the registration form and the logo */
     display: flex;
     flex-direction: row;
+
+    margin-left: 6vw;
+    margin-top: 5vh;
 }
 
 .registration-form {
@@ -23,7 +39,6 @@
 
     width: 50vw;
     height: 75vh;
-    margin-left: 10vh;
 
     display: flex;
     flex-direction: column;
@@ -51,6 +66,8 @@
     width: 25vw;
     margin-left: 1vw;
 
+    padding: 1vh;
+
     background-color: #e7e6dd;
     color: #0f2043;
 
@@ -71,17 +88,6 @@
     font-family: 'Rubik', sans-serif;
     font-weight: 500;
     font-size: 15px;
-}
-
-.signup-text {
-    height: 3vh;
-    margin-left: 10vh;
-
-    color: #0f2043;
-
-    font-family: 'Rubik', sans-serif;
-    font-weight: 500;
-    font-size: 50px;
 }
 
 .register-button {
