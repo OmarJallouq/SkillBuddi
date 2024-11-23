@@ -12,6 +12,7 @@ import PrivateRoutes from './utils/PrivateRoutes'
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { DatabaseProvider } from './utils/DatabaseContext';
+import { DatabaseProvider } from './utils/DatabaseContext';
 
 
 
