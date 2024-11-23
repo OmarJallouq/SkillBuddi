@@ -1,15 +1,14 @@
 import { useContext, useState, useEffect, createContext } from "react";
-import { account, databases, storage } from "../appwriteConfig";
+import { useDatabase } from "./DatabaseContext";
+import { account } from "../appwriteConfig";
 import { ID } from "appwrite";
 
 const AuthContext = createContext();
 
 // Database and Collection IDs
-const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
-const COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_COLLECTION}`;
-const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
 
 export const AuthProvider = ({ children }) => {
+  const { createUserData, updateUserData } = useDatabase();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
@@ -60,6 +59,8 @@ export const AuthProvider = ({ children }) => {
         userInfo.password,
         `${userInfo.firstName} ${userInfo.lastName}`
       );
+
+      // Logs user in
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
@@ -69,21 +70,18 @@ export const AuthProvider = ({ children }) => {
       setUser(accountDetails);
 
       // Add user to the database with basic details
-      await databases.createDocument(
-        DATABASE_ID,
-        COLLECTION_ID,
-        accountDetails.$id, // Use Appwrite user ID as the document ID
-        {
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          email: userInfo.email,
-          Bio: "",
-          Skills: [],
-          location: "",
-          dateOfBirth: null,
-          profilePicture: null,
-        }
-      );
+      const data = {
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        email: userInfo.email,
+        Bio: "",
+        Skills: [],
+        location: "",
+        dateOfBirth: null,
+        profilePicture: null,
+      };
+
+      createUserData(accountDetails.$id, data);
 
       return { success: true };
     } catch (error) {
@@ -94,28 +92,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateProfile = async (userId, updates) => {
+  const updateProfile = async (userId, data) => {
     try {
-      await databases.updateDocument(
-        DATABASE_ID,
-        COLLECTION_ID,
-        userId,
-        updates
-      );
+      updateUserData(userId, data);
       return { success: true };
     } catch (error) {
       setError(error.message || "Something went wrong");
       return { success: false, error: error.message || "Something went wrong" };
-    }
-  };
-
-  const uploadProfilePicture = async (file) => {
-    try {
-      const response = await storage.createFile(BUCKET_ID, ID.unique(), file);
-      return response.$id; // Return the file ID
-    } catch (error) {
-      console.error(error);
-      return null;
     }
   };
 
@@ -133,7 +116,6 @@ export const AuthProvider = ({ children }) => {
     logoutUser,
     registerUser,
     updateProfile,
-    uploadProfilePicture,
   };
 
   return (
