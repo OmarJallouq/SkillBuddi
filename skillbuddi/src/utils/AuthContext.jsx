@@ -5,8 +5,6 @@ import { ID } from "appwrite";
 
 const AuthContext = createContext();
 
-// Database and Collection IDs
-
 export const AuthProvider = ({ children }) => {
   const { createUserData, updateUserData } = useDatabase();
   const [loading, setLoading] = useState(true);
