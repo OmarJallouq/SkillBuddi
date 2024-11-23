@@ -1,0 +1,10 @@
+{
+    "id": "userId",
+    "name": "Jamal Doe",     
+    "photo": "https://randomuser.me/api/portraits/men/41.jpg",
+    "skills": ["Maths"],
+    "bio": "Passionate about sharing knowledge and learning new things.",
+    "location": "Brooklyn",
+    "age": "238",
+    "occupation": "Hustler"
+}
