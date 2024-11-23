@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import testProfile from "../testProfiles.json";
 
 const Profile = () => {
   const { id } = useParams(); // Extract the user ID from the URL
   const navigate = useNavigate(); // Hook for navigation
   const [profile, setProfile] = useState(null);
 
-  // Simulate fetching user data
+  // fetch user data
   useEffect(() => {
     const fetchData = async () => {
-      const mockData = {
-        id: "userId",
-        name: "Jamal Doe",
-        photo: "https://randomuser.me/api/portraits/men/41.jpg",
-        skills: ["Maths"],
-        bio: "Passionate about sharing knowledge and learning new things.",
-        location: "Brooklyn",
-        age: "238",
-        occupation: "Hustler",
-      };
-      setProfile(mockData);
+      /*fetch('urlhere').then(response => response.json()).then(data => {setProfile(data);});*/
+      setProfile(testProfile);
     };
 
     fetchData();
