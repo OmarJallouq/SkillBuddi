@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import testProfiles from "../testProfiles.json";
 import "../styles/profile.css";
 
-
 const Profile = () => {
   const { id } = useParams(); // Extract the user ID from the URL
   const navigate = useNavigate(); // Hook for navigation
@@ -42,19 +41,27 @@ const Profile = () => {
             Message {profile.name}
           </button>
         </div>
-  
+
         <div className="profile-details">
-          <p><strong>Name:</strong> {profile.name}</p>
-          <p><strong>Age:</strong> {profile.age}</p>
-          <p><strong>Location:</strong> {profile.location}</p>
-          <p><strong>Skills:</strong> {profile.skills.join(', ')}</p>
-          <p><strong>Bio:</strong> {profile.bio}</p>
+          <p>
+            <strong>Name:</strong> {profile.name}
+          </p>
+          <p>
+            <strong>Age:</strong> {profile.age}
+          </p>
+          <p>
+            <strong>Location:</strong> {profile.location}
+          </p>
+          <p>
+            <strong>Skills:</strong> {profile.skills.join(", ")}
+          </p>
+          <p>
+            <strong>Bio:</strong> {profile.bio}
+          </p>
         </div>
       </div>
     </div>
   );
-  
-  
 };
 
 export default Profile;
