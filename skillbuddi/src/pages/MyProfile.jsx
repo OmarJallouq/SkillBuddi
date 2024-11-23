@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../utils/AuthContext";
 import SkillTag from "../components/SkillTag";
 import "../styles/myProfile.css";
 
 const MyProfile = () => {
   // State to store the user's profile data
-  const [user, setUser] = useState(null);
+  const [mock, setMock] = useState(null);
+  const { user } = useAuth();
 
   // Simulated fetch function to get user data (this could be an API call in real use)
   // yeah someone should make this an api call lol
@@ -17,14 +19,14 @@ const MyProfile = () => {
         avatar: "https://www.w3schools.com/w3images/avatar2.png", // Placeholder image
         skills: ["JavaScript", "React", "Node.js", "CSS", "HTML"], // Example skills
       };
-      setUser(userData);
+      setMock(userData);
     };
     fetchUserData();
   }, []);
 
   // Handle removing a skill
   const handleRemoveSkill = (skillToRemove) => {
-    setUser((prevUser) => ({
+    setMock((prevUser) => ({
       ...prevUser,
       skills: prevUser.skills.filter((skill) => skill !== skillToRemove),
     }));
@@ -32,15 +34,15 @@ const MyProfile = () => {
 
   // Handle adding a new skill
   const handleAddSkill = (newSkill) => {
-    if (newSkill && !user.skills.includes(newSkill)) {
-      setUser((prevUser) => ({
+    if (newSkill && !mock.skills.includes(newSkill)) {
+      setMock((prevUser) => ({
         ...prevUser,
         skills: [...prevUser.skills, newSkill],
       }));
     }
   };
 
-  if (!user) {
+  if (!mock) {
     return <div>Loading...</div>;
   }
 
@@ -48,7 +50,7 @@ const MyProfile = () => {
     <div className="whole-thing">
       <div className="profile-container">
         <div className="profile-header">
-          <img src={user.avatar} alt="Profile Avatar" className="avatar" />
+          <img src={mock.avatar} alt="Profile Avatar" className="avatar" />
           <div className="profile-info">
             <h1>{user.name}</h1>
             <p>{user.username}</p>
@@ -59,11 +61,11 @@ const MyProfile = () => {
         <div className="skills-section">
           <div className="title-skills-container">
             <h2>My Skills</h2>
-            {user.skills.length === 0 ? (
+            {mock.skills.length === 0 ? (
               <p>No skills listed.</p>
             ) : (
               <ul className="skills-list">
-                {user.skills.map((skill, index) => (
+                {mock.skills.map((skill, index) => (
                   <SkillTag
                     skill={skill}
                     index={index}
