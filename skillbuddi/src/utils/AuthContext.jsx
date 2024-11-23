@@ -8,7 +8,6 @@ const AuthContext = createContext();
 const DATABASE_ID = "673ba5e5003626b2e2da";
 const COLLECTION_ID = "673ba600001967a66f67";
 const BUCKET_ID = "673bb76a0033fd6581b5";
-//FIXME: DO NOT DO THIS EVER!
 
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -136,7 +135,6 @@ export const AuthProvider = ({ children }) => {
     updateProfile,
     uploadProfilePicture,
   };
-  //TODO: check this
 
   return (
     <AuthContext.Provider value={contextData}>
