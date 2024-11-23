@@ -135,7 +135,6 @@ export const AuthProvider = ({ children }) => {
     updateProfile,
     uploadProfilePicture,
   };
-  //TODO: check this
 
   return (
     <AuthContext.Provider value={contextData}>
