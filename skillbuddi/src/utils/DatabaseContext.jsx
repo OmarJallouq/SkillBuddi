@@ -86,18 +86,16 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
+  const contextData = {
+    fetchUserData,
+    updateUserData,
+    createUserData,
+    uploadProfilePicture,
+  };
+
   return (
-    <DatabaseContext.Provider
-      value={{
-        fetchUserData,
-        updateUserData,
-        createUserData,
-        uploadProfilePicture,
-        loading,
-        error,
-      }}
-    >
-      {children}
+    <DatabaseContext.Provider value={contextData}>
+      {loading ? <p>Loading...</p> : children}
     </DatabaseContext.Provider>
   );
 };
@@ -106,3 +104,5 @@ export const DatabaseProvider = ({ children }) => {
 export const useDatabase = () => {
   return useContext(DatabaseContext);
 };
+
+export default DatabaseContext;
