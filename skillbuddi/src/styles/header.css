@@ -1,11 +1,16 @@
 .header-bar {
-    height: 6vh;
-
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    background-color: #162f65;
+    justify-content: space-between; /* Distribute items evenly */
+    align-items: center; /* Align items vertically at the center */
+    padding: 10px 20px;
+    background-color: #e8af30;
+    color: white;
+    position: fixed; /* Keeps the navbar at the top of the page */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px; /* Small height for the navbar */
+    z-index: 1000; /* Ensure navbar stays above other content */
 }
 
 .header-logo {
@@ -24,27 +29,32 @@
     display: flex;
 }
 
-.header-link {
-    margin-left: 1vw;
-
-    color: #e8c766;
-
+.header-link,
+.logout-button {
+    margin: 0 10px; /* Horizontal spacing between buttons */
+    padding: 5px 10px;
+    border: none;
+    background-color: #3361ac;
+    color: #eeebe7;
+    border-radius: 3px;
     font-family: 'Rubik', sans-serif;
     text-decoration: none;
     font-size: 20px;
+    white-space: nowrap;
+    text-align: center;
+    display: inline-block; /* Ensure buttons align correctly */
 }
 
 .logout-button {
-    background-color: #3361ac;
-    color: #e7e6dd;
-
-    border: 2px solid #0f2403;
-    border-radius: 6px;
-
-    height: 2vw;
-    margin: 1vw;
-
+    width: auto; /* Match the size dynamically */
     align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 
-    font-family: 'Rubik', sans-serif;
+.header-link:hover,
+.logout-button:hover {
+    background-color: transparent; /* Remove background */
+    color: #3361ac; /* Change text color to blue */
+    border: 1px solid #3361ac; /* Add a border to indicate focus */
 }
