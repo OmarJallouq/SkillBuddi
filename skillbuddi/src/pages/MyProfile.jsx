@@ -70,6 +70,15 @@ const MyProfile = () => {
     <div className="whole-thing">
       <div className="profile-container">
         <div className="profile-header">
+          <img src={user.avatar} alt="Profile Avatar" className="avatar" />
+          <div className="profile-info">
+            <h1>{user.name}</h1>
+            <p>{user.username}</p>
+            <p>{user.email}</p>
+          </div>
+        </div>
+      <div className="profile-container">
+        <div className="profile-header">
           <img src={mock.avatar} alt="Profile Avatar" className="avatar" />
           <div className="profile-info">
             <h1>{mock.name}</h1>
