@@ -32,36 +32,41 @@ const Login = () => {
   };
 
   return (
-    <div className="wholething">
-      <div className="login">
-        <form className="form" onSubmit={handleSubmit} ref={loginForm}>
-          <h1 className="heading">Log In</h1>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            required
-            className="input"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-            className="input"
-          />
-          <button className="button" type="submit">
-            Continue
-          </button>
-          <div className="registerer" type="register">
-            <Link className="registerer" to="/register">
-              No Account? Register
-            </Link>
-          </div>
-        </form>
+    <div className="signup-form">
+    <h2>Login</h2>
+    <form onSubmit={handleSubmit} ref={loginForm}>
+      <div className="form-field">
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        />
       </div>
-    </div>
-  );
+
+      <div className="form-field">
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+
+      <button className="button" type="submit">
+        Log In
+      </button>
+
+      <div className="registerer" type="register">
+          <Link className="registerer" to="/register">
+            No Account? Register
+          </Link>
+        </div>
+    </form>
+  </div>
+);
 };
 
 export default Login;
