@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../utils/AuthContext";
 import SkillTag from "../components/SkillTag";
 import { useAuth } from "../utils/AuthContext";
 import { useDatabase } from "../utils/DatabaseContext";
@@ -7,8 +6,7 @@ import "../styles/myProfile.css";
 
 const MyProfile = () => {
   // State to store the user's profile data
-  const [mock, setMock] = useState(null);
-  const { user } = useAuth();
+  const [user, setUser] = useState(null);
 
   // Simulated fetch function to get user data (this could be an API call in real use)
   // yeah someone should make this an api call lol
@@ -22,6 +20,7 @@ const MyProfile = () => {
         skills: ["JavaScript", "React", "Node.js", "CSS", "HTML"], // Example skills
       };
       setMock(mockData);
+      setUser(userData);
     };
     fetchUserData();
   }, []);
@@ -30,6 +29,7 @@ const MyProfile = () => {
   const handleRemoveSkill = (skillToRemove) => {
     setMock((prevUser) => ({
     setMock((prevUser) => ({
+    setUser((prevUser) => ({
       ...prevUser,
       skills: prevUser.skills.filter((skill) => skill !== skillToRemove),
     }));
@@ -41,6 +41,8 @@ const MyProfile = () => {
       setMock((prevUser) => ({
     if (newSkill && !mock.skills.includes(newSkill)) {
       setMock((prevUser) => ({
+    if (newSkill && !user.skills.includes(newSkill)) {
+      setUser((prevUser) => ({
         ...prevUser,
         skills: [...prevUser.skills, newSkill],
       }));
@@ -49,6 +51,7 @@ const MyProfile = () => {
 
   if (!mock) {
   if (!mock) {
+  if (!user) {
     return <div>Loading...</div>;
   }
 
@@ -56,7 +59,7 @@ const MyProfile = () => {
     <div className="whole-thing">
       <div className="profile-container">
         <div className="profile-header">
-          <img src={mock.avatar} alt="Profile Avatar" className="avatar" />
+          <img src={user.avatar} alt="Profile Avatar" className="avatar" />
           <div className="profile-info">
             <h1>{user.name}</h1>
             <p>{user.username}</p>
@@ -80,7 +83,7 @@ const MyProfile = () => {
               <p>No skills added yet.</p>
             ) : (
               <ul className="skills-list">
-                {mock.skills.map((skill, index) => (
+                {user.skills.map((skill, index) => (
                   <SkillTag
                     skill={skill}
                     index={index}
