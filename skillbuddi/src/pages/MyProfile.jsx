@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../utils/AuthContext";
 import SkillTag from "../components/SkillTag";
 import { useAuth } from "../utils/AuthContext";
 import { useDatabase } from "../utils/DatabaseContext";
@@ -8,7 +9,8 @@ const MyProfile = () => {
   // State to store the user's profile data
   const [mock, setMock] = useState(null);
   const { user } = useAuth();
-  // Simulated fetch function to get mock data (this could be an API call in real use)
+
+  // Simulated fetch function to get user data (this could be an API call in real use)
   // yeah someone should make this an api call lol
   useEffect(() => {
     const fetchUserData = () => {
@@ -27,6 +29,7 @@ const MyProfile = () => {
   // Handle removing a skill
   const handleRemoveSkill = (skillToRemove) => {
     setMock((prevUser) => ({
+    setMock((prevUser) => ({
       ...prevUser,
       skills: prevUser.skills.filter((skill) => skill !== skillToRemove),
     }));
@@ -36,6 +39,8 @@ const MyProfile = () => {
   const handleAddSkill = (newSkill) => {
     if (newSkill && !mock.skills.includes(newSkill)) {
       setMock((prevUser) => ({
+    if (newSkill && !mock.skills.includes(newSkill)) {
+      setMock((prevUser) => ({
         ...prevUser,
         skills: [...prevUser.skills, newSkill],
       }));
@@ -43,11 +48,21 @@ const MyProfile = () => {
   };
 
   if (!mock) {
+  if (!mock) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="whole-thing">
+      <div className="profile-container">
+        <div className="profile-header">
+          <img src={mock.avatar} alt="Profile Avatar" className="avatar" />
+          <div className="profile-info">
+            <h1>{user.name}</h1>
+            <p>{user.username}</p>
+            <p>{user.email}</p>
+          </div>
+        </div>
       <div className="profile-container">
         <div className="profile-header">
           <img src={mock.avatar} alt="Profile Avatar" className="avatar" />
