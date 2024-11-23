@@ -11,6 +11,7 @@ import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { DatabaseProvider } from './utils/DatabaseContext';
 import Chat from "./components/Chat";
 import ConversationList from "./components/ConversationList";
 
@@ -23,22 +24,24 @@ const App = () => {
       <ToastContainer position="top-right" autoClose={3000} />
 
       <Router>
-        <AuthProvider>
-          <Header />
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route element={<PrivateRoutes />}>
-              {/* PUT THE ROUTES HERE THAT SHOULD ONLY BE ACCESSED IF THE USER IS LOGGED IN */}s
-              <Route path="/" element={<Home />} />
-              <Route path="/conversations" element={<ConversationList />} />
-              <Route path="/chat/:partnerId" element={<Chat />} />
-              <Route path="/messages" element={<Messaging />} />
-              <Route path="/myProfile" element={<MyProfile />} />
-              <Route path="/profile" element={<Profile />} />
-            </Route>
-          </Routes>
-        </AuthProvider>
+        <DatabaseProvider>
+          <AuthProvider>
+            <Header />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route element={<PrivateRoutes />}>
+                {/* PUT THE ROUTES HERE THAT SHOULD ONLY BE ACCESSED IF THE USER IS LOGGED IN */}s
+                <Route path="/" element={<Home />} />
+                <Route path="/conversations" element={<ConversationList />} />
+                <Route path="/chat/:partnerId" element={<Chat />} />
+                <Route path="/messages" element={<Messaging />} />
+                <Route path="/myProfile" element={<MyProfile />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+            </Routes>
+          </AuthProvider>
+        </DatabaseProvider>
       </Router>
     </>
   );
