@@ -37,7 +37,7 @@ const Login = () => {
         <form className="form" onSubmit={handleSubmit} ref={loginForm}>
           <h1 className="heading">Log In</h1>
           <input
-            type="email"
+            type="text"
             name="email"
             placeholder="Email"
             required
