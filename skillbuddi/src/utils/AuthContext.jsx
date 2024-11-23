@@ -6,7 +6,7 @@ import { ID } from "appwrite";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const { createUserData, updateUserData } = useDatabase();
+  const { createUserData, updateUserData, fetchUserData } = useDatabase();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
@@ -23,7 +23,11 @@ export const AuthProvider = ({ children }) => {
         userInfo.password
       );
       const accountDetails = await account.get();
-      setUser(accountDetails);
+      const userDetails = await fetchUserData(accountDetails.$id);
+      setUser({
+        ...accountDetails,
+        ...userDetails,
+      });
 
       return { success: true };
     } catch (error) {
@@ -65,7 +69,6 @@ export const AuthProvider = ({ children }) => {
       );
 
       const accountDetails = await account.get();
-      setUser(accountDetails);
 
       // Add user to the database with basic details
       const data = {
@@ -79,7 +82,12 @@ export const AuthProvider = ({ children }) => {
         profilePicture: null,
       };
 
-      createUserData(accountDetails.$id, data);
+      await createUserData(accountDetails.$id, data);
+      const userDetails = await fetchUserData(accountDetails.$id);
+      setUser({
+        ...accountDetails,
+        ...userDetails,
+      });
 
       return { success: true };
     } catch (error) {
@@ -103,7 +111,11 @@ export const AuthProvider = ({ children }) => {
   const checkUserStatus = async () => {
     try {
       const accountDetails = await account.get();
-      setUser(accountDetails);
+      const userDetails = await fetchUserData(accountDetails.$id);
+      setUser({
+        ...accountDetails,
+        ...userDetails,
+      });
     } catch (error) {}
     setLoading(false);
   };
