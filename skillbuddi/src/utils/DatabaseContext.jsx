@@ -4,7 +4,7 @@ import { ID } from "appwrite";
 
 // Appwrite Configuration
 const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
-const USER_COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
+const USER_COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_CONNECTION}`;
 const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
 // Create Context
 const DatabaseContext = createContext();
