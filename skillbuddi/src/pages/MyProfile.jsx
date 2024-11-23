@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../utils/AuthContext";
 import SkillTag from "../components/SkillTag";
 import { useAuth } from "../utils/AuthContext";
 import { useDatabase } from "../utils/DatabaseContext";
