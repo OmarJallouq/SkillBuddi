@@ -225,7 +225,7 @@ const Register = () => {
             {/*<label>Email</label>*/}
             <input
               className="register-box"
-              type="email"
+              type="text"
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
