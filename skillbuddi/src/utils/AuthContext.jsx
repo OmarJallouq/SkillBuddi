@@ -5,10 +5,9 @@ import { ID } from "appwrite";
 const AuthContext = createContext();
 
 // Database and Collection IDs
-const DATABASE_ID = "673ba5e5003626b2e2da";
-const COLLECTION_ID = "673ba600001967a66f67";
-const BUCKET_ID = "673bb76a0033fd6581b5";
-//FIXME: DO NOT DO THIS EVER!
+const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
+const COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_COLLECTION}`;
+const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
 
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);

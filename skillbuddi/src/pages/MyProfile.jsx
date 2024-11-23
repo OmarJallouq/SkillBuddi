@@ -46,13 +46,44 @@ const MyProfile = () => {
 
   return (
     <div className="whole-thing">
-    <div className="profile-container">
-      <div className="profile-header">
-        <img src={user.avatar} alt="Profile Avatar" className="avatar" />
-        <div className="profile-info">
-          <h1>{user.name}</h1>
-          <p>{user.username}</p>
-          <p>{user.email}</p>
+      <div className="profile-container">
+        <div className="profile-header">
+          <img src={user.avatar} alt="Profile Avatar" className="avatar" />
+          <div className="profile-info">
+            <h1>{user.name}</h1>
+            <p>{user.username}</p>
+            <p>{user.email}</p>
+          </div>
+        </div>
+
+        <div className="skills-section">
+          <div className="title-skills-container">
+            <h2>My Skills</h2>
+            {user.skills.length === 0 ? (
+              <p>No skills listed.</p>
+            ) : (
+              <ul className="skills-list">
+                {user.skills.map((skill, index) => (
+                  <SkillTag
+                    skill={skill}
+                    index={index}
+                    handleRemoveSkill={handleRemoveSkill}
+                  />
+                ))}
+              </ul>
+            )}
+          </div>
+          <button
+            onClick={() => {
+              const newSkill = prompt("Enter a new skill:"); // Prompt to add a new skill
+              if (newSkill) {
+                handleAddSkill(newSkill);
+              }
+            }}
+            className="add-skill-button"
+          >
+            Add Skill
+          </button>
         </div>
       </div>
 
