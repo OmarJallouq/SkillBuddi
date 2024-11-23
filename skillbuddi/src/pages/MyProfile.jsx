@@ -57,37 +57,6 @@ const MyProfile = () => {
         </div>
 
         <div className="skills-section">
-          <div className="title-skills-container">
-            <h2>My Skills</h2>
-            {user.skills.length === 0 ? (
-              <p>No skills listed.</p>
-            ) : (
-              <ul className="skills-list">
-                {user.skills.map((skill, index) => (
-                  <SkillTag
-                    skill={skill}
-                    index={index}
-                    handleRemoveSkill={handleRemoveSkill}
-                  />
-                ))}
-              </ul>
-            )}
-          </div>
-          <button
-            onClick={() => {
-              const newSkill = prompt("Enter a new skill:"); // Prompt to add a new skill
-              if (newSkill) {
-                handleAddSkill(newSkill);
-              }
-            }}
-            className="add-skill-button"
-          >
-            Add Skill
-          </button>
-        </div>
-      </div>
-
-      <div className="skills-section">
         <div className="title-skills-container">
           <h2>My Skills</h2>
           {user.skills.length === 0 ? (
