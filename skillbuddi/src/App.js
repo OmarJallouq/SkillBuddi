@@ -11,6 +11,9 @@ import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import Chat from "./components/Chat";
+import ConversationList from "./components/ConversationList";
+
 import { DatabaseProvider } from './utils/DatabaseContext';
 import Chat from "./components/Chat";
 import ConversationList from "./components/ConversationList";
