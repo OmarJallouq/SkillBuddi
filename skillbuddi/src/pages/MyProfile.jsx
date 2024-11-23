@@ -60,7 +60,7 @@ const MyProfile = () => {
         <div className="title-skills-container">
           <h2>My Skills</h2>
           {user.skills.length === 0 ? (
-            <p>No skills listed.</p>
+            <p>No skills added yet.</p>
          ) : (
            <ul className="skills-list">
              {user.skills.map((skill, index) => (

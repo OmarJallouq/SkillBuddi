@@ -80,6 +80,14 @@
     font-family: 'Rubik', sans-serif;
     font-size: 35px;
   }
+
+  .skills-section p {
+    /* message that shows up when no skills are added */
+    color: #72726E;
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 20px;
+  }
   
   .skills-list {
     display: flex;
