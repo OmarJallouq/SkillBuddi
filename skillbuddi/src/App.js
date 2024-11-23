@@ -11,6 +11,9 @@ import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import Chat from "./components/Chat";
+import ConversationList from "./components/ConversationList";
+
 
 
 
@@ -28,6 +31,8 @@ const App = () => {
             <Route element={<PrivateRoutes />}>
               {/* PUT THE ROUTES HERE THAT SHOULD ONLY BE ACCESSED IF THE USER IS LOGGED IN */}s
               <Route path="/" element={<Home />} />
+              <Route path="/conversations" element={<ConversationList />} />
+              <Route path="/chat/:partnerId" element={<Chat />} />
               <Route path="/messages" element={<Messaging />} />
               <Route path="/myProfile" element={<MyProfile />} />
               <Route path="/profile" element={<Profile />} />

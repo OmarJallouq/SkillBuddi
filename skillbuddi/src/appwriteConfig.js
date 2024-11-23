@@ -17,4 +17,7 @@ const account2 = new Account(client2);
 const databases = new Databases(client2);
 const storage = new Storage(client2);
 
+export const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE; // Replace with your database ID
+export const MESSAGES_COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION; // Replace with your messages collection ID
+
 export { client2, account2, databases, storage };
