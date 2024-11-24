@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, createContext } from "react";
+import { useContext, useState, useEffect, createContext, useRef } from "react";
 import { useDatabase } from "./DatabaseContext";
 import { account } from "../appwriteConfig";
 import { ID } from "appwrite";
@@ -11,8 +11,17 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
 
+  const hasCheckedStatus = useRef(false);
+
   useEffect(() => {
-    checkUserStatus();
+    if (hasCheckedStatus.current) return; // Prevent re-execution
+    hasCheckedStatus.current = true;
+
+    const initializeUser = async () => {
+      await checkUserStatus();
+    };
+
+    initializeUser();
   }, []);
 
   const loginUser = async (userInfo) => {
@@ -108,17 +117,20 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const session = await account.getSession("current");
+      console.log(session);
       if (session) {
         const accountDetails = await account.get();
-        console.log("USER ID: " + accountDetails.$id);
         const userDetails = await fetchUserData(accountDetails.$id);
         setUser({ ...accountDetails, ...userDetails });
       } else {
-        console.log("No active session found");
+        console.warn("No active session found");
         setUser(null);
       }
     } catch (error) {
       console.error("Error in checkUserStatus:", error);
+      if (error.message.includes("missing scope")) {
+        console.warn("User is not authenticated. Redirecting to login.");
+      }
       setUser(null);
     } finally {
       setLoading(false);
