@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../utils/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/register.css";
 
 const Register = () => {
@@ -260,9 +260,18 @@ const Register = () => {
             )}
           </div>
 
-          <button className="register-button" type="submit">
-            Create SkillBuddi Account
-          </button>
+          <div className="stuff-container"> {/* this div is to reduce the margin between the button and the link */}
+            <button className="register-button" type="submit">
+              Create SkillBuddi Account
+            </button>
+
+            <div className="loginer">
+              <Link className="loginer" to="/">
+                Already have an account?
+              </Link>
+            </div>
+          </div>
+
         </form>
         <div className="registration-img">
           <img
