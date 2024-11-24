@@ -179,7 +179,6 @@ const Register = () => {
           onSubmit={handleSubmit}
         >
           <div className="form-field">
-            {/*<label>First Name</label>*/}
             <input
               className="register-box"
               type="text"
@@ -193,7 +192,6 @@ const Register = () => {
             )}
           </div>
           <div className="form-field">
-            {/*<label>Last Name</label>*/}
             <input
               className="register-box"
               type="text"
@@ -207,7 +205,6 @@ const Register = () => {
             )}
           </div>
           <div className="form-field">
-            {/*<label>Username</label>*/}
             <input
               className="register-box"
               type="text"
@@ -222,7 +219,6 @@ const Register = () => {
           </div>
 
           <div className="form-field">
-            {/*<label>Email</label>*/}
             <input
               className="register-box"
               type="text"
@@ -237,7 +233,6 @@ const Register = () => {
           </div>
 
           <div className="form-field">
-            {/*<label>Password</label>*/}
             <input
               className="register-box"
               type="password"
@@ -252,7 +247,6 @@ const Register = () => {
           </div>
 
           <div className="form-field">
-            {/*<label>Confirm Password</label>*/}
             <input
               className="register-box"
               type="password"
