@@ -34,12 +34,7 @@ export const AuthProvider = ({ children }) => {
       const accountDetails = await account.get();
       const userDetails = await fetchUserData(accountDetails.$id);
 
-      setUser((prevUser) => {
-        if (!prevUser || prevUser.$id !== accountDetails.$id) {
-          return { ...accountDetails, ...userDetails };
-        }
-        return prevUser;
-      });
+      setUser({ ...accountDetails, ...userDetails });
 
       return { success: true };
     } catch (error) {
