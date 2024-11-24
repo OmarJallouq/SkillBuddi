@@ -25,8 +25,8 @@
 }
 
 .profile-container {
-  width: 85vw; 
-  height: 60vh; 
+  width: 85vw;
+  height: 60vh;
   margin-top: 5vh;
   padding: 30px;
 
@@ -39,9 +39,9 @@
 
   display: flex;
   flex-direction: row;
-  align-items: flex-start; 
+  align-items: flex-start;
   justify-content: center;
-  gap: 30px; 
+  gap: 30px;
 }
 
 .profile-avatar {
@@ -55,8 +55,8 @@
 }
 
 .avatar {
-  width: 280px; 
-  height: 280px; 
+  width: 280px;
+  height: 280px;
   border-radius: 20px;
   margin-bottom: 20px;
 }
@@ -83,12 +83,12 @@
 }
 
 .profile-details {
-  width: 60%; 
+  width: 60%;
   font-family: 'Rubik', sans-serif;
   font-size: 18px;
   color: #0f2043;
   line-height: 1.5;
-  margin-top: 0; 
+  margin-top: 0;
 }
 
 .profile-details p {
