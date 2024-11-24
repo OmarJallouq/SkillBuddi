@@ -15,7 +15,7 @@ export const DatabaseProvider = ({ children }) => {
 
   // Fetch User Data by User ID
   const fetchUserData = async (userId) => {
-    setLoading(true);
+    //setLoading(true);
     setError(null);
     try {
       const userData = await databases.getDocument(
@@ -29,7 +29,7 @@ export const DatabaseProvider = ({ children }) => {
       console.error("Error fetching user data:", err);
       throw err;
     } finally {
-      setLoading(false);
+      //setLoading(false);
     }
   };
 

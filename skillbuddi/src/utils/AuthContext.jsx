@@ -103,16 +103,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  //FIX: rerenders my ass
   const checkUserStatus = async () => {
     setLoading(true);
-    try {
-      const accountDetails = await account.get();
-      const userDetails = await fetchUserData(accountDetails.$id);
 
-      setUser({ ...accountDetails, ...userDetails });
+    try {
+      const session = await account.getSession("current");
+      if (session) {
+        const accountDetails = await account.get();
+        console.log("USER ID: " + accountDetails.$id);
+        const userDetails = await fetchUserData(accountDetails.$id);
+        setUser({ ...accountDetails, ...userDetails });
+      } else {
+        console.log("No active session found");
+        setUser(null);
+      }
     } catch (error) {
       console.error("Error in checkUserStatus:", error);
+      setUser(null);
     } finally {
       setLoading(false);
     }
