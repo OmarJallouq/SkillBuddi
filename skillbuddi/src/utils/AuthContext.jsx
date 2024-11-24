@@ -1,24 +1,20 @@
-import { useContext, useState, useEffect, createContext, useMemo } from "react";
-import { account, databases, storage } from "../appwriteConfig";
+import { useContext, useState, useEffect, createContext, useRef } from "react";
+import { useDatabase } from "./DatabaseContext";
+import { account } from "../appwriteConfig";
 import { ID } from "appwrite";
 
 const AuthContext = createContext();
 
-// Database and Collection IDs from environment variables
-const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
-const COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_COLLECTION}`;
-const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
-
 export const AuthProvider = ({ children }) => {
+  const { createUserData, updateUserData, fetchUserData } = useDatabase();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     checkUserStatus();
-  }, []);
+  }, []); // Empty dependency array ensures it runs only once on mount.
 
-  // Login User
   const loginUser = async (userInfo) => {
     setLoading(true);
     try {
@@ -27,7 +23,11 @@ export const AuthProvider = ({ children }) => {
         userInfo.password
       );
       const accountDetails = await account.get();
-      setUser(accountDetails);
+      const userDetails = await fetchUserData(accountDetails.$id);
+      setUser({
+        ...accountDetails,
+        ...userDetails,
+      });
 
       return { success: true };
     } catch (error) {
@@ -38,22 +38,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout User
   const logoutUser = async () => {
     try {
       await account.deleteSessions("current");
-      setUser(null);
       return { success: true };
     } catch (error) {
       setError(error.message || "Something went wrong");
       return { success: false, error: error.message || "Something went wrong" };
+    } finally {
+      setUser(null);
     }
   };
 
-  // Register User
   const registerUser = async (userInfo) => {
     setLoading(true);
     try {
+      // Create user in Appwrite authentication
       const userId = ID.unique();
       await account.create(
         userId,
@@ -61,95 +61,84 @@ export const AuthProvider = ({ children }) => {
         userInfo.password,
         `${userInfo.firstName} ${userInfo.lastName}`
       );
+      console.log("THE USER ID IS " + userId);
+      // Logs user in
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
       );
 
       const accountDetails = await account.get();
-      setUser(accountDetails);
 
-      await databases.createDocument(
-        DATABASE_ID,
-        COLLECTION_ID,
-        accountDetails.$id, // Use Appwrite user ID as the document ID
-        {
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          email: userInfo.email,
-          Bio: "",
-          Skills: [],
-          location: "",
-          dateOfBirth: null,
-          profilePicture: null,
-        }
-      );
+      // Add user to the database with basic details
+      const data = {
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        email: userInfo.email,
+        Bio: "",
+        Skills: [],
+        location: "",
+        dateOfBirth: null,
+        profilePicture: null,
+      };
 
-      return { success: true };
-    } catch (error) {
-      setError(error.message || "Something went wrong");
-      return { success: false, error: error.message || "Something went wrong" };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Update User Profile
-  const updateProfile = async (userId, updates) => {
-    try {
-      await databases.updateDocument(
-        DATABASE_ID,
-        COLLECTION_ID,
-        userId,
-        updates
-      );
-      return { success: true };
-    } catch (error) {
-      setError(error.message || "Something went wrong");
-      return { success: false, error: error.message || "Something went wrong" };
-    }
-  };
-
-  // Upload Profile Picture
-  const uploadProfilePicture = async (file) => {
-    try {
-      const response = await storage.createFile(BUCKET_ID, ID.unique(), file);
-      return response.$id; // Return the file ID
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
-
-  // Check User Status
-  const checkUserStatus = async () => {
-    try {
-      const accountDetails = await account.get();
-      setUser((prevUser) => {
-        if (!prevUser || prevUser.$id !== accountDetails.$id) {
-          return accountDetails;
-        }
-        return prevUser;
+      await createUserData(accountDetails.$id, data);
+      const userDetails = await fetchUserData(accountDetails.$id);
+      setUser({
+        ...accountDetails,
+        ...userDetails,
       });
+
+      return { success: true };
     } catch (error) {
-      console.error("Error checking user status:", error);
+      setError(error.message || "Something went wrong");
+      return { success: false, error: error.message || "Something went wrong" };
     } finally {
       setLoading(false);
     }
   };
 
-  // Context Data (Memoized)
-  const contextData = useMemo(
-    () => ({
-      user,
-      loginUser,
-      logoutUser,
-      registerUser,
-      updateProfile,
-      uploadProfilePicture,
-    }),
-    [user]
-  );
+  const updateProfile = async (userId, data) => {
+    try {
+      updateUserData(userId, data);
+      return { success: true };
+    } catch (error) {
+      setError(error.message || "Something went wrong");
+      return { success: false, error: error.message || "Something went wrong" };
+    }
+  };
+
+  const checkUserStatus = async () => {
+    let accountDetails = {};
+    try {
+      try {
+        accountDetails = await account.get();
+        console.log("Got user account");
+        setUser(accountDetails);
+      } catch (error) {
+        console.error("checkUserStatus: Error fetching account:", error);
+      }
+
+      let userDetails = {};
+      try {
+        userDetails = await fetchUserData(accountDetails.$id);
+        console.log("Got user data");
+      } catch (error) {
+        console.warn("checkUserStatus: Failed to fetch user details:", error);
+      }
+    } catch {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const contextData = {
+    user,
+    loginUser,
+    logoutUser,
+    registerUser,
+    updateProfile,
+  };
 
   return (
     <AuthContext.Provider value={contextData}>
