@@ -101,17 +101,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  //TODO: Is this necessary to put here? Can't we just directly do this in DB? Seems redundant.
-  const updateProfile = async (userId, data) => {
-    try {
-      await updateUserData(userId, data);
-      return { success: true };
-    } catch (error) {
-      setError(error.message || "Something went wrong");
-      return { success: false, error: error.message || "Something went wrong" };
-    }
-  };
-
   const checkUserStatus = async () => {
     setLoading(true);
     try {
@@ -140,7 +129,6 @@ export const AuthProvider = ({ children }) => {
     loginUser,
     logoutUser,
     registerUser,
-    updateProfile,
   };
 
   return (
