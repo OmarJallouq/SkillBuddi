@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, createContext, useRef } from "react";
+import { useContext, useState, useEffect, createContext } from "react";
 import { useDatabase } from "./DatabaseContext";
 import { account } from "../appwriteConfig";
 import { ID } from "appwrite";
@@ -11,29 +11,24 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
 
-  const hasCheckedStatus = useRef(false);
-
   useEffect(() => {
-    if (hasCheckedStatus.current) return; // Prevent re-execution
-    hasCheckedStatus.current = true;
-
-    const initializeUser = async () => {
-      await checkUserStatus();
-    };
-
-    initializeUser();
+    checkUserStatus();
   }, []);
 
   const loginUser = async (userInfo) => {
     setLoading(true);
     try {
+      // Logs the User In
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
       );
+
+      // Gets all User Information
       const accountDetails = await account.get();
       const userDetails = await fetchUserData(accountDetails.$id);
 
+      // Sets the User
       setUser({ ...accountDetails, ...userDetails });
 
       return { success: true };
@@ -47,6 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   const logoutUser = async () => {
     try {
+      // Deletes the Current Session and Sets the User to Null
       await account.deleteSessions("current");
       setUser(null);
       return { success: true };
@@ -60,17 +56,22 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const userId = ID.unique();
+
+      // Makes the Auth Record
       await account.create(
         userId,
         userInfo.email,
         userInfo.password,
         `${userInfo.firstName} ${userInfo.lastName}`
       );
+
+      // Logs the User In
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
       );
 
+      // Information for Database Entry
       const accountDetails = await account.get();
       const data = {
         firstName: userInfo.firstName,
@@ -83,9 +84,12 @@ export const AuthProvider = ({ children }) => {
         profilePicture: null,
       };
 
+      // Creates Database Record
       await createUserData(accountDetails.$id, data);
+
       const userDetails = await fetchUserData(accountDetails.$id);
 
+      // Sets the User with all Information
       setUser({ ...accountDetails, ...userDetails });
 
       return { success: true };
@@ -97,6 +101,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  //TODO: Is this necessary to put here? Can't we just directly do this in DB? Seems redundant.
   const updateProfile = async (userId, data) => {
     try {
       await updateUserData(userId, data);
@@ -109,10 +114,11 @@ export const AuthProvider = ({ children }) => {
 
   const checkUserStatus = async () => {
     setLoading(true);
-
     try {
+      // Attempts to check if there exists a session
       const session = await account.getSession("current");
-      console.log(session);
+
+      // If user is logged in, get their information, otherwise, null
       if (session) {
         const accountDetails = await account.get();
         const userDetails = await fetchUserData(accountDetails.$id);
@@ -123,9 +129,6 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error in checkUserStatus:", error);
-      if (error.message.includes("missing scope")) {
-        console.warn("User is not authenticated. Redirecting to login.");
-      }
       setUser(null);
     } finally {
       setLoading(false);

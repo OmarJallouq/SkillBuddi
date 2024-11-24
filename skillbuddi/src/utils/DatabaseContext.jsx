@@ -2,11 +2,10 @@ import React, { createContext, useContext, useState } from "react";
 import { databases, storage } from "../appwriteConfig";
 import { ID } from "appwrite";
 
-// Appwrite Configuration
 const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
 const USER_COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_COLLECTION}`;
 const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
-// Create Context
+
 const DatabaseContext = createContext();
 
 export const DatabaseProvider = ({ children }) => {
