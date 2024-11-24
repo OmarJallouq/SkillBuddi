@@ -92,6 +92,15 @@
     font-size: 50px;
 }
 
+.stuff-container {
+    width: 50vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .register-button {
     height: 8vh;
     width: 25vw;
@@ -111,6 +120,17 @@
 
 .register-button:hover {
     background-color: #e8af30;
+}
+
+.loginer {
+    margin-top: 1vh;
+    text-align: center;
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 16px;
+    text-decoration: none;
+
+    color: #162f65;
 }
 
 .registration-img {
