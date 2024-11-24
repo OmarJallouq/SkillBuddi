@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, createContext, useRef } from "react";
+import { useContext, useState, useEffect, createContext } from "react";
 import { useDatabase } from "./DatabaseContext";
 import { account } from "../appwriteConfig";
 import { ID } from "appwrite";
@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkUserStatus();
-  }, []); // Empty dependency array ensures it runs only once on mount.
+  }, []);
 
   const loginUser = async (userInfo) => {
     setLoading(true);
@@ -24,9 +24,12 @@ export const AuthProvider = ({ children }) => {
       );
       const accountDetails = await account.get();
       const userDetails = await fetchUserData(accountDetails.$id);
-      setUser({
-        ...accountDetails,
-        ...userDetails,
+
+      setUser((prevUser) => {
+        if (!prevUser || prevUser.$id !== accountDetails.$id) {
+          return { ...accountDetails, ...userDetails };
+        }
+        return prevUser;
       });
 
       return { success: true };
@@ -41,19 +44,17 @@ export const AuthProvider = ({ children }) => {
   const logoutUser = async () => {
     try {
       await account.deleteSessions("current");
+      setUser(null);
       return { success: true };
     } catch (error) {
       setError(error.message || "Something went wrong");
       return { success: false, error: error.message || "Something went wrong" };
-    } finally {
-      setUser(null);
     }
   };
 
   const registerUser = async (userInfo) => {
     setLoading(true);
     try {
-      // Create user in Appwrite authentication
       const userId = ID.unique();
       await account.create(
         userId,
@@ -61,16 +62,12 @@ export const AuthProvider = ({ children }) => {
         userInfo.password,
         `${userInfo.firstName} ${userInfo.lastName}`
       );
-      console.log("THE USER ID IS " + userId);
-      // Logs user in
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
       );
 
       const accountDetails = await account.get();
-
-      // Add user to the database with basic details
       const data = {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
@@ -84,10 +81,8 @@ export const AuthProvider = ({ children }) => {
 
       await createUserData(accountDetails.$id, data);
       const userDetails = await fetchUserData(accountDetails.$id);
-      setUser({
-        ...accountDetails,
-        ...userDetails,
-      });
+
+      setUser({ ...accountDetails, ...userDetails });
 
       return { success: true };
     } catch (error) {
@@ -100,7 +95,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (userId, data) => {
     try {
-      updateUserData(userId, data);
+      await updateUserData(userId, data);
       return { success: true };
     } catch (error) {
       setError(error.message || "Something went wrong");
@@ -109,24 +104,19 @@ export const AuthProvider = ({ children }) => {
   };
 
   const checkUserStatus = async () => {
-    let accountDetails = {};
+    setLoading(true);
     try {
-      try {
-        accountDetails = await account.get();
-        console.log("Got user account");
-        setUser(accountDetails);
-      } catch (error) {
-        console.error("checkUserStatus: Error fetching account:", error);
-      }
+      const accountDetails = await account.get();
+      const userDetails = await fetchUserData(accountDetails.$id);
 
-      let userDetails = {};
-      try {
-        userDetails = await fetchUserData(accountDetails.$id);
-        console.log("Got user data");
-      } catch (error) {
-        console.warn("checkUserStatus: Failed to fetch user details:", error);
-      }
-    } catch {
+      setUser((prevUser) => {
+        if (!prevUser || prevUser.$id !== accountDetails.$id) {
+          return { ...accountDetails, ...userDetails };
+        }
+        return prevUser;
+      });
+    } catch (error) {
+      console.error("Error in checkUserStatus:", error);
     } finally {
       setLoading(false);
     }
