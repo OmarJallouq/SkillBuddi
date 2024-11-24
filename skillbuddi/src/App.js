@@ -8,6 +8,7 @@ import MyProfile from './pages/MyProfile';
 import Profile from './pages/Profile';
 import About from './pages/About';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Logout from './pages/Logout';
 import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
 import { ToastContainer } from 'react-toastify';
@@ -35,6 +36,7 @@ const App = () => {
                 <Route path="/myProfile" element={<MyProfile />} />
                 <Route path="/profile" element={<Profile />} />
               </Route>
+              <Route path="/logout" element={<Logout />} />
             </Routes>
           </AuthProvider>
         </DatabaseProvider>
