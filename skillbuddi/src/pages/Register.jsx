@@ -82,6 +82,7 @@ const Register = () => {
         ...prevErrors,
         username: "Username can only contain letters and numbers.",
       }));
+      isValid = false;
     } else {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -144,8 +145,7 @@ const Register = () => {
     }
 
     if (!isValid) {
-      //not valid
-      alert("Registration Unsuccessful");
+      toast.error("Registration not successful. Please check the form.");
       return;
     }
 
