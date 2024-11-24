@@ -169,7 +169,7 @@ const Register = () => {
 
   return (
     <div className="registration-box">
-      <h2 className="signup-text">Create a SkillBuddi Account</h2>
+      <h2 className="signup-text">Sign Up for SkillBuddi</h2>
       <div className="i-hate-css">
         {" "}
         {/* this exists so that i can place the logo to the side of the form */}
