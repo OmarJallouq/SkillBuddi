@@ -9,14 +9,12 @@ const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
 const DatabaseContext = createContext();
 
 export const DatabaseProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch User Data by User ID
   const fetchUserData = async (userId) => {
-    //setLoading(true);
     setError(null);
     try {
+      // Gets and returns the record
       const userData = await databases.getDocument(
         DATABASE_ID,
         USER_COLLECTION_ID,
@@ -27,16 +25,13 @@ export const DatabaseProvider = ({ children }) => {
       setError(err.message);
       console.error("Error fetching user data:", err);
       throw err;
-    } finally {
-      //setLoading(false);
     }
   };
 
-  // Update User Data
   const updateUserData = async (userId, data) => {
-    setLoading(true);
     setError(null);
     try {
+      // Updates and returns updated record
       const updatedData = await databases.updateDocument(
         DATABASE_ID,
         USER_COLLECTION_ID,
@@ -48,16 +43,13 @@ export const DatabaseProvider = ({ children }) => {
       setError(err.message);
       console.error("Error updating user data:", err);
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Create New User Data
   const createUserData = async (id, data) => {
-    setLoading(true);
     setError(null);
     try {
+      // Creates new record in User collection
       const newData = await databases.createDocument(
         DATABASE_ID,
         USER_COLLECTION_ID,
@@ -69,12 +61,9 @@ export const DatabaseProvider = ({ children }) => {
       setError(err.message);
       console.error("Error creating user data:", err);
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Upload Profile Picture
   const uploadProfilePicture = async (file) => {
     try {
       const response = await storage.createFile(BUCKET_ID, ID.unique(), file);
@@ -94,7 +83,7 @@ export const DatabaseProvider = ({ children }) => {
 
   return (
     <DatabaseContext.Provider value={contextData}>
-      {loading ? <p>Loading...</p> : children}
+      {children}
     </DatabaseContext.Provider>
   );
 };
