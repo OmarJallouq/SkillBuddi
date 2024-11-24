@@ -38,7 +38,7 @@ const App = () => {
                 <Route path="/chat/:partnerId" element={<Chat />} />
                 <Route path="/messages" element={<Messaging />} />
                 <Route path="/myProfile" element={<MyProfile />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile/:id" element={<Profile />} />
               </Route>
               <Route path="/logout" element={<Logout />} />
             </Routes>
