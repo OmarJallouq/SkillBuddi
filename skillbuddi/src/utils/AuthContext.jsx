@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, createContext, useRef } from "react";
+import { useContext, useState, useEffect, createContext } from "react";
 import { useDatabase } from "./DatabaseContext";
 import { account } from "../appwriteConfig";
 import { ID } from "appwrite";
@@ -11,15 +11,9 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
 
-  // Ref to ensure `checkUserStatus` is only run once
-  const hasCheckedStatus = useRef(false);
-
   useEffect(() => {
-    if (!hasCheckedStatus.current) {
-      hasCheckedStatus.current = true;
-      checkUserStatus();
-    }
-  }, []); // Empty dependency array ensures it only runs once.
+    checkUserStatus();
+  }, []);
 
   const loginUser = async (userInfo) => {
     setLoading(true);
@@ -30,9 +24,12 @@ export const AuthProvider = ({ children }) => {
       );
       const accountDetails = await account.get();
       const userDetails = await fetchUserData(accountDetails.$id);
-      setUser({
-        ...accountDetails,
-        ...userDetails,
+
+      setUser((prevUser) => {
+        if (!prevUser || prevUser.$id !== accountDetails.$id) {
+          return { ...accountDetails, ...userDetails };
+        }
+        return prevUser;
       });
 
       return { success: true };
@@ -58,7 +55,6 @@ export const AuthProvider = ({ children }) => {
   const registerUser = async (userInfo) => {
     setLoading(true);
     try {
-      // Create user in Appwrite authentication
       const userId = ID.unique();
       await account.create(
         userId,
@@ -66,17 +62,12 @@ export const AuthProvider = ({ children }) => {
         userInfo.password,
         `${userInfo.firstName} ${userInfo.lastName}`
       );
-      console.log("User ID:", userId);
-
-      // Logs user in
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
       );
 
       const accountDetails = await account.get();
-
-      // Add user to the database with basic details
       const data = {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
@@ -90,10 +81,8 @@ export const AuthProvider = ({ children }) => {
 
       await createUserData(accountDetails.$id, data);
       const userDetails = await fetchUserData(accountDetails.$id);
-      setUser({
-        ...accountDetails,
-        ...userDetails,
-      });
+
+      setUser({ ...accountDetails, ...userDetails });
 
       return { success: true };
     } catch (error) {
@@ -114,23 +103,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  //FIX: rerenders my ass
   const checkUserStatus = async () => {
     setLoading(true);
-
     try {
       const accountDetails = await account.get();
-
-      // If user is already set and matches the fetched user, skip fetching
-      if (user && user.$id === accountDetails.$id) {
-        setLoading(false);
-        return;
-      }
-
       const userDetails = await fetchUserData(accountDetails.$id);
-      setUser({
-        ...accountDetails,
-        ...userDetails,
-      });
+
+      setUser({ ...accountDetails, ...userDetails });
     } catch (error) {
       console.error("Error in checkUserStatus:", error);
     } finally {
