@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import testProfile from "../testProfiles.json";
+import testProfiles from "../testProfiles.json";
 import "../styles/profile.css";
 
 
@@ -13,7 +13,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       /*fetch('urlhere').then(response => response.json()).then(data => {setProfile(data);});*/
-      setProfile(testProfile);
+      setProfile(testProfiles[id]);
     };
 
     fetchData();
