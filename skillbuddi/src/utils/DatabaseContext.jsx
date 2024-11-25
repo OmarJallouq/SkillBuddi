@@ -64,6 +64,17 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
+  const deleteUserData = async (userId) => {
+    setError(null);
+    try {
+      await databases.deleteDocument(DATABASE_ID, USER_COLLECTION_ID, userId);
+      return { success: true };
+    } catch (err) {
+      setError(err.message);
+      return { success: false, error: err.message };
+    }
+  };
+
   const uploadProfilePicture = async (file) => {
     try {
       const response = await storage.createFile(BUCKET_ID, ID.unique(), file);
@@ -79,6 +90,7 @@ export const DatabaseProvider = ({ children }) => {
     updateUserData,
     createUserData,
     uploadProfilePicture,
+    deleteUserData,
   };
 
   return (
