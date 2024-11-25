@@ -1,51 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import SkillTag from "../components/SkillTag";
 import { useAuth } from "../utils/AuthContext";
-import { useDatabase } from "../utils/DatabaseContext";
 import "../styles/myProfile.css";
 
 const MyProfile = () => {
-  // State to store the user's profile data
-  const [user, setUser] = useState(null);
+  const { user } = useAuth();
 
-  // Simulated fetch function to get user data (this could be an API call in real use)
-  // yeah someone should make this an api call lol
-  useEffect(() => {
-    const fetchUserData = () => {
-      const mockData = {
-        name: "Akumba Khabibi",
-        username: "cocksucker123",
-        email: "akumba@example.com",
-        avatar: "https://www.w3schools.com/w3images/avatar2.png", // Placeholder image
-        skills: ["JavaScript", "React", "Node.js", "CSS", "HTML"], // Example skills
-      };
-      setMock(mockData);
-      setUser(userData);
-    };
-    fetchUserData();
-  }, []);
-
-  // Handle removing a skill
   const handleRemoveSkill = (skillToRemove) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      skills: prevUser.skills.filter((skill) => skill !== skillToRemove),
-    }));
+    //TODO: HandleRemoveSkill Logic with DB
   };
 
-  // Handle adding a new skill
   const handleAddSkill = (newSkill) => {
-    if (newSkill && !mock.skills.includes(newSkill)) {
-      setUser((prevUser) => ({
-        ...prevUser,
-        skills: [...prevUser.skills, newSkill],
-      }));
-    }
+    //TODO: HandleAddSkill Logic with DB
   };
-
-  if (!mock) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="whole-thing">
@@ -58,20 +25,11 @@ const MyProfile = () => {
             <p>{user.email}</p>
           </div>
         </div>
-      <div className="profile-container">
-        <div className="profile-header">
-          <img src={mock.avatar} alt="Profile Avatar" className="avatar" />
-          <div className="profile-info">
-            <h1>{mock.name}</h1>
-            <p>{mock.username}</p>
-            <p>{mock.email}</p>
-          </div>
-        </div>
 
         <div className="skills-section">
           <div className="title-skills-container">
             <h2>My Skills</h2>
-            {mock.skills.length === 0 ? (
+            {!user.skills ? (
               <p>No skills added yet.</p>
             ) : (
               <ul className="skills-list">
@@ -87,7 +45,7 @@ const MyProfile = () => {
           </div>
           <button
             onClick={() => {
-              const newSkill = prompt("Enter a new skill:"); // Prompt to add a new skill
+              const newSkill = prompt("Enter a new skill:");
               if (newSkill) {
                 handleAddSkill(newSkill);
               }
@@ -99,8 +57,7 @@ const MyProfile = () => {
         </div>
       </div>
     </div>
-    </div>
   );
-}
+};
 
 export default MyProfile;
