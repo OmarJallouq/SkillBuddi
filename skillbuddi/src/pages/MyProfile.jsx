@@ -78,7 +78,14 @@ const MyProfile = () => {
             <h1>{user.name}</h1>
             <p>{user.username}</p>
             <p>{user.email}</p>
+            <p>Location: {user.location}</p> 
+            <p>Date of Birth: {user.dateOfBirth}</p>
           </div>
+        </div>
+        <div className="Bio">
+          <h2>Bio</h2>
+          <p>{user.Bio}</p>
+
         </div>
 
         <div className="skills-section">
