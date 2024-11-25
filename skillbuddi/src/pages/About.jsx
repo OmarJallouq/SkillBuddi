@@ -7,7 +7,7 @@ const About = () => {
       <div className="header-section">
         <h1 className="title">Who are we?</h1>
         <p className="subtitle">
-          Connecting people to share and exchange skills.
+          BRINGING PEOPLE TOGETHER TO SHARE SKILLS
         </p>
       </div>
       <div className="content-section">
@@ -24,8 +24,7 @@ const About = () => {
         <p className="text">
           - Personalized profiles to showcase your skills and interests <br />
           - Matching with like-minded individuals <br />
-          - A safe and friendly environment for collaboration <br />
-          - Easy-to-use
+          - A safe and friendly environment for collaboration
         </p>
 
         <h2 className="section-title">Our Values</h2>
@@ -38,45 +37,6 @@ const About = () => {
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    fontFamily: "'Roboto', sans-serif",
-    backgroundColor: "#f9f9f9",
-    padding: "20px",
-    lineHeight: "1.6",
-    color: "#333",
-  },
-  headerSection: {
-    textAlign: "center",
-    padding: "40px 20px",
-    backgroundColor: "#40E0D0", // Turquoise background
-    color: "#fff",
-  },
-  title: {
-    fontSize: "36px",
-    margin: "0 0 10px",
-  },
-  subtitle: {
-    fontSize: "18px",
-    margin: "0",
-  },
-  contentSection: {
-    padding: "20px 40px",
-    maxWidth: "800px",
-    margin: "0 auto",
-  },
-  sectionTitle: {
-    fontSize: "24px",
-    marginBottom: "10px",
-    color: "#007BFF",
-  },
-  text: {
-    fontSize: "16px",
-    marginBottom: "20px",
-    color: "#555",
-  },
 };
 
 export default About;
