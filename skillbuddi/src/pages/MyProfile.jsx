@@ -99,7 +99,8 @@ const MyProfile = () => {
         </div>
       </div>
     </div>
+    </div>
   );
-};
+}
 
 export default MyProfile;
