@@ -54,7 +54,6 @@ const Register = () => {
         ...prevErrors,
         firstName: "",
       }));
-      
     }
 
     if (lastName.trim() === "") {
@@ -68,7 +67,6 @@ const Register = () => {
         ...prevErrors,
         lastName: "",
       }));
-      
     }
 
     if (username.trim() === "") {
@@ -88,7 +86,6 @@ const Register = () => {
         ...prevErrors,
         username: "",
       }));
-      
     }
 
     if (!email.includes("@")) {
@@ -102,7 +99,6 @@ const Register = () => {
         ...prevErrors,
         email: "",
       }));
-      
     }
 
     if (password.length < 8) {
@@ -114,7 +110,7 @@ const Register = () => {
     } else if (
       !/[a-zA-z]/.test(password) ||
       !/\d/.test(password) ||
-      !/[!@#$%^&*(),.?":{}|<>]/.test(password)
+      !/[!@#$%^&*(),._?":{}|<>]/.test(password)
     ) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -127,7 +123,6 @@ const Register = () => {
         ...prevErrors,
         password: "",
       }));
-      
     }
 
     if (password !== passwordConfirm) {
@@ -141,7 +136,6 @@ const Register = () => {
         ...prevErrors,
         passwordConfirm: "",
       }));
-      
     }
 
     if (!isValid) {
