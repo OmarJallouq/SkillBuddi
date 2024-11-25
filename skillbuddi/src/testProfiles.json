@@ -1,6 +1,5 @@
 {
-  {
-    "id": "1",
+  "1" : {
     "name": "Jamal Doe",     
     "photo": "https://randomuser.me/api/portraits/men/41.jpg",
     "skills": ["Maths"],
@@ -9,13 +8,12 @@
     "age": "238",
     "occupation": "Hustler"
   },
-  {
-    "id": "2",
+  "2" : {
     "name": "Akumba Khabibi",
     "photo": "https://randomuser.me/api/portraits/men/40.jpg",
     "skills": ["Sucking dick", "Taking it up the ass"],
     "bio": "Hello I'm Akumba, my pronouns are he/they",
     "age": "20",
     "occupation": "Unemployed"
-  },
+  }
 }
