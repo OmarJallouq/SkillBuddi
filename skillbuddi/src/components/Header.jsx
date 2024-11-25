@@ -33,10 +33,10 @@ const Header = () => {
             <Link className="header-link" to="/">
               Matching
             </Link>
-            <Link className="header-link" to="/">
+            <Link className="header-link" to="/myProfile">
               My Profile
             </Link>
-            <Link className="header-link" to="/">
+            <Link className="header-link" to="/messages">
               Messages
             </Link>
           </div>
