@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import defaultPfp from '../'
 
 const Profile = () => {
   const { id } = useParams(); // Extract the user ID from the URL
@@ -43,7 +44,7 @@ const Profile = () => {
             <p style={{fontSize: '40px'}}>
             <strong>{profile.name}'s Profile</strong>
             </p>
-            <img src={profile.photo}
+            <img src={profile?.photo || }
                 alt={`${profile.name}'s profile`}
                 style={{ width: "350px", borderRadius: "20px", marginTop: "20px" }}>
             </img>
