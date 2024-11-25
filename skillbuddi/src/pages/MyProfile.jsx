@@ -44,7 +44,33 @@ const MyProfile = () => {
     }
   };
   
-//need to write a function to update the bio?
+//check i don't know if it's right
+const handleChangeBio = async () => {
+  const newBio = prompt("Enter a new bio:");
+  
+  // Check if the input is valid
+  if (!newBio || newBio.trim() === "") {
+    toast.error("Bio cannot be empty!");
+    return;
+  }
+
+  try {
+    // Update the user's bio in the database
+    const response = await updateUserData(user.$id, { Bio: newBio });
+
+    if (response.success) {
+      // Update local state for immediate UI feedback
+      user.Bio = newBio; 
+      toast.success("Bio updated successfully!");
+    } else {
+      throw new Error(response.error);
+    }
+  } catch (error) {
+    toast.error(error.message || "Failed to update bio.");
+  }
+};
+
+//need to write a function to update profile picture
 
   const handleRemoveSkill = async (skillToRemove) => {
     const updatedSkills = skills.filter((skill) => skill !== skillToRemove);
@@ -131,7 +157,7 @@ const MyProfile = () => {
           <div className="bio-header">
            <h2>Bio</h2>
            <button
-          onClick={() => handleChangeField("Bio")}
+          onClick={() => handleChangeBio("Bio")}
           className="change-field-button"
           >
           Change Bio
