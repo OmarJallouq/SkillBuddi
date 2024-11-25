@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
 import { toast } from "react-toastify";
 import "../styles/header.css";
-import logo from "../logo.PNG"
+import logo from "../logo.png"
 
 const Header = () => {
   const { user, logoutUser } = useAuth();
