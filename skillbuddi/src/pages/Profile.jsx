@@ -13,11 +13,17 @@ const Profile = () => {
   // fetch user data
   useEffect(() => {
     const fetchData = async () => {
-      fetchUserData(); //
-      setProfile(testProfiles[id]);
+      try {
+        const userData = await fetchUserData(username);
+        setProfile(userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     };
 
-    fetchData();
+    if (username) {
+      fetchData();
+    }
   }, [username]);
 
   if (!profile) {
@@ -31,22 +37,24 @@ const Profile = () => {
 
   return (
     <div className="whole-thing">
-      <h1 className="profile-title">{profile.name}'s Profile</h1>
+      <h1 className="profile-title">
+        {profile.firstName + " " + profile.lastName}'s Profile
+      </h1>
       <div className="profile-container">
         <div className="profile-avatar">
           <img
             src={profile.photo}
-            alt={`${profile.name}'s profile`}
+            alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
           <button className="message-button" onClick={handleMessage}>
-            Message {profile.name}
+            Message {profile.firstName}
           </button>
         </div>
 
         <div className="profile-details">
           <p>
-            <strong>Name:</strong> {profile.name}
+            <strong>Name:</strong> {profile.firstName + " " + profile.lastName}
           </p>
           <p>
             <strong>Age:</strong> {profile.age}
@@ -55,10 +63,10 @@ const Profile = () => {
             <strong>Location:</strong> {profile.location}
           </p>
           <p>
-            <strong>Skills:</strong> {profile.skills.join(", ")}
+            <strong>Skills:</strong> {profile.Skills.join(", ")}
           </p>
           <p>
-            <strong>Bio:</strong> {profile.bio}
+            <strong>Bio:</strong> {profile.Bio}
           </p>
         </div>
       </div>
