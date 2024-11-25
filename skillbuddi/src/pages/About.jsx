@@ -1,17 +1,18 @@
 import React from "react";
+import "../styles/about.css";
 
 const About = () => {
   return (
-    <div style={styles.container}>
-      <div style={styles.headerSection}>
-        <h1 style={styles.title}>Who are we?</h1>
-        <p style={styles.subtitle}>
+    <div className="container">
+      <div className="header-section">
+        <h1 className="title">Who are we?</h1>
+        <p className="subtitle">
           Connecting people to share and exchange skills.
         </p>
       </div>
-      <div style={styles.contentSection}>
-        <h2 style={styles.sectionTitle}>Our Mission</h2>
-        <p style={styles.text}>
+      <div className="content-section">
+        <h2 className="section-title">Our Mission</h2>
+        <p className="text">
           Our platform is designed to bring individuals together to exchange
           skills, learn from one another, and grow as a community. Whether you
           want to teach coding, learn a new language, or improve your painting
@@ -19,16 +20,16 @@ const About = () => {
           passions.
         </p>
 
-        <h2 style={styles.sectionTitle}>Why Choose Us?</h2>
-        <p style={styles.text}>
+        <h2 className="section-title">Why Choose Us?</h2>
+        <p className="text">
           - Personalized profiles to showcase your skills and interests <br />
           - Matching with like-minded individuals <br />
           - A safe and friendly environment for collaboration <br />
           - Easy-to-use
         </p>
 
-        <h2 style={styles.sectionTitle}>Our Values</h2>
-        <p style={styles.text}>
+        <h2 className="section-title">Our Values</h2>
+        <p className="text">
           We believe in the power of collaboration, lifelong learning, and
           fostering meaningful connections. Our goal is to empower individuals
           to achieve their full potential by sharing what they know and learning
