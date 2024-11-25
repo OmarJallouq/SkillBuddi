@@ -32,7 +32,7 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/messages" element={<Messaging />} />
                 <Route path="/myProfile" element={<MyProfile />} />
-                <Route path="/profile/:id" element={<Profile />} />
+                <Route path="/profile/:username" element={<Profile />} />
               </Route>
             </Routes>
           </AuthProvider>

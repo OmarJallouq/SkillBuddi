@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import testProfiles from "../testProfiles.json";
+import { useDatabase } from "../utils/DatabaseContext";
 import "../styles/profile.css";
 
 const Profile = () => {
-  const { id } = useParams(); // Extract the user ID from the URL
+  const { username } = useParams(); // Extract the user ID from the URL
   const navigate = useNavigate(); // Hook for navigation
+  const { fetchUserData } = useDatabase();
   const [profile, setProfile] = useState(null);
 
   // fetch user data
   useEffect(() => {
     const fetchData = async () => {
-      /*fetch('urlhere').then(response => response.json()).then(data => {setProfile(data);});*/
+      fetchUserData(); //
       setProfile(testProfiles[id]);
     };
 
     fetchData();
-  }, [id]);
+  }, [username]);
 
   if (!profile) {
     return <div>Loading...</div>;
