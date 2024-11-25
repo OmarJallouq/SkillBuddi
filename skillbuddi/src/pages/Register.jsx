@@ -105,7 +105,7 @@ const Register = () => {
       isValid = true;
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       setErrors((prevErrors) => ({
         ...prevErrors,
         password: "Minimum 6 characters required.",
@@ -260,18 +260,18 @@ const Register = () => {
             )}
           </div>
 
-          <div className="stuff-container"> {/* this div is to reduce the margin between the button and the link */}
+          <div className="stuff-container">
+            {" "}
+            {/* this div is to reduce the margin between the button and the link */}
             <button className="register-button" type="submit">
               Create SkillBuddi Account
             </button>
-
             <div className="loginer">
               <Link className="loginer" to="/">
                 Already have an account?
               </Link>
             </div>
           </div>
-
         </form>
         <div className="registration-img">
           <img
