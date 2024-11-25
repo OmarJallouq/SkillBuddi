@@ -27,8 +27,6 @@ const MyProfile = () => {
 
   // Handle removing a skill
   const handleRemoveSkill = (skillToRemove) => {
-    setMock((prevUser) => ({
-    setMock((prevUser) => ({
     setUser((prevUser) => ({
       ...prevUser,
       skills: prevUser.skills.filter((skill) => skill !== skillToRemove),
@@ -38,10 +36,6 @@ const MyProfile = () => {
   // Handle adding a new skill
   const handleAddSkill = (newSkill) => {
     if (newSkill && !mock.skills.includes(newSkill)) {
-      setMock((prevUser) => ({
-    if (newSkill && !mock.skills.includes(newSkill)) {
-      setMock((prevUser) => ({
-    if (newSkill && !user.skills.includes(newSkill)) {
       setUser((prevUser) => ({
         ...prevUser,
         skills: [...prevUser.skills, newSkill],
@@ -50,8 +44,6 @@ const MyProfile = () => {
   };
 
   if (!mock) {
-  if (!mock) {
-  if (!user) {
     return <div>Loading...</div>;
   }
 
