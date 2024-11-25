@@ -3,6 +3,7 @@ import SkillTag from "../components/SkillTag";
 import { useAuth } from "../utils/AuthContext";
 import { useDatabase } from "../utils/DatabaseContext";
 import { toast } from "react-toastify";
+import defaultPfp from "../assets/Default_pfp.svg.png";
 import "../styles/myProfile.css";
 
 const MyProfile = () => {
@@ -68,7 +69,11 @@ const MyProfile = () => {
     <div className="whole-thing">
       <div className="profile-container">
         <div className="profile-header">
-          <img src={user.avatar} alt="Profile Avatar" className="avatar" />
+          <img
+            src={user.profilePicture ? user.profilePicture : defaultPfp}
+            alt="Profile Avatar"
+            className="avatar"
+          />
           <div className="profile-info">
             <h1>{user.name}</h1>
             <p>{user.username}</p>
