@@ -54,7 +54,7 @@ const Register = () => {
         ...prevErrors,
         firstName: "",
       }));
-      isValid = true;
+      
     }
 
     if (lastName.trim() === "") {
@@ -68,7 +68,7 @@ const Register = () => {
         ...prevErrors,
         lastName: "",
       }));
-      isValid = true;
+      
     }
 
     if (username.trim() === "") {
@@ -88,7 +88,7 @@ const Register = () => {
         ...prevErrors,
         username: "",
       }));
-      isValid = true;
+      
     }
 
     if (!email.includes("@")) {
@@ -102,7 +102,7 @@ const Register = () => {
         ...prevErrors,
         email: "",
       }));
-      isValid = true;
+      
     }
 
     if (password.length < 6) {
@@ -127,7 +127,7 @@ const Register = () => {
         ...prevErrors,
         password: "",
       }));
-      isValid = true;
+      
     }
 
     if (password !== passwordConfirm) {
@@ -141,7 +141,7 @@ const Register = () => {
         ...prevErrors,
         passwordConfirm: "",
       }));
-      isValid = true;
+      
     }
 
     if (!isValid) {
