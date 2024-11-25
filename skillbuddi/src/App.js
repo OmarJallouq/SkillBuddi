@@ -35,7 +35,6 @@ const App = () => {
                 <Route path="/myProfile" element={<MyProfile />} />
                 <Route path="/profile/:id" element={<Profile />} />
               </Route>
-              <Route path="/logout" element={<Logout />} />
             </Routes>
           </AuthProvider>
         </DatabaseProvider>
