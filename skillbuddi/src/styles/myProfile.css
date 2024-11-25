@@ -120,13 +120,6 @@
     background-color: #e8af30;
   }
 
-  .Bio h2 {
-    text-align: center;
-    font-size: 20px;
-
-    font-family: 'Rubik', sans-serif;
-    font-size: 35px;
-  }
   
   .Bio p {
     color: #72726E;
@@ -134,3 +127,46 @@
     font-family: 'Rubik', sans-serif;
     font-size: 20px;
   }
+
+  .change-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .change-button:hover {
+    background-color: #0056b3;
+  }
+  
+
+  .bio-header h2 {
+    text-align: center;
+    font-size: 20px;
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 35px;
+  }
+  
+  /*
+  need to change the position of this button
+  */
+  .change-field-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .change-field-button:hover {
+    background-color: #0056b3;
+  }
+  
