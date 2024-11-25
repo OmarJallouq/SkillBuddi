@@ -6,7 +6,7 @@ import { ID } from "appwrite";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const { createUserData, updateUserData, fetchUserData } = useDatabase();
+  const { createUserData, fetchUserData, deleteUserData } = useDatabase();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
@@ -101,6 +101,51 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const deleteProfile = async () => {
+    if (!user) {
+      return { success: false, error: "No user is logged in." };
+    }
+
+    try {
+      const userId = user.$id;
+
+      // Delete user data from the database
+      const deleteDataResult = await deleteUserData(userId);
+      if (!deleteDataResult.success) {
+        throw new Error(deleteDataResult.error);
+      }
+
+      // Delete user account sessions (logs them out)
+      try {
+        await account.deleteSessions("current");
+      } catch (sessionError) {
+        console.warn("Failed to delete user session:", sessionError);
+
+        // Rollback: Recreate the user document if necessary
+        await createUserData(userId, { ...user });
+        throw new Error("Failed to delete user session. Database restored.");
+      }
+      // Deletes user data from Auth
+      try {
+        await account.delete(userId);
+      } catch (accountError) {
+        console.warn("Failed to delete user account:", accountError);
+
+        // Rollback: Recreate the user document
+        await createUserData(userId, { ...user });
+        throw new Error(
+          "Failed to delete Appwrite account. Database restored."
+        );
+      }
+
+      setUser(null); // Clear user context
+      return { success: true };
+    } catch (error) {
+      console.error("Error deleting profile:", error);
+      return { success: false, error: error.message || "Something went wrong" };
+    }
+  };
+
   const checkUserStatus = async () => {
     setLoading(true);
     try {
@@ -129,6 +174,7 @@ export const AuthProvider = ({ children }) => {
     loginUser,
     logoutUser,
     registerUser,
+    deleteProfile,
   };
 
   return (
