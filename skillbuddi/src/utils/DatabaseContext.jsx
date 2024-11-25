@@ -2,22 +2,19 @@ import React, { createContext, useContext, useState } from "react";
 import { databases, storage } from "../appwriteConfig";
 import { ID } from "appwrite";
 
-// Appwrite Configuration
 const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
-const USER_COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_CONNECTION}`;
+const USER_COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_COLLECTION}`;
 const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
-// Create Context
+
 const DatabaseContext = createContext();
 
 export const DatabaseProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch User Data by User ID
   const fetchUserData = async (userId) => {
-    setLoading(true);
     setError(null);
     try {
+      // Gets and returns the record
       const userData = await databases.getDocument(
         DATABASE_ID,
         USER_COLLECTION_ID,
@@ -28,16 +25,13 @@ export const DatabaseProvider = ({ children }) => {
       setError(err.message);
       console.error("Error fetching user data:", err);
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Update User Data
   const updateUserData = async (userId, data) => {
-    setLoading(true);
     setError(null);
     try {
+      // Updates and returns updated record
       const updatedData = await databases.updateDocument(
         DATABASE_ID,
         USER_COLLECTION_ID,
@@ -49,16 +43,13 @@ export const DatabaseProvider = ({ children }) => {
       setError(err.message);
       console.error("Error updating user data:", err);
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Create New User Data
   const createUserData = async (id, data) => {
-    setLoading(true);
     setError(null);
     try {
+      // Creates new record in User collection
       const newData = await databases.createDocument(
         DATABASE_ID,
         USER_COLLECTION_ID,
@@ -70,12 +61,20 @@ export const DatabaseProvider = ({ children }) => {
       setError(err.message);
       console.error("Error creating user data:", err);
       throw err;
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Upload Profile Picture
+  const deleteUserData = async (userId) => {
+    setError(null);
+    try {
+      await databases.deleteDocument(DATABASE_ID, USER_COLLECTION_ID, userId);
+      return { success: true };
+    } catch (err) {
+      setError(err.message);
+      return { success: false, error: err.message };
+    }
+  };
+
   const uploadProfilePicture = async (file) => {
     try {
       const response = await storage.createFile(BUCKET_ID, ID.unique(), file);
@@ -86,17 +85,16 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
+  const contextData = {
+    fetchUserData,
+    updateUserData,
+    createUserData,
+    uploadProfilePicture,
+    deleteUserData,
+  };
+
   return (
-    <DatabaseContext.Provider
-      value={{
-        fetchUserData,
-        updateUserData,
-        createUserData,
-        uploadProfilePicture,
-        loading,
-        error,
-      }}
-    >
+    <DatabaseContext.Provider value={contextData}>
       {children}
     </DatabaseContext.Provider>
   );
@@ -106,3 +104,5 @@ export const DatabaseProvider = ({ children }) => {
 export const useDatabase = () => {
   return useContext(DatabaseContext);
 };
+
+export default DatabaseContext;

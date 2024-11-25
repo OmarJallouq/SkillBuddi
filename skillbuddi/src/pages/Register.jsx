@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../utils/AuthContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/register.css";
 
 const Register = () => {
@@ -54,7 +54,7 @@ const Register = () => {
         ...prevErrors,
         firstName: "",
       }));
-      isValid = true;
+      
     }
 
     if (lastName.trim() === "") {
@@ -68,7 +68,7 @@ const Register = () => {
         ...prevErrors,
         lastName: "",
       }));
-      isValid = true;
+      
     }
 
     if (username.trim() === "") {
@@ -82,12 +82,13 @@ const Register = () => {
         ...prevErrors,
         username: "Username can only contain letters and numbers.",
       }));
+      isValid = false;
     } else {
       setErrors((prevErrors) => ({
         ...prevErrors,
         username: "",
       }));
-      isValid = true;
+      
     }
 
     if (!email.includes("@")) {
@@ -101,10 +102,10 @@ const Register = () => {
         ...prevErrors,
         email: "",
       }));
-      isValid = true;
+      
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       setErrors((prevErrors) => ({
         ...prevErrors,
         password: "Minimum 6 characters required.",
@@ -126,7 +127,7 @@ const Register = () => {
         ...prevErrors,
         password: "",
       }));
-      isValid = true;
+      
     }
 
     if (password !== passwordConfirm) {
@@ -140,12 +141,11 @@ const Register = () => {
         ...prevErrors,
         passwordConfirm: "",
       }));
-      isValid = true;
+      
     }
 
     if (!isValid) {
-      //not valid
-      alert("Registration Unsuccessful");
+      toast.error("Registration not successful. Please check the form.");
       return;
     }
 
@@ -169,7 +169,7 @@ const Register = () => {
 
   return (
     <div className="registration-box">
-      <h2 className="signup-text">Sign Up</h2>
+      <h2 className="signup-text">Sign Up for SkillBuddi</h2>
       <div className="i-hate-css">
         {" "}
         {/* this exists so that i can place the logo to the side of the form */}
@@ -179,7 +179,6 @@ const Register = () => {
           onSubmit={handleSubmit}
         >
           <div className="form-field">
-            {/*<label>First Name</label>*/}
             <input
               className="register-box"
               type="text"
@@ -193,7 +192,6 @@ const Register = () => {
             )}
           </div>
           <div className="form-field">
-            {/*<label>Last Name</label>*/}
             <input
               className="register-box"
               type="text"
@@ -207,7 +205,6 @@ const Register = () => {
             )}
           </div>
           <div className="form-field">
-            {/*<label>Username</label>*/}
             <input
               className="register-box"
               type="text"
@@ -222,10 +219,9 @@ const Register = () => {
           </div>
 
           <div className="form-field">
-            {/*<label>Email</label>*/}
             <input
               className="register-box"
-              type="email"
+              type="text"
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -237,7 +233,6 @@ const Register = () => {
           </div>
 
           <div className="form-field">
-            {/*<label>Password</label>*/}
             <input
               className="register-box"
               type="password"
@@ -252,7 +247,6 @@ const Register = () => {
           </div>
 
           <div className="form-field">
-            {/*<label>Confirm Password</label>*/}
             <input
               className="register-box"
               type="password"
@@ -266,9 +260,18 @@ const Register = () => {
             )}
           </div>
 
-          <button className="register-button" type="submit">
-            Create SkillBuddi Account
-          </button>
+          <div className="stuff-container">
+            {" "}
+            {/* this div is to reduce the margin between the button and the link */}
+            <button className="register-button" type="submit">
+              Create SkillBuddi Account
+            </button>
+            <div className="loginer">
+              <Link className="loginer" to="/">
+                Already have an account?
+              </Link>
+            </div>
+          </div>
         </form>
         <div className="registration-img">
           <img

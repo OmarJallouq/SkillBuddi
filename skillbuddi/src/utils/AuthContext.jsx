@@ -1,15 +1,12 @@
 import { useContext, useState, useEffect, createContext } from "react";
-import { account, databases, storage } from "../appwriteConfig";
+import { useDatabase } from "./DatabaseContext";
+import { account } from "../appwriteConfig";
 import { ID } from "appwrite";
 
 const AuthContext = createContext();
 
-// Database and Collection IDs
-const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
-const COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_COLLECTION}`;
-const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
-
 export const AuthProvider = ({ children }) => {
+  const { createUserData, fetchUserData, deleteUserData } = useDatabase();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
@@ -21,12 +18,18 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (userInfo) => {
     setLoading(true);
     try {
+      // Logs the User In
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
       );
+
+      // Gets all User Information
       const accountDetails = await account.get();
-      setUser(accountDetails);
+      const userDetails = await fetchUserData(accountDetails.$id);
+
+      // Sets the User
+      setUser({ ...accountDetails, ...userDetails });
 
       return { success: true };
     } catch (error) {
@@ -39,51 +42,55 @@ export const AuthProvider = ({ children }) => {
 
   const logoutUser = async () => {
     try {
+      // Deletes the Current Session and Sets the User to Null
       await account.deleteSessions("current");
+      setUser(null);
       return { success: true };
     } catch (error) {
       setError(error.message || "Something went wrong");
       return { success: false, error: error.message || "Something went wrong" };
-    } finally {
-      setUser(null);
     }
   };
 
   const registerUser = async (userInfo) => {
     setLoading(true);
     try {
-      // Create user in Appwrite authentication
       const userId = ID.unique();
+
+      // Makes the Auth Record
       await account.create(
         userId,
         userInfo.email,
         userInfo.password,
         `${userInfo.firstName} ${userInfo.lastName}`
       );
+
+      // Logs the User In
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
       );
 
+      // Information for Database Entry
       const accountDetails = await account.get();
-      setUser(accountDetails);
+      const data = {
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        email: userInfo.email,
+        Bio: "",
+        Skills: [],
+        location: "",
+        dateOfBirth: null, //TODO: default DOB
+        profilePicture: null, //TODO: default pfp
+      };
 
-      // Add user to the database with basic details
-      await databases.createDocument(
-        DATABASE_ID,
-        COLLECTION_ID,
-        accountDetails.$id, // Use Appwrite user ID as the document ID
-        {
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          email: userInfo.email,
-          Bio: "",
-          Skills: [],
-          location: "",
-          dateOfBirth: null,
-          profilePicture: null,
-        }
-      );
+      // Creates Database Record
+      await createUserData(accountDetails.$id, data);
+
+      const userDetails = await fetchUserData(accountDetails.$id);
+
+      // Sets the User with all Information
+      setUser({ ...accountDetails, ...userDetails });
 
       return { success: true };
     } catch (error) {
@@ -94,37 +101,72 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateProfile = async (userId, updates) => {
+  const deleteProfile = async () => {
+    if (!user) {
+      return { success: false, error: "No user is logged in." };
+    }
+
     try {
-      await databases.updateDocument(
-        DATABASE_ID,
-        COLLECTION_ID,
-        userId,
-        updates
-      );
+      const userId = user.$id;
+
+      // Delete user data from the database
+      const deleteDataResult = await deleteUserData(userId);
+      if (!deleteDataResult.success) {
+        throw new Error(deleteDataResult.error);
+      }
+
+      // Delete user account sessions (logs them out)
+      try {
+        await account.deleteSessions("current");
+      } catch (sessionError) {
+        console.warn("Failed to delete user session:", sessionError);
+
+        // Rollback: Recreate the user document if necessary
+        await createUserData(userId, { ...user });
+        throw new Error("Failed to delete user session. Database restored.");
+      }
+      // Deletes user data from Auth
+      try {
+        await account.delete(userId);
+      } catch (accountError) {
+        console.warn("Failed to delete user account:", accountError);
+
+        // Rollback: Recreate the user document
+        await createUserData(userId, { ...user });
+        throw new Error(
+          "Failed to delete Appwrite account. Database restored."
+        );
+      }
+
+      setUser(null); // Clear user context
       return { success: true };
     } catch (error) {
-      setError(error.message || "Something went wrong");
+      console.error("Error deleting profile:", error);
       return { success: false, error: error.message || "Something went wrong" };
     }
   };
 
-  const uploadProfilePicture = async (file) => {
-    try {
-      const response = await storage.createFile(BUCKET_ID, ID.unique(), file);
-      return response.$id; // Return the file ID
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
-
   const checkUserStatus = async () => {
+    setLoading(true);
     try {
-      const accountDetails = await account.get();
-      setUser(accountDetails);
-    } catch (error) {}
-    setLoading(false);
+      // Attempts to check if there exists a session
+      const session = await account.getSession("current");
+
+      // If user is logged in, get their information, otherwise, null
+      if (session) {
+        const accountDetails = await account.get();
+        const userDetails = await fetchUserData(accountDetails.$id);
+        setUser({ ...accountDetails, ...userDetails });
+      } else {
+        console.warn("No active session found");
+        setUser(null);
+      }
+    } catch (error) {
+      console.error("Error in checkUserStatus:", error);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contextData = {
@@ -132,10 +174,8 @@ export const AuthProvider = ({ children }) => {
     loginUser,
     logoutUser,
     registerUser,
-    updateProfile,
-    uploadProfilePicture,
+    deleteProfile,
   };
-  //TODO: check this
 
   return (
     <AuthContext.Provider value={contextData}>

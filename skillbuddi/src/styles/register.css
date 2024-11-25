@@ -4,18 +4,21 @@
     /* the background */
     display: flex;
     flex-direction: column;
+    justify-content: center;
 
-    height: 96vh;
+    height: 100vh;
     margin: 0px;
     padding: 0px;
 
-    background: linear-gradient(to right, #e8c766, #e8c766, #ffffff);
+    background: linear-gradient(to right, #162f65, #3361ac);
 }
 
 .i-hate-css {
     /* this contains the registration form and the logo */
     display: flex;
     flex-direction: row;
+
+    margin-top: 6vh;
 }
 
 .registration-form {
@@ -32,6 +35,8 @@
 
     background-color: white;
     border-radius: 20px;
+
+    border:3px solid #0f2403;
 }
 
 .form-field {
@@ -51,6 +56,8 @@
     width: 25vw;
     margin-left: 1vw;
 
+    padding: 1vw;
+
     background-color: #e7e6dd;
     color: #0f2043;
 
@@ -58,6 +65,7 @@
     border-radius: 4px;
 
     font-family: 'Rubik', sans-serif;
+    font-size: 18px;
 }
 
 .registration-error {
@@ -77,11 +85,20 @@
     height: 3vh;
     margin-left: 10vh;
 
-    color: #0f2043;
+    color: #e8af30;
 
     font-family: 'Rubik', sans-serif;
     font-weight: 500;
     font-size: 50px;
+}
+
+.stuff-container {
+    width: 50vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .register-button {
@@ -96,12 +113,24 @@
     border-radius: 10px;
 
     font-family: 'Rubik', sans-serif;
+    font-size: 20px;
 
     cursor: pointer;
 }
 
 .register-button:hover {
     background-color: #e8af30;
+}
+
+.loginer {
+    margin-top: 1vh;
+    text-align: center;
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 16px;
+    text-decoration: none;
+
+    color: #162f65;
 }
 
 .registration-img {
