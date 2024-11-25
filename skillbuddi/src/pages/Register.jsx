@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/register.css";
+import logo from "../logo.PNG"
 
 const Register = () => {
   const registerForm = useRef(null);
@@ -277,7 +278,7 @@ const Register = () => {
           <img
             className="registration-img"
             alt="omars face"
-            src="https://i.ibb.co/Zdv59dK/omer.jpg"
+            src={logo}
           ></img>
         </div>
       </div>
