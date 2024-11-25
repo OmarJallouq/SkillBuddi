@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import testProfiles from "../testProfiles.json";
 import { useDatabase } from "../utils/DatabaseContext";
+import defaultPfp from "../assets/Default_pfp.svg.png";
 import "../styles/profile.css";
 
 const Profile = () => {
@@ -43,7 +43,7 @@ const Profile = () => {
       <div className="profile-container">
         <div className="profile-avatar">
           <img
-            src={profile.photo}
+            src={profile.profilePicture ? profile.profilePicture : defaultPfp}
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
