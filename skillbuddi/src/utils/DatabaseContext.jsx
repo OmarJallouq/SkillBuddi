@@ -38,11 +38,11 @@ export const DatabaseProvider = ({ children }) => {
         userId,
         data
       );
-      return updatedData;
+      return { success: true, updatedData };
     } catch (err) {
       setError(err.message);
       console.error("Error updating user data:", err);
-      throw err;
+      return { success: false, error: err.message || "Something went wrong." };
     }
   };
 
