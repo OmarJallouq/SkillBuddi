@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
   const registerUser = async (userInfo) => {
     setLoading(true);
     try {
-      const userId = ID.unique();
+      const userId = userInfo.username;
 
       // Makes the Auth Record
       await account.create(
@@ -77,7 +77,6 @@ export const AuthProvider = ({ children }) => {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
         email: userInfo.email,
-        username: userInfo.username,
         Bio: "",
         Skills: [],
         location: "",
