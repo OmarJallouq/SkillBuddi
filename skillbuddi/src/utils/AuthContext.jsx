@@ -80,8 +80,8 @@ export const AuthProvider = ({ children }) => {
         Bio: "",
         Skills: [],
         location: "",
-        dateOfBirth: null,
-        profilePicture: null,
+        dateOfBirth: null, //TODO: default DOB
+        profilePicture: null, //TODO: default pfp
       };
 
       // Creates Database Record
