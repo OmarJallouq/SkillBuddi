@@ -312,7 +312,10 @@ const Register = () => {
               type="date"
               name="dateOfBirth"
               value={dateOfBirth.toString()}
-              onChange={(e) => setDateOfBirth(Date(e.target.value))}
+              onChange={(e) => {
+                const dateOfBirth = new Date(e.target.value);
+                setDateOfBirth(dateOfBirth);
+              }}
               placeholder="Enter your date of birth"
             />
             {errors.dateOfBirth && (
