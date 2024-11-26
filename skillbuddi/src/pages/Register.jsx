@@ -48,7 +48,6 @@ const Register = () => {
     const passwordConfirm = registerForm.current.password2.value;
     const dateOfBirth = registerForm.current.dateOfBirth.value;
     const location = registerForm.current.location.value;
-    const Bio = registerForm.current.Bio.value;
 
     let isValid = true;
 
