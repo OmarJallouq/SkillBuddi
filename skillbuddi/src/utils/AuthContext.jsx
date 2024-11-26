@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect, createContext } from "react";
 import { useDatabase } from "./DatabaseContext";
 import { account } from "../appwriteConfig";
-import { ID } from "appwrite";
 
 const AuthContext = createContext();
 
@@ -79,9 +78,9 @@ export const AuthProvider = ({ children }) => {
         email: userInfo.email,
         Bio: "",
         Skills: [],
-        location: "",
-        dateOfBirth: null, //TODO: default DOB
-        profilePicture: null, //TODO: default pfp
+        location: userInfo.location,
+        dateOfBirth: userInfo.dateOfBirth,
+        profilePicture: null,
       };
 
       // Creates Database Record
