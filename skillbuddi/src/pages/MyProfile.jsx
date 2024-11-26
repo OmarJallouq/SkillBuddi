@@ -155,14 +155,15 @@ const handleChangeBio = async () => {
         <div className="Bio">
 
           <div className="bio-header">
-           <h2>Bio</h2>
-           <button
-          onClick={() => handleChangeBio("Bio")}
-          className="change-button"
-          >
-          ✎
-          </button>
+            <h2>Bio</h2>
+            <button
+              onClick={() => handleChangeBio("Bio")}
+              className="change-button"
+            >
+              ✎
+            </button>
           </div>
+
           <p>{user.Bio}</p>
 
         </div>
