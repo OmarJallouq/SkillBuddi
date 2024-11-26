@@ -17,7 +17,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState(new Date());
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [location, setLocation] = useState("");
 
   useEffect(() => {
@@ -159,7 +159,8 @@ const Register = () => {
         today.getMonth(),
         today.getDate()
       );
-      if (dateOfBirth > thresholdDate) {
+      const dateAsDate = new Date(dateOfBirth);
+      if (dateAsDate > thresholdDate) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           dateOfBirth: "You must be over 18 to use SkillBuddi",
@@ -310,9 +311,7 @@ const Register = () => {
               className="register-box"
               type="date"
               name="dateOfBirth"
-              value={dateOfBirth.toString()}
               onChange={(e) => {
-                const dateOfBirth = new Date(e.target.value);
                 setDateOfBirth(dateOfBirth);
               }}
               placeholder="Enter your date of birth"
