@@ -19,7 +19,6 @@ const Register = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [location, setLocation] = useState("");
-  const [Bio, setBio] = useState("");
 
   useEffect(() => {
     if (user) {
