@@ -43,6 +43,31 @@ const MyProfile = () => {
       toast.error(error.message || `Failed to update ${fieldName}.`);
     }
   };
+
+  const handleChangeName = async () => {
+    const newName = prompt("Enter a new name:");
+
+    if (!newName || newName.trim() === "") {
+      toast.error("Name cannot be empty!");
+      return;
+    }
+
+    try {
+      // Update the user's name in the database
+      const response = await updateUserData(user.$id, { name: newName });
+  
+      if (response.success) {
+        // Update local state for immediate UI feedback
+        user.Name = newName; 
+        toast.success("Name updated successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to update name.");
+    }
+
+  }
   
 //check i don't know if it's right
 const handleChangeBio = async () => {
@@ -131,7 +156,14 @@ const handleChangeBio = async () => {
             className="avatar"
           />
           <div className="profile-info">
-            <h1>{user.name}</h1>
+            <h1>
+              {user.name}
+              <button
+              onClick={() => handleChangeName()}
+              className="change-button">
+              ✎
+              </button>
+            </h1>
             <p>{user.username}</p>
             <p>{user.email}</p>
             <p>
