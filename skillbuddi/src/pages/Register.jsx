@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/register.css";
-import logo from "../logo.PNG"
+import logo from "../logo.PNG";
 
 const Register = () => {
   const registerForm = useRef(null);
@@ -21,7 +21,6 @@ const Register = () => {
   const [location, setLocation] = useState("");
   const [Bio, setBio] = useState("");
 
-
   useEffect(() => {
     if (user) {
       navigate("/");
@@ -35,8 +34,8 @@ const Register = () => {
     email: "",
     password: "",
     passwordConfirm: "",
-    dateOfBirth: "",    
-    location: "",    
+    dateOfBirth: "",
+    location: "",
     Bio: "",
   });
 
@@ -65,7 +64,6 @@ const Register = () => {
         ...prevErrors,
         firstName: "",
       }));
-      
     }
 
     if (lastName.trim() === "") {
@@ -79,7 +77,6 @@ const Register = () => {
         ...prevErrors,
         lastName: "",
       }));
-      
     }
 
     if (username.trim() === "") {
@@ -99,7 +96,6 @@ const Register = () => {
         ...prevErrors,
         username: "",
       }));
-      
     }
 
     if (!email.includes("@")) {
@@ -113,7 +109,6 @@ const Register = () => {
         ...prevErrors,
         email: "",
       }));
-      
     }
 
     if (password.length < 8) {
@@ -138,7 +133,6 @@ const Register = () => {
         ...prevErrors,
         password: "",
       }));
-      
     }
 
     if (password !== passwordConfirm) {
@@ -152,7 +146,6 @@ const Register = () => {
         ...prevErrors,
         passwordConfirm: "",
       }));
-      
     }
 
     if (!dateOfBirth) {
@@ -197,35 +190,6 @@ const Register = () => {
       }));
     }
 
-    // Validate Bio
-    const wordCount = Bio.trim().split(/\s+/).length;
-    if (wordCount > 30) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        Bio: "Bio cannot exceed 30 words.",
-      }));
-      isValid = false;
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        Bio: "",
-      }));
-    }
-
-    if (Bio.trim() === "") {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        Bio: "Please enter a bio.",
-      }));
-      isValid = false;
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        location: "",
-      }));
-    }
-    
-
     if (!isValid) {
       toast.error("Registration not successful. Please check the form.");
       return;
@@ -240,7 +204,6 @@ const Register = () => {
       passwordConfirm,
       dateOfBirth,
       location,
-      Bio,
     };
 
     const response = await registerUser(userInfo);
@@ -373,19 +336,6 @@ const Register = () => {
             )}
           </div>
 
-          <div className="form-field">
-            <textarea
-              className="register-Bio-field"
-              name="Bio"
-              value={Bio}
-              onChange={(e) => setBio(e.target.value)}
-              placeholder="Enter your Bio (max 30 words)"
-            />
-            {errors.Bio && (
-              <p className="registration-error">{errors.Bio}</p>
-            )}
-          </div>
-
           <div className="stuff-container">
             {" "}
             {/* this div is to reduce the margin between the button and the link */}
@@ -400,11 +350,7 @@ const Register = () => {
           </div>
         </form>
         <div className="registration-img">
-          <img
-            className="registration-img"
-            alt="omars face"
-            src={logo}
-          ></img>
+          <img className="registration-img" alt="omars face" src={logo}></img>
         </div>
       </div>
     </div>
