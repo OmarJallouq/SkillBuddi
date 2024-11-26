@@ -78,6 +78,7 @@ export const AuthProvider = ({ children }) => {
         email: userInfo.email,
         Bio: "",
         Skills: [],
+        wantedSkills: [],
         location: userInfo.location,
         dateOfBirth: userInfo.dateOfBirth,
         profilePicture: null,
