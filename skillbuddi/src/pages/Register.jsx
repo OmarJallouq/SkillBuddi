@@ -17,7 +17,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState({});
   const [location, setLocation] = useState("");
 
   useEffect(() => {
@@ -313,7 +313,7 @@ const Register = () => {
               type="date"
               name="dateOfBirth"
               value={dateOfBirth}
-              onChange={(e) => setDateOfBirth(e.target.value)}
+              onChange={(e) => setDateOfBirth(Date(e.target.value))}
               placeholder="Enter your date of birth"
             />
             {errors.dateOfBirth && (
