@@ -49,10 +49,19 @@
 
     font-family: 'Rubik', sans-serif;
   }
-  
+
   .profile-info p {
     /* username and email of account */
     margin: 5px 0;
+    color: #72726E;
+
+    font-family: 'Rubik', sans-serif;
+  }
+
+  .bio-input {
+    background: none;
+    border: none;
+
     color: #72726E;
 
     font-family: 'Rubik', sans-serif;
@@ -129,14 +138,20 @@
   }
 
   .change-button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    font-size: 12px;
-    color: white;
-    background-color: #007bff;
-    border: none;
+    width: 1.5vw;
+    height: 1.5vw;
+
+    margin-left: 1vw;
+
+    color: #72726E;
+    background: none;
+
+    border: 2px solid #72726E;
+
     border-radius: 5px;
     cursor: pointer;
+
+    font-size: 16px;
   }
   
   .change-button:hover {

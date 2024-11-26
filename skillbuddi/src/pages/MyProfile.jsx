@@ -139,7 +139,7 @@ const handleChangeBio = async () => {
               <button
               onClick={() => handleChangeField("location")}
               className="change-button">
-              Change Location
+              ✎
               </button>
             </p> 
             <p>
@@ -147,7 +147,7 @@ const handleChangeBio = async () => {
               <button
               className="change-button"
               onClick={() => handleChangeField("dateOfBirth", "Date of Birth")}>
-              Change Date of Birth
+              ✎
               </button>
             </p>
           </div>
@@ -158,9 +158,9 @@ const handleChangeBio = async () => {
            <h2>Bio</h2>
            <button
           onClick={() => handleChangeBio("Bio")}
-          className="change-field-button"
+          className="change-button"
           >
-          Change Bio
+          ✎
           </button>
           </div>
           <p>{user.Bio}</p>
