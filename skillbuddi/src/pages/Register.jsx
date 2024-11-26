@@ -162,10 +162,25 @@ const Register = () => {
       }));
       isValid = false;
     } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        dateOfBirth: "",
-      }));
+      const today = new Date();
+      const thresholdDate = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+      );
+      const dateAsDate = new Date(dateOfBirth);
+      if (dateAsDate > thresholdDate) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          dateOfBirth: "You must be over 18 to use SkillBuddi",
+        }));
+        isValid = false;
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          dateOfBirth: "",
+        }));
+      }
     }
 
     // Validate Location
