@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
 
 .container {
+    margin-top: 6vh; /* this may be unnecessary after merging with the routing branch (in which the header is properly done) */
+
     height: 100vh;
     width: 100vw;
 
@@ -17,10 +19,27 @@
 .header-section {
     width: 100vw;
 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 
     text-align: center;
-    background-color: #e8c766;
+    background-color: #162f65;
     color: #fff;
+}
+
+.about-logo {
+    width: 8vw;
+    height: 8vw;
+}
+
+.hidden-logo {
+    /* invisible logo used to offset the title to the center of the header bar */
+    width: 8vw;
+    height: 8vw;
+
+    visibility: hidden;
 }
 
 .title {
@@ -41,7 +60,7 @@
     
 .content-section {
     height: 80vh;
-    width: 50vw;
+    width: 70vw;
 
     text-align: center;
 }
@@ -54,6 +73,13 @@
     
     color: #162f65;
 }
+
+.text-and-logos {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
     
 .text {
     text-align: justify;
@@ -62,4 +88,12 @@
     font-size: 18px;
     margin-bottom: 3vh;
     color: #555;
+}
+
+.icon {
+    width: 15vh;
+    height: 13vh;
+
+    margin-left: 3vw;
+    margin-right: 3vw;
 }
