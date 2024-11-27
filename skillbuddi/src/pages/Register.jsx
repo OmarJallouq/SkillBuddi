@@ -19,7 +19,7 @@ const Register = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [location, setLocation] = useState("");
-  const [Bio, setBio] = useState("");
+  
 
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const Register = () => {
     passwordConfirm: "",
     dateOfBirth: "",    
     location: "",    
-    Bio: "",
+    
   });
 
   const handleSubmit = async (e) => {
@@ -50,7 +50,7 @@ const Register = () => {
     const passwordConfirm = registerForm.current.password2.value;
     const dateOfBirth = registerForm.current.dateOfBirth.value;
     const location = registerForm.current.location.value;
-    const Bio = registerForm.current.Bio.value;
+    
 
     let isValid = true;
 
@@ -190,34 +190,6 @@ const Register = () => {
         location: "",
       }));
     }
-
-    // Validate Bio
-    const wordCount = Bio.trim().split(/\s+/).length;
-    if (wordCount > 30) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        Bio: "Bio cannot exceed 30 words.",
-      }));
-      isValid = false;
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        Bio: "",
-      }));
-    }
-
-    if (Bio.trim() === "") {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        Bio: "Please enter a bio.",
-      }));
-      isValid = false;
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        location: "",
-      }));
-    }
     
 
     if (!isValid) {
@@ -234,7 +206,7 @@ const Register = () => {
       passwordConfirm,
       dateOfBirth,
       location,
-      Bio,
+
     };
 
     const response = await registerUser(userInfo);
@@ -368,18 +340,6 @@ const Register = () => {
             )}
           </div>
 
-          <div className="form-field">
-            <textarea
-              className="register-Bio-field"
-              name="Bio"
-              value={Bio}
-              onChange={(e) => setBio(e.target.value)}
-              placeholder="Enter your Bio (max 30 words)"
-            />
-            {errors.Bio && (
-              <p className="registration-error">{errors.Bio}</p>
-            )}
-          </div>
 
           <div className="stuff-container">
             {" "}
