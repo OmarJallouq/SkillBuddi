@@ -78,14 +78,14 @@ export const AuthProvider = ({ children }) => {
         email: userInfo.email,
         Bio: "",
         Skills: [],
-        wantedSkills: [],
+        //wantedSkills: [], //TODO: Add these to DB
         location: userInfo.location,
         dateOfBirth: userInfo.dateOfBirth,
-        profilePicture: null,
+        //profilePicture: null,
       };
 
       // Creates Database Record
-      await createUserData(accountDetails.$id, data);
+      await createUserData(accountDetails.$id, data); //TODO: if this fails delete the auth account
 
       const userDetails = await fetchUserData(accountDetails.$id);
 
