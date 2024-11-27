@@ -19,8 +19,6 @@ const Register = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [location, setLocation] = useState("");
-  
-
 
   useEffect(() => {
     if (user) {
@@ -35,9 +33,8 @@ const Register = () => {
     email: "",
     password: "",
     passwordConfirm: "",
-    dateOfBirth: "",    
-    location: "",    
-    
+    dateOfBirth: "",
+    location: "",
   });
 
   const handleSubmit = async (e) => {
@@ -50,7 +47,6 @@ const Register = () => {
     const passwordConfirm = registerForm.current.password2.value;
     const dateOfBirth = registerForm.current.dateOfBirth.value;
     const location = registerForm.current.location.value;
-    
 
     let isValid = true;
 
@@ -121,7 +117,7 @@ const Register = () => {
     } else if (
       !/[a-zA-z]/.test(password) ||
       !/\d/.test(password) ||
-      !/[!@#$%^&*(),.?":{}|<>]/.test(password)
+      !/[!@#$%^&*(),.?":_{}|<>]/.test(password)
     ) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -190,7 +186,6 @@ const Register = () => {
         location: "",
       }));
     }
-    
 
     if (!isValid) {
       toast.error("Registration not successful. Please check the form.");
@@ -206,7 +201,6 @@ const Register = () => {
       passwordConfirm,
       dateOfBirth,
       location,
-
     };
 
     const response = await registerUser(userInfo);
@@ -339,7 +333,6 @@ const Register = () => {
               <p className="registration-error">{errors.location}</p>
             )}
           </div>
-
 
           <div className="stuff-container">
             {" "}
