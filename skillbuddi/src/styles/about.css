@@ -97,3 +97,13 @@
     margin-left: 3vw;
     margin-right: 3vw;
 }
+
+.icon-hidden {
+    width: 15vh;
+    height: 13vh;
+
+    margin-left: 3vw;
+    margin-right: 3vw;
+
+    visibility: hidden;
+}

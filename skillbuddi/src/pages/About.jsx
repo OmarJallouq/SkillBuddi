@@ -44,7 +44,7 @@ const About = () => {
               passions.
             </p>
             <img
-              className="icon"
+              className="icon-hidden"
               alt=""
               src={exchangeIcon}
             ></img>
@@ -53,7 +53,7 @@ const About = () => {
           <h2 className="section-title">Why Choose Us?</h2>
           <div className="text-and-logos">
             <img
-              className="icon"
+              className="icon-hidden"
               alt=""
               src={brainIcon}
             ></img>
@@ -83,7 +83,7 @@ const About = () => {
               from others.
             </p>
             <img
-              className="icon"
+              className="icon-hidden"
               alt=""
               src={globeIcon}
             ></img>
