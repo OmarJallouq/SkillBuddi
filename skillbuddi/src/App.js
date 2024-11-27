@@ -12,6 +12,7 @@ import PrivateRoutes from './utils/PrivateRoutes'
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { DatabaseProvider } from './utils/DatabaseContext';
+import Delete from './pages/Delete';
 
 
 
@@ -33,6 +34,7 @@ const App = () => {
                 <Route path="/messages" element={<Messaging />} />
                 <Route path="/myProfile" element={<MyProfile />} />
                 <Route path="/profile/:id" element={<Profile />} />
+                <Route path="/delete" element={<Delete />} />
               </Route>
             </Routes>
           </AuthProvider>
