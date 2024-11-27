@@ -1,3 +1,4 @@
+import { Query } from "appwrite";
 import { databases } from "../appwriteConfig";
 
 // Replace these with your database and collection IDs
