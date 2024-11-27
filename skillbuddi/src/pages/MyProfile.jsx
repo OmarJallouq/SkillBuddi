@@ -39,39 +39,13 @@ const MyProfile = () => {
 
       if (response.success) {
         // Update the user field locally to reflect changes immediately
-        user[field] = newValue.trim();
+        window.location.reload(false); //TODO: Bad practice, add as dependency in useEffect to trigger rerender.
         toast.success(`${fieldName} updated successfully!`);
       } else {
         throw new Error(response.error);
       }
     } catch (error) {
       toast.error(error.message || `Failed to update ${fieldName}.`);
-    }
-  };
-
-  //check i don't know if it's right
-  const handleChangeBio = async () => {
-    const newBio = prompt("Enter a new bio:");
-
-    // Check if the input is valid
-    if (!newBio || newBio.trim() === "") {
-      toast.error("Bio cannot be empty!");
-      return;
-    }
-
-    try {
-      // Update the user's bio in the database
-      const response = await updateUserData(user.$id, { Bio: newBio });
-
-      if (response.success) {
-        // Update local state for immediate UI feedback
-        user.Bio = newBio;
-        toast.success("Bio updated successfully!");
-      } else {
-        throw new Error(response.error);
-      }
-    } catch (error) {
-      toast.error(error.message || "Failed to update bio.");
     }
   };
 
