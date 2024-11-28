@@ -3,7 +3,7 @@ import { databases } from "../appwriteConfig";
 
 // Replace these with your database and collection IDs
 const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE;
-const COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION;
+const COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION; //TODO: This is not in .env???
 
 export const fetchConversations = async (userId) => {
   try {
