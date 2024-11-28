@@ -31,6 +31,11 @@ const MyProfile = () => {
       return;
     }
 
+    if (field === "Bio" && newValue.length > 140) {
+      toast.error("Bio exceeds 140 character limit")
+      return;
+    }
+
     //TODO: add validation for DOB format, add character limit for bio
     try {
       const response = await updateUserData(user.$id, {
@@ -124,12 +129,6 @@ const MyProfile = () => {
             </p>
             <p>
               Date of Birth: {user.dateOfBirth}
-              <button
-                className="change-button"
-                onClick={() => handleChangeField("dateOfBirth")}
-              >
-                ✎
-              </button>
             </p>
           </div>
         </div>
