@@ -4,3 +4,11 @@
 
     background: linear-gradient(to right, #3361ac, #162f65);
 }
+
+.cards-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 3vw;
+    gap: 3vw;
+}
