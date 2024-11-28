@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+.whole-card {
+    width: 25vw;
+    height: 30vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: #e7e6dd;
+
+    border: 5px solid #e8af30;
+    border-radius: 15px;
+}
+
+.top-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: top;
+
+    margin-top: 1vh;
+}
+
+.pfp {
+    width: 6vh;
+    height: 6vh;
+    border-radius: 50%;
+
+    margin-left: 1vh;
+}
+
+.top-text {
+    margin-left: 1vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: top;
+
+    font-family: 'Rubik', sans-serif;
+    /*font-weight: 500;*/
+}
+
+.top-text h {
+    font-size: 24px;
+}
+
+.top-text p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    color: #72726E;
+}
+
+.bio-section {
+    height: 30vh;
+    margin-left: 1vh;
+    margin-right: 1vh;
+
+    overflow-y: scroll;
+
+    font-family: 'Rubik', sans-serif;
+}
+
+.skills-section {
+    margin-left: 1vh;
+    margin-right: 1vh;
+
+    font-family: 'Rubik', sans-serif;
+}

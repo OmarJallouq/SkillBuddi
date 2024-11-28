@@ -1,16 +1,20 @@
 import React from "react";
-
 import "../styles/home.css";
+import UserCard from "../components/UserCard";
 
 const Home = () => {
   return (
-    <div className="homepage-container">
-      {/* Side Navigation Bar */}
-
-      {/* Main Content */}
+    <div className="home-page">
       <div className="main-content">
-        <h1>Welcome to SkillBuddi!</h1>
-        <p>Find and share skills in a connected community</p>
+        <div className="head-section">
+
+        </div>
+
+        <div className="cards-section">
+          <UserCard
+            username="omarjallouq"
+          />
+        </div>
       </div>
     </div>
   );
