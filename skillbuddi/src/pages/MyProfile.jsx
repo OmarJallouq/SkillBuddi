@@ -10,11 +10,12 @@ const MyProfile = () => {
   const { user } = useAuth();
   const { updateUserData } = useDatabase();
   const [skills, setSkills] = useState([]);
+  const [skillsWanted, setSkillsWanted] = useState([]);
 
   useEffect(() => {
     setSkills(user.Skills);
   }, []);
-
+  
   //check this I don't know if it's right
   const handleChangeField = async (field) => {
     const fieldName =
@@ -173,6 +174,36 @@ const MyProfile = () => {
             className="add-skill-button"
           >
             Add Skill
+          </button>
+        </div>
+        <div className="skills-wanted-section">
+          <div className="title-skills-container">
+            <h2>Skills Wanted</h2>
+            {skillsWanted.length === 0 ? (
+              <p>No skills wanted added yet.</p>
+            ) : (
+              <ul className="skills-list">
+                {skillsWanted.map((skill, index) => (
+                  <SkillTag
+                    key={index}
+                    skill={skill}
+                    index={index}
+                    handleRemoveSkill={handleRemoveWantedSkill}
+                  />
+                ))}
+              </ul>
+            )}
+          </div>
+          <button
+            onClick={() => {
+              const newSkill = prompt("Enter a new skill wanted:");
+              if (newSkill) {
+                handleAddWantedSkill(newSkill);
+              }
+            }}
+            className="add-skill-button"
+          >
+            Add Skill Wanted
           </button>
         </div>
       </div>
