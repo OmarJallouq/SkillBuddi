@@ -285,7 +285,7 @@ const handleChangeBio = async () => {
       id="profile-picture-upload"
     />
     <label htmlFor="profile-picture-upload" className="upload-profile-picture-button">
-      <span>Upload Profile Picture</span>
+      <span>Upload Picture</span>
     </label>
       </div>
           <div className="profile-info">

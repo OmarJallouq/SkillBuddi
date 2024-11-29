@@ -2,7 +2,7 @@
 
 .whole-thing {
   width: 100vw;
-  height: 200vh;
+  height: 180vh;
 
   display: flex;
   flex-direction: column;
@@ -16,7 +16,7 @@
 .profile-container {
   /* box that has everythin g */
     width: 80vw;
-    height: 125vh; 
+    height:143vh; 
     margin-top: 10vh;
     padding: 2vh;
     
@@ -255,7 +255,7 @@
     height: 4vh; /* Slightly taller for better visual balance */
     width: 12vw; /* Increase width for more spaciousness */
     margin: 20px auto;
-    margin-top: 20vh; /* Slightly higher margin to give it a bit of space */
+    margin-top: 25vh; /* Slightly higher margin to give it a bit of space */
     margin-bottom: 4vh; /* Reduce space to make it more consistent */
     margin-left: -17vh;
     background-color: #e8c766; /* Consistent button color */
@@ -284,7 +284,9 @@
     text-align: center;
     font-family: 'Rubik', sans-serif;
     font-size: 14px; /* Slightly smaller font size for better alignment */
-    padding: 0 10px; /* Add horizontal padding to the text */
+    padding: 10px; /* Add horizontal padding to the text */
+    font-weight: 500;
+    
   }
   
 
