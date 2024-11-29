@@ -2,43 +2,38 @@ import React, { useState, useEffect } from "react";
 import "../styles/home.css";
 import UserCard from "../components/UserCard";
 import { useAuth } from "../utils/AuthContext";
-import { databases } from "../appwriteConfig";
-import { Query } from "appwrite";
-
-const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE;
-const COLLECTION_ID = process.env.REACT_APP_APPWRITE_COLLECTION;
+import { useDatabase } from "../utils/DatabaseContext";
 
 const Home = () => {
   const { user } = useAuth(); // Access the currently logged-in user
+  const { fetchMatchingUsers } = useDatabase(); // Access the fetchMatchingUsers function
   const [searchValue, setSearchValue] = useState("");
   const [matchingUsers, setMatchingUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Fetch matching users whenever the user changes
   useEffect(() => {
-    if (user && user.Skills_wanted) {
-      fetchMatchingUsers(user.Skills_wanted);
-    }
-  }, [user]);
+    const loadMatchingUsers = async () => {
+      if (user?.Skills_wanted) {
+        setLoading(true);
+        setError(null);
+        try {
+          const users = await fetchMatchingUsers(user.Skills_wanted);
+          setMatchingUsers(users);
+        } catch (err) {
+          console.error("Error fetching matching users:", err);
+          setError("Failed to load matching users.");
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
 
-  const fetchMatchingUsers = async (skillsWanted) => {
-    setLoading(true);
-    try {
-      const response = await databases.listDocuments(
-        DATABASE_ID,
-        COLLECTION_ID,
-        [Query.search("Skills", skillsWanted.join(" "))]
-      );
-      setMatchingUsers(response.documents);
-    } catch (err) {
-      console.error("Error fetching matching users:", err);
-      setError("Failed to load matching users.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    loadMatchingUsers();
+  }, [user, fetchMatchingUsers]);
 
-  //This function takes in the so called "OG users" and filters them based on the value in the search, such that the users must include the word in the search.
+  // Filter users based on search value
   const filteredUsers = matchingUsers.filter(
     (user) =>
       searchValue.trim() === "" ||
@@ -58,7 +53,7 @@ const Home = () => {
               type="text"
               placeholder="Search for a skill..."
               value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)} //onChange for real time changes
+              onChange={(e) => setSearchValue(e.target.value)} // onChange for real-time changes
             />
           </div>
         </div>

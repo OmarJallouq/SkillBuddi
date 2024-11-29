@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { databases, storage } from "../appwriteConfig";
-import { ID } from "appwrite";
+import { ID, Query } from "appwrite";
 
 const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
 const USER_COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_COLLECTION}`;
@@ -25,6 +25,20 @@ export const DatabaseProvider = ({ children }) => {
       setError(err.message);
       console.error("Error fetching user data:", err);
       throw err;
+    }
+  };
+
+  const fetchMatchingUsers = async (skillsWanted) => {
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        USER_COLLECTION_ID,
+        [Query.search("Skills", skillsWanted.join(" "))]
+      );
+      return response.documents;
+    } catch (err) {
+      console.error("Error fetching matching users:", err);
+      setError("Failed to load matching users.");
     }
   };
 
@@ -87,6 +101,7 @@ export const DatabaseProvider = ({ children }) => {
 
   const contextData = {
     fetchUserData,
+    fetchMatchingUsers,
     updateUserData,
     createUserData,
     uploadProfilePicture,
