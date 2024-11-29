@@ -85,10 +85,56 @@ const MyProfile = () => {
     const currentValue = user[field];
     const newValue = prompt(`Enter your new ${fieldName}:`, currentValue);
 
+    
     if (!newValue || newValue.trim() === "") {
       toast.error(`${fieldName} cannot be empty!`);
       return;
     }
+    /*
+    if (field === "username") {
+      if (newValue.trim() === "") {
+        toast.error("Username cannot be empty!");
+        return;
+      }
+      try {
+        const isTaken = await checkUsernameAvailability(newValue.trim());
+        if (isTaken) {
+          toast.error("Username is already taken!");
+          return;
+        }
+      } catch (error) {
+        toast.error("Failed to validate username. Please try again.");
+        return;
+      }
+    }
+    */
+
+    if (field === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(newValue)) {
+        toast.error("Invalid email format!");
+        return;
+      }
+    }
+  
+    if (field === "dateOfBirth") {
+      const enteredDate = new Date(newValue);
+      const today = new Date();
+      const age = today.getFullYear() - enteredDate.getFullYear();
+      if (today < new Date(enteredDate.setFullYear(enteredDate.getFullYear() + age))) {
+        age--; // Adjust if the birthday hasn't occurred yet this year
+      }
+      if (age < 18) {
+        toast.error("You must be at least 18 years old!");
+        return;
+      }
+    }
+
+    if (field === "location" && newValue.trim() === "") {
+      toast.error("Location cannot be empty!");
+      return;
+    }
+  
 
     if (field === "Bio" && newValue.length > 140) {
       toast.error("Bio exceeds 140 character limit")
@@ -113,7 +159,7 @@ const MyProfile = () => {
     }
   };
 
-  //need to write a function to update profile picture
+  
 
   const handleRemoveSkill = async (skillToRemove) => {
     const updatedSkills = skills.filter((skill) => skill !== skillToRemove);
@@ -174,9 +220,51 @@ const MyProfile = () => {
             className="avatar"
           />
           <div className="profile-info">
-            <h1>{user.name}</h1>
-            <p>{user.username}</p>
-            <p>{user.email}</p>
+            <p>
+            First Name: {user.name}
+              <button
+              onClick={() => handleChangeField("name")}
+              className="change-button"
+              >
+              ✎
+              </button>
+            </p>
+            <p>
+            Last Name: {user.lastName}
+              <button
+              onClick={() => handleChangeField("lastName")}
+              className="change-button"
+              >
+              ✎
+              </button>
+            </p>
+            <p>
+            Username: {user.username}
+              <button
+              onClick={() => handleChangeField("username")}
+              className="change-button"
+              >
+              ✎
+              </button>
+            </p>
+            <p>
+              Email: {user.email}
+              <button
+              onClick={() => handleChangeField("email")}
+              className="change-button"
+              >
+              ✎
+              </button>
+            </p>
+            <p>
+              Date of Birth: {user.dateOfBirth}
+              <button
+              onClick={() => handleChangeField("dateOfBirth")}
+              className="change-button"
+            >
+            ✎
+              </button>
+            </p>
             <p>
               Location: {user.location}
               <button
