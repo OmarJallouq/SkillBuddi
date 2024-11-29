@@ -28,14 +28,26 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  const fetchMatchingUsers = async (skillsWanted) => {
+  const fetchMatchingUsers = async (userId) => {
     try {
+      const currentUser = await fetchUserData(userId);
+
+      // Query for users whose Skills match the current user's Skills_wanted
       const response = await databases.listDocuments(
         DATABASE_ID,
         USER_COLLECTION_ID,
-        [Query.search("Skills", skillsWanted.join(" "))]
+        [
+          Query.search("Skills", currentUser.Skills_wanted.join(" ")), // Their Skills match my wanted skills
+          Query.search("Skills_wanted", currentUser.Skills.join(" ")), // Their wanted skills match my Skills
+        ]
       );
-      return response.documents;
+
+      // Filter out the current user from the results
+      const filteredUsers = response.documents.filter(
+        (user) => user.$id !== currentUser.$id
+      );
+
+      return filteredUsers;
     } catch (err) {
       console.error("Error fetching matching users:", err);
       setError("Failed to load matching users.");

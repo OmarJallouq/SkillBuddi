@@ -19,7 +19,7 @@ const Home = () => {
         setLoading(true);
         setError(null);
         try {
-          const users = await fetchMatchingUsers(user.Skills_wanted);
+          const users = await fetchMatchingUsers(user.$id);
           setMatchingUsers(users);
         } catch (err) {
           console.error("Error fetching matching users:", err);
