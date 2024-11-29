@@ -17,7 +17,7 @@ const MyProfile = () => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [location, setLocation] = useState(user.location);
-  const [bio, setBio] = useState('');
+  const [bio, setBio] = useState(user.bio);
 
   useEffect(() => {
     setSkills(user.Skills);
@@ -25,8 +25,8 @@ const MyProfile = () => {
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setLocation(user.location);
-    setBio('');
-  }, []);
+    setBio(user.Bio);
+  }, [user]);
 
   useEffect(() => {
     setSkills(user.Skills || []);
@@ -156,6 +156,7 @@ const handleChangeBio = async () => {
     if (response.success) {
       // Update local state for immediate UI feedback
       setBio(newBio); 
+      
       toast.success("Bio updated successfully!");
     } else {
       throw new Error(response.error);
