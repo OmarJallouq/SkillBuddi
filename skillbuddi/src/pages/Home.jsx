@@ -1,11 +1,31 @@
 import React, { useState } from "react";
 import "../styles/home.css";
 import UserCard from "../components/UserCard";
+import { useDatabase } from "../utils/DatabaseContext";
 
 const Home = () => {
   const [searchValue, setSearchValue] = useState("");
+  const { fetchUserData } = useDatabase();
+  const [profile, setProfile] = useState(null);
+  const userDatas = [];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userData = await fetchUserData(username);
+        setProfile(userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    if (username) {
+      fetchData();
+    }
+  }, [username]);
 
   const users = ["omarjallouq", "fjanczak", "valentina12345", "cwelchuj123"];
+  const searchedUsers = users;
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -13,6 +33,14 @@ const Home = () => {
 
   const handleSearch = () => {
     console.log(searchValue);
+
+    const searchCondition = (user) => user.Skills.includes(searchValue.trim());
+    
+    if (searchValue == "") {
+      searchedUsers = users;
+    } else {
+      searchedUsers = users.filter(searchCondition)
+    }
   };
 
   return (
@@ -28,7 +56,7 @@ const Home = () => {
               className="search-bar"
               type="text"
               placeholder="Search for a skill..."
-              onChange={handleSearchChange()}
+              onChange={handleSearchChange}
             />
 
             <button className="search-button" onClick={() => handleSearch()}>
@@ -38,7 +66,7 @@ const Home = () => {
         </div>
 
         <div className="cards-section">
-          {users.map((username) => (
+          {searchedUsers.map((username) => (
             <UserCard username={username} />
           ))}
         </div>
