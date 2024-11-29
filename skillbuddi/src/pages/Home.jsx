@@ -3,7 +3,7 @@ import "../styles/home.css";
 import UserCard from "../components/UserCard";
 
 const Home = () => {
-  const users = ["omarjallouq", "fjanczak", "valentina12345"];
+  const users = ["omarjallouq", "fjanczak", "valentina12345", "cwelchuj123"];
 
   return (
     <div className="home-page">
@@ -19,8 +19,9 @@ const Home = () => {
               type="text"
               placeholder="Search for a skill..."
             />
+
             <button className="search-button">
-              
+              🔎︎
             </button>
           </div>
         </div>
