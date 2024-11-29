@@ -14,10 +14,18 @@ const MyProfile = () => {
   const { updateUserData } = useDatabase();
   const [skills, setSkills] = useState([]);
   const [skillsWanted, setSkillsWanted] = useState([]);
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [location, setLocation] = useState(user.location);
+  const [bio, setBio] = useState('');
 
   useEffect(() => {
     setSkills(user.Skills);
     console.log(skills);
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setLocation(user.location);
+    setBio('');
   }, []);
 
   useEffect(() => {
@@ -79,65 +87,28 @@ const MyProfile = () => {
   };
   
   //check this I don't know if it's right
-  const handleChangeField = async (field) => {
-    const fieldName = field === "location" ? "Location" : "Date of Birth";
-    const currentValue = user[field];
-    const newValue = prompt(`Enter your new ${fieldName}:`, currentValue);
+  
+  const handleChangeLocation = async () => {
+    const newLocation = prompt("Enter a new location:");
 
-    
-    if (field === "dateOfBirth") {
-      const birthDate = new Date(newValue);
-      const age = new Date().getFullYear() - birthDate.getFullYear();
-  
-      if (age < 18) {
-        toast.error("You must be at least 18 years old!");
-        return;
-      }
-    }
-  
-    if (!newValue || newValue.trim() === "") {
-      toast.error(`${fieldName} cannot be empty!`);
-      return;
-    }
-  
-    try {
-      const response = await updateUserData(user.$id, {
-        [field]: newValue.trim(),
-      });
-  
-      if (response.success) {
-        // Update the user field locally to reflect changes immediately
-        user[field] = newValue.trim();
-        toast.success(`${fieldName} updated successfully!`);
-      } else {
-        throw new Error(response.error);
-      }
-    } catch (error) {
-      toast.error(error.message || `Failed to update ${fieldName}.`);
-    }
-  };
-
-  const handleChangeFirstName = async () => {
-    const newFirstName = prompt("Enter a new first name:");
-
-    if (!newFirstName || newFirstName.trim() === "") {
-      toast.error("First Name cannot be empty!");
+    if (!newLocation || newLocation.trim() === "") {
+      toast.error("Location cannot be empty!");
       return;
     }
 
     try {
       // Update the user's name in the database
-      const response = await updateUserData(user.$id, { firstName: newFirstName });
+      const response = await updateUserData(user.$id, { location: newLocation });
   
       if (response.success) {
         // Update local state for immediate UI feedback
-        user.firstName = newFirstName; 
-        toast.success("First name updated successfully!");
+        setLocation(newLocation); 
+        toast.success("Location updated successfully!");
       } else {
         throw new Error(response.error);
       }
     } catch (error) {
-      toast.error(error.message || "Failed to update first name.");
+      toast.error(error.message || "Failed to update location.");
     }
 
   }
@@ -156,7 +127,7 @@ const MyProfile = () => {
   
       if (response.success) {
         // Update local state for immediate UI feedback
-        user.lastName = newLastName; 
+        setLastName(newLastName); 
         toast.success("Last name updated successfully!");
       } else {
         throw new Error(response.error);
@@ -184,7 +155,7 @@ const handleChangeBio = async () => {
 
     if (response.success) {
       // Update local state for immediate UI feedback
-      user.Bio = newBio; 
+      setBio(newBio); 
       toast.success("Bio updated successfully!");
     } else {
       throw new Error(response.error);
@@ -267,6 +238,32 @@ const handleChangeBio = async () => {
     }
   };
 
+  const handleChangeFirstName = async () => {
+    const newFirstName = prompt("Enter a new first name:");
+
+    if (!newFirstName || newFirstName.trim() === "") {
+      toast.error("First Name cannot be empty!");
+      return;
+    }
+
+    try {
+      // Update the user's name in the database
+      const response = await updateUserData(user.$id, { firstName: newFirstName });
+  
+      if (response.success) {
+        // Update local state for immediate UI feedback
+        setFirstName(newFirstName);
+
+        toast.success("First name updated successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to update first name.");
+    }
+
+  }
+
   return (
     <div className="whole-thing">
       <div className="profile-container">
@@ -291,7 +288,7 @@ const handleChangeBio = async () => {
           <div className="profile-info">
             <h1>
               {user.username}
-              First name: {user.firstName} 
+              First name: {firstName} 
               
               
               <button
@@ -301,7 +298,7 @@ const handleChangeBio = async () => {
               </button>
             </h1>
             <h1>
-              Last name: {user.lastName}
+              Last name: {lastName}
               <button
               onClick={() => handleChangeLastName()}
               className="change-button">
@@ -311,20 +308,16 @@ const handleChangeBio = async () => {
             <p>{user.username}</p>
             <p>{user.email}</p>
             <p>
-              Location: {user.location}
+              Location: {location}
               <button
-              onClick={() => handleChangeField("location")}
+              onClick={() => handleChangeLocation()}
               className="change-button">
               ✎
               </button>
             </p> 
             <p>
               Date of Birth: {user.dateOfBirth}
-              <button
-              className="change-button"
-              onClick={() => handleChangeField("dateOfBirth", "Date of Birth")}>
-              ✎
-              </button>
+              
             </p>
           </div>
         </div>
@@ -340,7 +333,7 @@ const handleChangeBio = async () => {
             </button>
           </div>
 
-          <p>{user.Bio}</p>
+          <p>{bio}</p>
 
         </div>
 

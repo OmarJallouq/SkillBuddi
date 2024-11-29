@@ -45,17 +45,21 @@
   
   .profile-info h1 {
     /* first name and last name of account */
-    font-size: 24px;
-    margin: 0;
+    font-size: 22px;
+    margin: 5px 0;
+    margin-left: 30px;
+    color: #72726E;
 
     font-family: 'Rubik', sans-serif;
   }
 
   .profile-info p {
     /* username and email of account */
+    font-size: 22px;
     margin: 5px 0;
-    color: #72726E;
+    
     margin-left: 30px;
+    color: #72726E;
     font-family: 'Rubik', sans-serif;
   }
 
