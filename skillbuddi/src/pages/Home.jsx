@@ -38,7 +38,7 @@ const Home = () => {
       setLoading(false);
     }
   };
-    console.log("started useeffect");
+    
     /*const fetchAllData = async () => {
       console.log("started fetchalldata");
       try {
@@ -86,7 +86,6 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      {console.log("started return of home page")}
       <div className="main-content">
         <div className="head-section">
           <p className="matching-title">Your Matches</p>
@@ -108,9 +107,10 @@ const Home = () => {
           <p>{error}</p>
         ) : (
           <div className="cards-section">
+            {console.log(matchingUsers)}
             {matchingUsers.length > 0 ? (
               matchingUsers.map((user) => (
-                <UserCard key={user.$id} username={user.username} />
+                <UserCard username={user.username} />
               ))
             ) : (
               <p>No matching users found.</p>
