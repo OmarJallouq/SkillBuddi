@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/home.css";
 import UserCard from "../components/UserCard";
 import { useAuth } from "../utils/AuthContext";
@@ -39,7 +39,7 @@ const Home = () => {
     }
   };
     console.log("started useeffect");
-    const fetchAllData = async () => {
+    /*const fetchAllData = async () => {
       console.log("started fetchalldata");
       try {
         console.log("got to try");
@@ -56,17 +56,16 @@ const Home = () => {
       fetchAllData();
       console.log("did fetchalldata");
     }
-  }, [users]);
 
   setSearchedUsers(users);
-  console.log("did setsearchedusers"); 
+  console.log("did setsearchedusers"); */
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
   };
 
   const handleSearch = () => {
-    const filteredUsers = matchingUsers.filter((user) =>
+    /*const filteredUsers = matchingUsers.filter((user) =>
       user.Skills.some((skill) =>
         skill.toLowerCase().includes(searchValue.trim().toLowerCase())
       )
@@ -82,13 +81,13 @@ const Home = () => {
 
       const searchedUserDatas = profiles.filter(searchCondition);
       setSearchedUsers(searchedUserDatas.map((searchedData) => searchedData.username));
-    }
-  };
+    }*/
+  }
 
   return (
     <div className="home-page">
       {console.log("started return of home page")}
-      {/*<div className="main-content">
+      <div className="main-content">
         <div className="head-section">
           <p className="matching-title">Your Matches</p>
           <div className="search">
