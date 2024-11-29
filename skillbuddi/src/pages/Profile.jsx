@@ -14,12 +14,10 @@ const Profile = () => {
   // fetch user data
   useEffect(() => {
     const calculateAge = (dobString) => {
-      //TODO: function is simply wrong i believe
       const today = new Date();
       const dob = new Date(dobString);
 
       let age = today.getFullYear() - dob.getFullYear();
-      console.log("Today: " + today + " DOB: " + dob);
       // Adjust if the birthday hasn't occurred yet this year
       if (
         today.getMonth() < dob.getMonth() ||
