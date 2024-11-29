@@ -14,6 +14,7 @@ const Home = () => {
   const [matchingUsers, setMatchingUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [ogMatchingUsers, setOgMatchingUsers] = useState([]);
 
   useEffect(() => {
     if (user && user.Skills_wanted) {
@@ -31,6 +32,7 @@ const Home = () => {
       );
 
       setMatchingUsers(response.documents);
+      setOgMatchingUsers(matchingUsers);
     } catch (err) {
       console.error("Error fetching matching users:", err);
       setError("Failed to load matching users.");
@@ -39,49 +41,20 @@ const Home = () => {
     }
   };
 
-  /*const fetchAllData = async () => {
-      console.log("started fetchalldata");
-      try {
-        console.log("got to try");
-        const userDataPromises = users.map((username) => fetchUserData(username));
-        const userDatas = await Promise.all(userDataPromises);
-        setProfiles(userDatas);
-        console.log("finished try");
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    if (users && users.length > 0) {
-      fetchAllData();
-      console.log("did fetchalldata");
-    }
-
-  setSearchedUsers(users);
-  console.log("did setsearchedusers"); */
+  console.log("gottoset");
+  
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
   };
 
   const handleSearch = () => {
-    /*const filteredUsers = matchingUsers.filter((user) =>
-      user.Skills.some((skill) =>
-        skill.toLowerCase().includes(searchValue.trim().toLowerCase())
-      )
-    );
-
-    setMatchingUsers(filteredUsers);
-    console.log(searchValue);
-    
-    if (searchValue == "") {
-      setSearchedUsers(users);
+    if (searchValue.trim() == "") {
+      setMatchingUsers(ogMatchingUsers);
     } else {
-      const searchCondition = (user) => user.Skills.includes(searchValue.trim());
-
-      const searchedUserDatas = profiles.filter(searchCondition);
-      setSearchedUsers(searchedUserDatas.map((searchedData) => searchedData.username));
-    }*/
+      const searchCondition = (user) => user.Skills.includes(searchValue);
+      setMatchingUsers(matchingUsers.filter(searchCondition));
+    }
   };
 
   return (
