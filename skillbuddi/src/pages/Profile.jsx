@@ -9,13 +9,33 @@ const Profile = () => {
   const navigate = useNavigate(); // Hook for navigation
   const { fetchUserData } = useDatabase();
   const [profile, setProfile] = useState(null);
+  const [age, setAge] = useState(0);
 
   // fetch user data
   useEffect(() => {
+    const calculateAge = (dobString) => {
+      //TODO: function is simply wrong i believe
+      const today = new Date();
+      const dob = new Date(dobString);
+
+      let age = today.getFullYear() - dob.getFullYear();
+      console.log("Today: " + today + " DOB: " + dob);
+      // Adjust if the birthday hasn't occurred yet this year
+      if (
+        today.getMonth() < dob.getMonth() ||
+        (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())
+      ) {
+        age--;
+      }
+
+      return age;
+    };
+
     const fetchData = async () => {
       try {
         const userData = await fetchUserData(username);
         setProfile(userData);
+        setAge(calculateAge(userData.dateOfBirth));
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -57,7 +77,7 @@ const Profile = () => {
             <strong>Name:</strong> {profile.firstName + " " + profile.lastName}
           </p>
           <p>
-            <strong>Age:</strong> {profile.age}
+            <strong>Age:</strong> {age}
           </p>
           <p>
             <strong>Location:</strong> {profile.location}
