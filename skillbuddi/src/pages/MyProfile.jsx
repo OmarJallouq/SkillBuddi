@@ -17,14 +17,14 @@ const MyProfile = () => {
 
   useEffect(() => {
     setSkills(user.Skills);
-  }, [user]);
-
+    console.log(skills);
+  }, []);
 
   useEffect(() => {
     setSkills(user.Skills || []);
     setSkillsWanted(user.Skills_wanted || []);
   }, [user]);
-  
+
   const handleAddWantedSkill = async (newSkill) => {
     if (!newSkill.trim()) {
       toast.error("Skill cannot be empty!");
@@ -77,82 +77,37 @@ const MyProfile = () => {
       toast.error(error.message || "Failed to remove skill wanted.");
     }
   };
+  
   //check this I don't know if it's right
   const handleChangeField = async (field) => {
-    const fieldName =
-      field === "location"
-        ? "Location"
-        : field === "dateOfBirth"
-        ? "Date of Birth"
-        : "Bio";
+    const fieldName = field === "location" ? "Location" : "Date of Birth";
     const currentValue = user[field];
     const newValue = prompt(`Enter your new ${fieldName}:`, currentValue);
 
     
-    if (!newValue || newValue.trim() === "") {
-      toast.error(`${fieldName} cannot be empty!`);
-      return;
-    }
-    /*
-    if (field === "username") {
-      if (newValue.trim() === "") {
-        toast.error("Username cannot be empty!");
-        return;
-      }
-      try {
-        const isTaken = await checkUsernameAvailability(newValue.trim());
-        if (isTaken) {
-          toast.error("Username is already taken!");
-          return;
-        }
-      } catch (error) {
-        toast.error("Failed to validate username. Please try again.");
-        return;
-      }
-    }
-    */
-
-    if (field === "email") {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(newValue)) {
-        toast.error("Invalid email format!");
-        return;
-      }
-    }
-  
     if (field === "dateOfBirth") {
-      const enteredDate = new Date(newValue);
-      const today = new Date();
-      const age = today.getFullYear() - enteredDate.getFullYear();
-      if (today < new Date(enteredDate.setFullYear(enteredDate.getFullYear() + age))) {
-        age--; // Adjust if the birthday hasn't occurred yet this year
-      }
+      const birthDate = new Date(newValue);
+      const age = new Date().getFullYear() - birthDate.getFullYear();
+  
       if (age < 18) {
         toast.error("You must be at least 18 years old!");
         return;
       }
     }
-
-    if (field === "location" && newValue.trim() === "") {
-      toast.error("Location cannot be empty!");
+  
+    if (!newValue || newValue.trim() === "") {
+      toast.error(`${fieldName} cannot be empty!`);
       return;
     }
   
-
-    if (field === "Bio" && newValue.length > 140) {
-      toast.error("Bio exceeds 140 character limit")
-      return;
-    }
-
-    //TODO: add validation for DOB format, add character limit for bio
     try {
       const response = await updateUserData(user.$id, {
         [field]: newValue.trim(),
       });
-
+  
       if (response.success) {
         // Update the user field locally to reflect changes immediately
-        window.location.reload(false); //TODO: Bad practice, add as dependency in useEffect to trigger rerender.
+        user[field] = newValue.trim();
         toast.success(`${fieldName} updated successfully!`);
       } else {
         throw new Error(response.error);
@@ -162,7 +117,84 @@ const MyProfile = () => {
     }
   };
 
+  const handleChangeFirstName = async () => {
+    const newFirstName = prompt("Enter a new first name:");
+
+    if (!newFirstName || newFirstName.trim() === "") {
+      toast.error("First Name cannot be empty!");
+      return;
+    }
+
+    try {
+      // Update the user's name in the database
+      const response = await updateUserData(user.$id, { firstName: newFirstName });
   
+      if (response.success) {
+        // Update local state for immediate UI feedback
+        user.firstName = newFirstName; 
+        toast.success("First name updated successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to update first name.");
+    }
+
+  }
+
+  const handleChangeLastName = async () => {
+    const newLastName = prompt("Enter a new last name:");
+
+    if (!newLastName || newLastName.trim() === "") {
+      toast.error("Last name cannot be empty!");
+      return;
+    }
+
+    try {
+      // Update the user's name in the database
+      const response = await updateUserData(user.$id, { lastName: newLastName });
+  
+      if (response.success) {
+        // Update local state for immediate UI feedback
+        user.lastName = newLastName; 
+        toast.success("Last name updated successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to update last name.");
+    }
+
+  }
+  
+  
+//check i don't know if it's right
+const handleChangeBio = async () => {
+  const newBio = prompt("Enter a new bio:");
+  
+  // Check if the input is valid
+  if (!newBio || newBio.trim() === "") {
+    toast.error("Bio cannot be empty!");
+    return;
+  }
+
+  try {
+    // Update the user's bio in the database
+    const response = await updateUserData(user.$id, { Bio: newBio });
+
+    if (response.success) {
+      // Update local state for immediate UI feedback
+      user.Bio = newBio; 
+      toast.success("Bio updated successfully!");
+    } else {
+      throw new Error(response.error);
+    }
+  } catch (error) {
+    toast.error(error.message || "Failed to update bio.");
+  }
+};
+
+//need to write a function to update profile picture
 
   const handleRemoveSkill = async (skillToRemove) => {
     const updatedSkills = skills.filter((skill) => skill !== skillToRemove);
@@ -257,70 +289,51 @@ const MyProfile = () => {
     </label>
       </div>
           <div className="profile-info">
-            <p>
-            First Name: {user.name}
+            <h1>
+              {user.username}
+              First name: {user.firstName} 
+              
+              
               <button
-              onClick={() => handleChangeField("name")}
-              className="change-button"
-              >
+              onClick={() => handleChangeFirstName()}
+              className="change-button">
               ✎
               </button>
-            </p>
-            <p>
-            Last Name: {user.lastName}
+            </h1>
+            <h1>
+              Last name: {user.lastName}
               <button
-              onClick={() => handleChangeField("lastName")}
-              className="change-button"
-              >
+              onClick={() => handleChangeLastName()}
+              className="change-button">
               ✎
               </button>
-            </p>
-            <p>
-            Username: {user.username}
-              <button
-              onClick={() => handleChangeField("username")}
-              className="change-button"
-              >
-              ✎
-              </button>
-            </p>
-            <p>
-              Email: {user.email}
-              <button
-              onClick={() => handleChangeField("email")}
-              className="change-button"
-              >
-              ✎
-              </button>
-            </p>
-            <p>
-              Date of Birth: {user.dateOfBirth}
-              <button
-              onClick={() => handleChangeField("dateOfBirth")}
-              className="change-button"
-            >
-            ✎
-              </button>
-            </p>
+            </h1>
+            <p>{user.username}</p>
+            <p>{user.email}</p>
             <p>
               Location: {user.location}
               <button
-                onClick={() => handleChangeField("location")}
-                className="change-button"
-              >
-                ✎
+              onClick={() => handleChangeField("location")}
+              className="change-button">
+              ✎
               </button>
-            </p>
+            </p> 
             <p>
               Date of Birth: {user.dateOfBirth}
+              <button
+              className="change-button"
+              onClick={() => handleChangeField("dateOfBirth", "Date of Birth")}>
+              ✎
+              </button>
             </p>
           </div>
         </div>
         <div className="Bio">
+
           <div className="bio-header">
             <h2>Bio</h2>
             <button
-              onClick={() => handleChangeField("Bio")}
+              onClick={() => handleChangeBio("Bio")}
               className="change-button"
             >
               ✎
@@ -328,6 +341,7 @@ const MyProfile = () => {
           </div>
 
           <p>{user.Bio}</p>
+
         </div>
 
         <div className="skills-section">
