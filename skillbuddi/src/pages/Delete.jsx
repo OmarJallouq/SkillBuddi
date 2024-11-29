@@ -23,7 +23,7 @@ const Delete = () => {
 
     deleteFunction();
     navigate("/");
-  }, []);
+  }, [deleteProfile, navigate]);
 
   return <div>DELETING...</div>;
 };

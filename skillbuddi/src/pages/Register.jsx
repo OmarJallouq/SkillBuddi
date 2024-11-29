@@ -24,7 +24,7 @@ const Register = () => {
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user, navigate]);
 
   const [errors, setErrors] = useState({
     firstName: "",
