@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect, createContext } from "react";
 import { useDatabase } from "./DatabaseContext";
 import { account } from "../appwriteConfig";
+import { ID } from "appwrite";
 
 const AuthContext = createContext();
 
@@ -16,22 +17,28 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (userInfo) => {
     setLoading(true);
+    let LoggedIn = false;
     try {
-      // Gets all User Information
-      const accountDetails = await account.get();
-      const userDetails = await fetchUserData(accountDetails.$id);
-
       // Logs the User In
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
       );
 
+      LoggedIn = true;
+
+      // Gets all User Information
+      const accountDetails = await account.get();
+      const userDetails = await fetchUserData(accountDetails.$id);
+
       // Sets the User
       setUser({ ...accountDetails, ...userDetails });
 
       return { success: true };
     } catch (error) {
+      if (LoggedIn) {
+        logoutUser();
+      }
       setError(error.message || "Something went wrong");
       return { success: false, error: error.message || "Something went wrong" };
     } finally {
@@ -54,7 +61,7 @@ export const AuthProvider = ({ children }) => {
   const registerUser = async (userInfo) => {
     setLoading(true);
     try {
-      const userId = userInfo.username;
+      const userId = ID.unique();
 
       // Makes the Auth Record
       await account.create(
@@ -76,16 +83,16 @@ export const AuthProvider = ({ children }) => {
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
         email: userInfo.email,
+        username: userInfo.username,
         Bio: "",
         Skills: [],
-        //wantedSkills: [], //TODO: Add these to DB
-        location: userInfo.location,
-        dateOfBirth: userInfo.dateOfBirth,
-        //profilePicture: null,
+        location: "",
+        dateOfBirth: null, //TODO: default DOB
+        profilePicture: null, //TODO: default pfp
       };
 
       // Creates Database Record
-      await createUserData(accountDetails.$id, data); //TODO: if this fails delete the auth account
+      await createUserData(accountDetails.$id, data);
 
       const userDetails = await fetchUserData(accountDetails.$id);
 
