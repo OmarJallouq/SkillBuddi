@@ -30,42 +30,32 @@ export const DatabaseProvider = ({ children }) => {
 
   const fetchMatchingUsers = async (currentUser) => {
     try {
-      // Prepare queries for skills
-      const skillsWantedQuery = currentUser.Skills_wanted.join(" ");
-      const skillsQuery = currentUser.Skills.join(" ");
-
-      // Fetch users who have skills you want and also want the skills you have
+      // First, get all the users
       const response = await databases.listDocuments(
         DATABASE_ID,
-        USER_COLLECTION_ID,
-        [
-          // First query: Users who have at least one skill from Skills_wanted
-          Query.search("Skills", skillsWantedQuery),
-
-          // Second query: Users who want at least one skill you have in Skills
-          Query.search("Skills_wanted", skillsQuery),
-        ]
+        USER_COLLECTION_ID
       );
 
-      // Filter out the current user from the results
-      const filteredUsers = response.documents.filter(
-        (user) => user.$id !== currentUser.$id
-      );
+      // Now, filter the users based on matching skills and wanted skills
+      const filteredUsers = response.documents.filter((user) => {
+        // Skip the current user
+        if (user.$id === currentUser.$id) return false;
 
-      // Further filter the users to ensure they match both criteria:
-      const matchingUsers = filteredUsers.filter((user) => {
-        const hasMatchingSkills = user.Skills.some(
-          (skill) => currentUser.Skills_wanted.includes(skill) // Check if user has any of the skills you want
+        // Check if any of the user's skills match any of the current user's wanted skills
+        const hasMatchingSkills = currentUser.Skills_wanted.some(
+          (wantedSkill) => user.Skills.includes(wantedSkill)
         );
 
-        const hasMatchingWantedSkills = user.Skills_wanted.some(
-          (wantedSkill) => currentUser.Skills.includes(wantedSkill) // Check if user wants any of the skills you have
+        // Check if any of the user's wanted skills match any of the current user's skills
+        const hasMatchingWantedSkills = user.Skills_wanted.some((wantedSkill) =>
+          currentUser.Skills.includes(wantedSkill)
         );
 
-        return hasMatchingSkills && hasMatchingWantedSkills; // Return users that meet both conditions
+        // Return true if there's a match in either direction
+        return hasMatchingSkills && hasMatchingWantedSkills;
       });
 
-      return matchingUsers;
+      return filteredUsers;
     } catch (err) {
       console.error("Error fetching matching users:", err);
       setError("Failed to load matching users.");
