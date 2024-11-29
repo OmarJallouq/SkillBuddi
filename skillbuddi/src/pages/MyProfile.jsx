@@ -15,7 +15,67 @@ const MyProfile = () => {
   useEffect(() => {
     setSkills(user.Skills);
   }, []);
+
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    setSkills(user.Skills || []);
+    setSkillsWanted(user.Skills_wanted || []);
+  }, [user]);
   
+  const handleAddWantedSkill = async (newSkill) => {
+    if (!newSkill.trim()) {
+      toast.error("Skill cannot be empty!");
+      return;
+    }
+
+    const currentSkillsWanted = skillsWanted || [];
+
+    if (currentSkillsWanted.includes(newSkill)) {
+      toast.error("Skill already exists!");
+      return;
+    }
+
+    const updatedSkillsWanted = [...currentSkillsWanted, newSkill];
+
+    try {
+      const response = await updateUserData(user.$id, {
+        Skills_wanted: updatedSkillsWanted,
+      });
+
+      if (response.success) {
+        setSkillsWanted(updatedSkillsWanted);
+        toast.success("Skill Wanted Added Successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to add skill wanted.");
+    }
+  };
+
+  // Remove a wanted skill
+  const handleRemoveWantedSkill = async (skillToRemove) => {
+    const updatedSkillsWanted = skillsWanted.filter(
+      (skill) => skill !== skillToRemove
+    );
+
+    try {
+      const response = await updateUserData(user.$id, {
+        Skills_wanted: updatedSkillsWanted,
+      });
+
+      if (response.success) {
+        setSkillsWanted(updatedSkillsWanted);
+        toast.success("Skill Wanted Removed Successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to remove skill wanted.");
+    }
+  };
+>>>>>>> ea20bc3 (skills wanted button)
   //check this I don't know if it's right
   const handleChangeField = async (field) => {
     const fieldName =
