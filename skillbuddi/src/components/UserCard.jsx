@@ -32,7 +32,7 @@ const UserCard = ({ username }) => {
 
   const handleMessage = () => {
     // Redirect to the Messaging page with the profile ID
-    navigate(`/messaging/${profile.id}`);
+    navigate(`/messaging/${profile.$id}`);
   };
 
   const handleProfileClick = () => {
@@ -63,9 +63,7 @@ const UserCard = ({ username }) => {
       </div>
 
       <div className="skills-section">
-        <p className="skills-text">
-          Skills: {profile.Skills.join(", ")}
-        </p>
+        <p className="skills-text">Skills: {profile.Skills.join(", ")}</p>
       </div>
 
       <button onClick={handleMessage}>Send Message</button>
