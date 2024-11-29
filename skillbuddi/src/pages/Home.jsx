@@ -14,7 +14,6 @@ const Home = () => {
   const [matchingUsers, setMatchingUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [ogMatchingUsers, setOgMatchingUsers] = useState([]);
 
   useEffect(() => {
     if (user && user.Skills_wanted) {
@@ -30,9 +29,7 @@ const Home = () => {
         COLLECTION_ID,
         [Query.search("Skills", skillsWanted.join(" "))]
       );
-
       setMatchingUsers(response.documents);
-      setOgMatchingUsers(response.documents);
     } catch (err) {
       console.error("Error fetching matching users:", err);
       setError("Failed to load matching users.");
@@ -40,20 +37,15 @@ const Home = () => {
       setLoading(false);
     }
   };
-  
 
-  const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
-  const handleSearch = () => {
-    if (searchValue.trim() == "") {
-      setMatchingUsers(ogMatchingUsers);
-    } else {
-      const searchCondition = (user) => user.Skills.includes(searchValue);
-      setMatchingUsers(matchingUsers.filter(searchCondition));
-    }
-  };
+  //This function takes in the so called "OG users" and filters them based on the value in the search, such that the users must include the word in the search.
+  const filteredUsers = matchingUsers.filter(
+    (user) =>
+      searchValue.trim() === "" ||
+      user.Skills.some((skill) =>
+        skill.toLowerCase().includes(searchValue.toLowerCase())
+      )
+  );
 
   return (
     <div className="home-page">
@@ -65,11 +57,9 @@ const Home = () => {
               className="search-bar"
               type="text"
               placeholder="Search for a skill..."
-              onChange={handleSearchChange}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)} //onChange for real time changes
             />
-            <button className="search-button" onClick={handleSearch}>
-              🔎︎
-            </button>
           </div>
         </div>
         {loading ? (
@@ -78,10 +68,14 @@ const Home = () => {
           <p>{error}</p>
         ) : (
           <div className="cards-section">
-            {matchingUsers.length > 0 ? (
-              matchingUsers.map((user) => <UserCard username={user.$id} />)
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                <UserCard key={user.$id} username={user.$id} />
+              ))
             ) : (
-              <p>No matching users found.</p>
+              <p>
+                No matching users found, try adding skills or wanted skills!
+              </p>
             )}
           </div>
         )}
