@@ -32,7 +32,7 @@ const Home = () => {
       );
 
       setMatchingUsers(response.documents);
-      setOgMatchingUsers(matchingUsers);
+      setOgMatchingUsers(response.documents);
     } catch (err) {
       console.error("Error fetching matching users:", err);
       setError("Failed to load matching users.");
@@ -40,8 +40,6 @@ const Home = () => {
       setLoading(false);
     }
   };
-
-  console.log("gottoset");
   
 
   const handleSearchChange = (event) => {
@@ -80,7 +78,6 @@ const Home = () => {
           <p>{error}</p>
         ) : (
           <div className="cards-section">
-            {console.log(matchingUsers)}
             {matchingUsers.length > 0 ? (
               matchingUsers.map((user) => <UserCard username={user.$id} />)
             ) : (
@@ -91,7 +88,6 @@ const Home = () => {
       </div>
     </div>
   );
-  console.log("returned everything");
 };
 
 export default Home;
