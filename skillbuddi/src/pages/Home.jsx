@@ -1,56 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/home.css";
 import UserCard from "../components/UserCard";
-import { useDatabase } from "../utils/DatabaseContext";
+import { useAuth } from "../utils/AuthContext";
+import { databases } from "../appwriteConfig";
+import { Query } from "appwrite";
+
+const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE;
+const COLLECTION_ID = process.env.REACT_APP_APPWRITE_COLLECTION;
 
 const Home = () => {
+  const { user } = useAuth(); // Access the currently logged-in user
   const [searchValue, setSearchValue] = useState("");
-  const { fetchUserData } = useDatabase();
-  const [profile, setProfile] = useState(null);
-  const userDatas = [];
+  const [matchingUsers, setMatchingUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userData = await fetchUserData(username);
-        setProfile(userData);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    if (username) {
-      fetchData();
+    if (user && user.Skills_wanted) {
+      fetchMatchingUsers(user.Skills_wanted);
     }
-  }, [username]);
+  }, [user]);
 
-  const users = ["omarjallouq", "fjanczak", "valentina12345", "cwelchuj123"];
-  const searchedUsers = users;
+  const fetchMatchingUsers = async (skillsWanted) => {
+    setLoading(true);
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        COLLECTION_ID,
+        [Query.search("Skills", skillsWanted.join(" "))]
+      );
+
+      setMatchingUsers(response.documents);
+    } catch (err) {
+      console.error("Error fetching matching users:", err);
+      setError("Failed to load matching users.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
   };
 
   const handleSearch = () => {
-    console.log(searchValue);
+    const filteredUsers = matchingUsers.filter((user) =>
+      user.Skills.some((skill) =>
+        skill.toLowerCase().includes(searchValue.trim().toLowerCase())
+      )
+    );
 
-    const searchCondition = (user) => user.Skills.includes(searchValue.trim());
-    
-    if (searchValue == "") {
-      searchedUsers = users;
-    } else {
-      searchedUsers = users.filter(searchCondition)
-    }
+    setMatchingUsers(filteredUsers);
   };
 
   return (
     <div className="home-page">
       <div className="main-content">
         <div className="head-section">
-          <p className="matching-title">
-            Your Matches
-          </p>
-
+          <p className="matching-title">Your Matches</p>
           <div className="search">
             <input
               className="search-bar"
@@ -58,18 +65,26 @@ const Home = () => {
               placeholder="Search for a skill..."
               onChange={handleSearchChange}
             />
-
-            <button className="search-button" onClick={() => handleSearch()}>
+            <button className="search-button" onClick={handleSearch}>
               🔎︎
             </button>
           </div>
         </div>
-
-        <div className="cards-section">
-          {searchedUsers.map((username) => (
-            <UserCard username={username} />
-          ))}
-        </div>
+        {loading ? (
+          <p>Loading matches...</p>
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <div className="cards-section">
+            {matchingUsers.length > 0 ? (
+              matchingUsers.map((user) => (
+                <UserCard key={user.$id} username={user.username} />
+              ))
+            ) : (
+              <p>No matching users found.</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
