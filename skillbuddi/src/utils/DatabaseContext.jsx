@@ -30,7 +30,7 @@ export const DatabaseProvider = ({ children }) => {
 
   const fetchMatchingUsers = async (currentUser) => {
     try {
-      // First, get all the users
+      // First, get all the users (prolly not efficient, but fuck it)
       const response = await databases.listDocuments(
         DATABASE_ID,
         USER_COLLECTION_ID
@@ -51,7 +51,7 @@ export const DatabaseProvider = ({ children }) => {
           currentUser.Skills.includes(wantedSkill)
         );
 
-        // Return true if there's a match in either direction
+        // Return true if there's a match in both directions simultaneously
         return hasMatchingSkills && hasMatchingWantedSkills;
       });
 
