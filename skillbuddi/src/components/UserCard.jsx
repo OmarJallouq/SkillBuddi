@@ -56,6 +56,8 @@ const UserCard = ({ username }) => {
 
           <p>{profile.$id}</p>
         </div>
+
+        <button className="redirect-button" onClick={handleMessage}>Send Message</button>
       </div>
 
       <div className="bio-section">
@@ -67,8 +69,6 @@ const UserCard = ({ username }) => {
           Skills: {profile.Skills.join(", ")}
         </p>
       </div>
-
-      <button onClick={handleMessage}>Send Message</button>
     </div>
   );
 };
