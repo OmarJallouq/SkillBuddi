@@ -6,9 +6,6 @@ import { toast } from "react-toastify";
 import defaultPfp from "../assets/Default_pfp.svg.png";
 import "../styles/myProfile.css";
 
-
-
-
 const MyProfile = () => {
   const { user } = useAuth();
   const { updateUserData } = useDatabase();
@@ -20,17 +17,12 @@ const MyProfile = () => {
   const [bio, setBio] = useState(user.bio);
 
   useEffect(() => {
-    setSkills(user.Skills);
-    console.log(skills);
     setFirstName(user.firstName);
     setLastName(user.lastName);
-    setLocation(user.location);
-    setBio(user.Bio);
-  }, [user]);
-
-  useEffect(() => {
     setSkills(user.Skills || []);
     setSkillsWanted(user.Skills_wanted || []);
+    setLocation(user.location);
+    setBio(user.Bio);
   }, [user]);
 
   const handleAddWantedSkill = async (newSkill) => {
@@ -64,7 +56,6 @@ const MyProfile = () => {
     }
   };
 
-  // Remove a wanted skill
   const handleRemoveWantedSkill = async (skillToRemove) => {
     const updatedSkillsWanted = skillsWanted.filter(
       (skill) => skill !== skillToRemove
@@ -85,9 +76,7 @@ const MyProfile = () => {
       toast.error(error.message || "Failed to remove the wanted skill.");
     }
   };
-  
-  //check this I don't know if it's right
-  
+
   const handleChangeLocation = async () => {
     const newLocation = prompt("Enter a new location:");
 
@@ -98,11 +87,13 @@ const MyProfile = () => {
 
     try {
       // Update the user's name in the database
-      const response = await updateUserData(user.$id, { location: newLocation });
-  
+      const response = await updateUserData(user.$id, {
+        location: newLocation,
+      });
+
       if (response.success) {
         // Update local state for immediate UI feedback
-        setLocation(newLocation); 
+        setLocation(newLocation);
         toast.success("Location updated successfully!");
       } else {
         throw new Error(response.error);
@@ -110,8 +101,40 @@ const MyProfile = () => {
     } catch (error) {
       toast.error(error.message || "Failed to update location.");
     }
+  };
 
-  }
+  const handleChangeName = async () => {
+    const newFirstName = prompt("Enter a new First Name:");
+    if (!newFirstName || newFirstName.trim() === "") {
+      toast.error("Last name cannot be empty!");
+      return;
+    }
+
+    const newLastName = prompt("Enter a new Last Name:");
+    if (!newLastName || newLastName.trim() === "") {
+      toast.error("Last name cannot be empty!");
+      return;
+    }
+
+    try {
+      // Update the user's name in the database
+      const response = await updateUserData(user.$id, {
+        firstName: newFirstName,
+        lastName: newLastName,
+      });
+
+      if (response.success) {
+        // Update local state for immediate UI feedback
+        setFirstName(newFirstName);
+        setLastName(newLastName);
+        toast.success("Name updated successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to update last name.");
+    }
+  };
 
   const handleChangeLastName = async () => {
     const newLastName = prompt("Enter a new last name:");
@@ -123,11 +146,13 @@ const MyProfile = () => {
 
     try {
       // Update the user's name in the database
-      const response = await updateUserData(user.$id, { lastName: newLastName });
-  
+      const response = await updateUserData(user.$id, {
+        lastName: newLastName,
+      });
+
       if (response.success) {
         // Update local state for immediate UI feedback
-        setLastName(newLastName); 
+        setLastName(newLastName);
         toast.success("Last name updated successfully!");
       } else {
         throw new Error(response.error);
@@ -135,38 +160,33 @@ const MyProfile = () => {
     } catch (error) {
       toast.error(error.message || "Failed to update last name.");
     }
+  };
 
-  }
-  
-  
-//check i don't know if it's right
-const handleChangeBio = async () => {
-  const newBio = prompt("Enter a new bio:");
-  
-  // Check if the input is valid
-  if (!newBio || newBio.trim() === "") {
-    toast.error("Bio cannot be empty!");
-    return;
-  }
+  const handleChangeBio = async () => {
+    const newBio = prompt("Enter a new bio:");
 
-  try {
-    // Update the user's bio in the database
-    const response = await updateUserData(user.$id, { Bio: newBio });
-
-    if (response.success) {
-      // Update local state for immediate UI feedback
-      setBio(newBio); 
-      
-      toast.success("Bio updated successfully!");
-    } else {
-      throw new Error(response.error);
+    // Check if the input is valid
+    if (!newBio || newBio.trim() === "") {
+      toast.error("Bio cannot be empty!");
+      return;
     }
-  } catch (error) {
-    toast.error(error.message || "Failed to update bio.");
-  }
-};
 
-//need to write a function to update profile picture
+    try {
+      // Update the user's bio in the database
+      const response = await updateUserData(user.$id, { Bio: newBio });
+
+      if (response.success) {
+        // Update local state for immediate UI feedback
+        setBio(newBio);
+
+        toast.success("Bio updated successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to update bio.");
+    }
+  };
 
   const handleRemoveSkill = async (skillToRemove) => {
     const updatedSkills = skills.filter((skill) => skill !== skillToRemove);
@@ -220,15 +240,15 @@ const handleChangeBio = async () => {
   const handleProfilePictureChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-  
+
     const formData = new FormData();
-    formData.append('profilePicture', file);
-  
+    formData.append("profilePicture", file);
+
     try {
       const response = await updateUserData(user.$id, {
         profilePicture: URL.createObjectURL(file), // Store the URL for immediate preview
       });
-  
+
       if (response.success) {
         toast.success("Profile picture updated successfully!");
       } else {
@@ -239,91 +259,55 @@ const handleChangeBio = async () => {
     }
   };
 
-  const handleChangeFirstName = async () => {
-    const newFirstName = prompt("Enter a new first name:");
-
-    if (!newFirstName || newFirstName.trim() === "") {
-      toast.error("First Name cannot be empty!");
-      return;
-    }
-
-    try {
-      // Update the user's name in the database
-      const response = await updateUserData(user.$id, { firstName: newFirstName });
-  
-      if (response.success) {
-        // Update local state for immediate UI feedback
-        setFirstName(newFirstName);
-
-        toast.success("First name updated successfully!");
-      } else {
-        throw new Error(response.error);
-      }
-    } catch (error) {
-      toast.error(error.message || "Failed to update first name.");
-    }
-
-  }
-
   return (
     <div className="whole-thing">
       <div className="profile-container">
         <div className="profile-header">
-        <img
-    src={user.profilePicture ? user.profilePicture : defaultPfp}
-    alt="Profile Avatar"
-    className="avatar"
-  />
-  <div>
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleProfilePictureChange}
-      style={{ display: 'none' }}
-      id="profile-picture-upload"
-    />
-    <label htmlFor="profile-picture-upload" className="upload-profile-picture-button">
-      <span>Upload Picture</span>
-    </label>
-      </div>
+          <img
+            src={user.profilePicture ? user.profilePicture : defaultPfp}
+            alt="Profile Avatar"
+            className="avatar"
+          />
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePictureChange}
+              style={{ display: "none" }}
+              id="profile-picture-upload"
+            />
+            <label
+              htmlFor="profile-picture-upload"
+              className="upload-profile-picture-button"
+            >
+              <span>Upload Picture</span>
+            </label>
+          </div>
           <div className="profile-info">
             <h1>
-              {user.username}
-              First name: {firstName} 
-              
-              
+              Name: {firstName} {lastName}
               <button
-              onClick={() => handleChangeFirstName()}
-              className="change-button">
-              ✎
+                onClick={() => handleChangeName()}
+                className="change-button"
+              >
+                ✎
               </button>
             </h1>
-            <h1>
-              Last name: {lastName}
-              <button
-              onClick={() => handleChangeLastName()}
-              className="change-button">
-              ✎
-              </button>
-            </h1>
-            <p>{user.username}</p>
+            <p>{user.$id}</p>
             <p>{user.email}</p>
             <p>
               Location: {location}
               <button
-              onClick={() => handleChangeLocation()}
-              className="change-button">
-              ✎
+                onClick={() => handleChangeLocation()}
+                className="change-button"
+              >
+                ✎
               </button>
-            </p> 
-            <p>
-              Date of Birth: {user.dateOfBirth}
-              
             </p>
+            <p>Date of Birth: {user.dateOfBirth}</p>
           </div>
         </div>
         <div className="Bio">
-
           <div className="bio-header">
             <h2>Bio</h2>
             <button
@@ -335,7 +319,6 @@ const handleChangeBio = async () => {
           </div>
 
           <p>{bio}</p>
-
         </div>
 
         <div className="skills-section">
