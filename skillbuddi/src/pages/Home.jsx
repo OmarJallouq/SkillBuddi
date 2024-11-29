@@ -6,34 +6,29 @@ import { useDatabase } from "../utils/DatabaseContext";
 
 const Home = () => {
   const { user } = useAuth(); // Access the currently logged-in user
-  const { fetchMatchingUsers } = useDatabase(); // Access the fetchMatchingUsers function
+  const { fetchMatchingUsers } = useDatabase();
   const [searchValue, setSearchValue] = useState("");
-  const [matchingUsers, setMatchingUsers] = useState([]);
+  const [matchingUsers, setMatchingUsers] = useState([]); // Initialize as an empty array
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch matching users whenever the user changes
   useEffect(() => {
-    const loadMatchingUsers = async () => {
-      if (user?.Skills_wanted) {
-        setLoading(true);
-        setError(null);
-        try {
-          const users = await fetchMatchingUsers(user.$id);
-          setMatchingUsers(users);
-        } catch (err) {
-          console.error("Error fetching matching users:", err);
-          setError("Failed to load matching users.");
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    loadMatchingUsers();
+    if (user) {
+      setLoading(true); // Set loading to true before fetching
+      fetchMatchingUsers(user)
+        .then((users) => {
+          setMatchingUsers(users); // Update state with fetched users
+        })
+        .catch((err) => {
+          setError(err.message); // Handle any errors
+        })
+        .finally(() => {
+          setLoading(false); // Set loading to false after fetching is done
+        });
+    }
   }, [user, fetchMatchingUsers]);
 
-  // Filter users based on search value
+  // This filters matching users based on search value, if any
   const filteredUsers = matchingUsers.filter(
     (user) =>
       searchValue.trim() === "" ||
@@ -53,7 +48,7 @@ const Home = () => {
               type="text"
               placeholder="Search for a skill..."
               value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)} // onChange for real-time changes
+              onChange={(e) => setSearchValue(e.target.value)} // OnChange for real-time search
             />
           </div>
         </div>

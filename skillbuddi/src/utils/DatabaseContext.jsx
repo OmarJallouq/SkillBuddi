@@ -28,17 +28,22 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  const fetchMatchingUsers = async (userId) => {
+  const fetchMatchingUsers = async (currentUser) => {
     try {
-      const currentUser = await fetchUserData(userId);
+      // Prepare queries for skills
+      const skillsWantedQuery = currentUser.Skills_wanted.join(" ");
+      const skillsQuery = currentUser.Skills.join(" ");
 
-      // Query for users whose Skills match the current user's Skills_wanted
+      // Fetch users who have skills you want and also want the skills you have
       const response = await databases.listDocuments(
         DATABASE_ID,
         USER_COLLECTION_ID,
         [
-          Query.search("Skills", currentUser.Skills_wanted.join(" ")), // Their Skills match my wanted skills
-          Query.search("Skills_wanted", currentUser.Skills.join(" ")), // Their wanted skills match my Skills
+          // First query: Users who have at least one skill from Skills_wanted
+          Query.search("Skills", skillsWantedQuery),
+
+          // Second query: Users who want at least one skill you have in Skills
+          Query.search("Skills_wanted", skillsQuery),
         ]
       );
 
@@ -47,7 +52,20 @@ export const DatabaseProvider = ({ children }) => {
         (user) => user.$id !== currentUser.$id
       );
 
-      return filteredUsers;
+      // Further filter the users to ensure they match both criteria:
+      const matchingUsers = filteredUsers.filter((user) => {
+        const hasMatchingSkills = user.Skills.some(
+          (skill) => currentUser.Skills_wanted.includes(skill) // Check if user has any of the skills you want
+        );
+
+        const hasMatchingWantedSkills = user.Skills_wanted.some(
+          (wantedSkill) => currentUser.Skills.includes(wantedSkill) // Check if user wants any of the skills you have
+        );
+
+        return hasMatchingSkills && hasMatchingWantedSkills; // Return users that meet both conditions
+      });
+
+      return matchingUsers;
     } catch (err) {
       console.error("Error fetching matching users:", err);
       setError("Failed to load matching users.");
