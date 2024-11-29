@@ -6,6 +6,9 @@ import { toast } from "react-toastify";
 import defaultPfp from "../assets/Default_pfp.svg.png";
 import "../styles/myProfile.css";
 
+
+
+
 const MyProfile = () => {
   const { user } = useAuth();
   const { updateUserData } = useDatabase();
@@ -14,7 +17,7 @@ const MyProfile = () => {
 
   useEffect(() => {
     setSkills(user.Skills);
-  }, []);
+  }, [user]);
 
 
   useEffect(() => {
@@ -210,15 +213,49 @@ const MyProfile = () => {
     }
   };
 
+  const handleProfilePictureChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+  
+    try {
+      const response = await updateUserData(user.$id, {
+        profilePicture: URL.createObjectURL(file), // Store the URL for immediate preview
+      });
+  
+      if (response.success) {
+        toast.success("Profile picture updated successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to update profile picture.");
+    }
+  };
+
   return (
     <div className="whole-thing">
       <div className="profile-container">
         <div className="profile-header">
-          <img
-            src={user.profilePicture ? user.profilePicture : defaultPfp}
-            alt="Profile Avatar"
-            className="avatar"
-          />
+        <img
+    src={user.profilePicture ? user.profilePicture : defaultPfp}
+    alt="Profile Avatar"
+    className="avatar"
+  />
+  <div>
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleProfilePictureChange}
+      style={{ display: 'none' }}
+      id="profile-picture-upload"
+    />
+    <label htmlFor="profile-picture-upload" className="upload-profile-picture-button">
+      <span>Upload Profile Picture</span>
+    </label>
+      </div>
           <div className="profile-info">
             <p>
             First Name: {user.name}

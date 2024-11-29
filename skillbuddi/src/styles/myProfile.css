@@ -19,7 +19,7 @@
     height: 125vh; 
     margin-top: 10vh;
     padding: 2vh;
-
+    
     background-color: #e7e6dd;
 
     border-radius: 8px;
@@ -36,10 +36,11 @@
   }
   
   .avatar {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    margin-right: 20px;
+    margin-left: 30px;
+    margin-bottom: 50px;
   }
   
   .profile-info h1 {
@@ -54,7 +55,7 @@
     /* username and email of account */
     margin: 5px 0;
     color: #72726E;
-
+    margin-left: 30px;
     font-family: 'Rubik', sans-serif;
   }
 
@@ -249,3 +250,42 @@
   .add-skill-wanted-button:hover {
     background-color: #e8af30;
   }
+
+  .upload-profile-picture-button {
+    height: 4vh; /* Slightly taller for better visual balance */
+    width: 12vw; /* Increase width for more spaciousness */
+    margin: 20px auto;
+    margin-top: 20vh; /* Slightly higher margin to give it a bit of space */
+    margin-bottom: 4vh; /* Reduce space to make it more consistent */
+    margin-left: -17vh;
+    background-color: #e8c766; /* Consistent button color */
+    color: #0f2043; /* Dark text for contrast */
+    border: 4px solid #3361ac; /* Border matches profile container */
+    border-radius: 12px; /* Rounded corners for consistency */
+    font-family: 'Rubik', sans-serif; /* Consistent font */
+    font-size: 20px; /* Adjusted for a more balanced text size */
+    cursor: pointer; /* Pointer cursor for interaction */
+    display: block;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
+  }
+  
+  .upload-profile-picture-button:hover {
+    background-color: #e8af30; /* Darker shade on hover */
+    transform: scale(1.05); /* Subtle scaling effect for interaction */
+  }
+  
+  .upload-profile-picture-button input[type="file"] {
+    display: none; /* Hide the file input */
+  }
+  
+  .upload-profile-picture-button span {
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+    font-size: 14px; /* Slightly smaller font size for better alignment */
+    padding: 0 10px; /* Add horizontal padding to the text */
+  }
+  
+
+  
