@@ -52,7 +52,7 @@ const UserCard = ({ username }) => {
         </div>
 
         <div className="top-text">
-          <h>{profile.firstName + " " + profile.lastName}</h>
+          <h1>{profile.firstName + " " + profile.lastName}</h1>
 
           <p>{profile.$id}</p>
         </div>
