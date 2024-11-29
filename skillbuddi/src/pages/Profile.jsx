@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../utils/AuthContext";
+
 
 const Profile = () => {
   const { id } = useParams(); // Extract the user ID from the URL
