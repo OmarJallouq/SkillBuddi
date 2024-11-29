@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/home.css";
 import UserCard from "../components/UserCard";
 
 const Home = () => {
+  const [searchValue, setSearchValue] = useState("");
+
   const users = ["omarjallouq", "fjanczak", "valentina12345", "cwelchuj123"];
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  const handleSearch = () => {
+    console.log(searchValue);
+  };
 
   return (
     <div className="home-page">
@@ -18,9 +28,10 @@ const Home = () => {
               className="search-bar"
               type="text"
               placeholder="Search for a skill..."
+              onChange={handleSearchChange()}
             />
 
-            <button className="search-button">
+            <button className="search-button" onClick={() => handleSearch()}>
               🔎︎
             </button>
           </div>
