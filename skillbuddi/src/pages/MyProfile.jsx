@@ -183,7 +183,7 @@ const handleChangeBio = async () => {
         throw new Error(response.error);
       }
     } catch (error) {
-      toast.error(error.message || "Failed to remove skill.");
+      toast.error(error.message || "Failed to remove the skill.");
     }
   };
 
@@ -213,7 +213,7 @@ const handleChangeBio = async () => {
         throw new Error(response.error);
       }
     } catch (error) {
-      toast.error(error.message || "Failed to add skill.");
+      toast.error(error.message || "Failed to add the skill.");
     }
   };
 
