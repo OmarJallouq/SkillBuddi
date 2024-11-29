@@ -55,12 +55,12 @@ const MyProfile = () => {
 
       if (response.success) {
         setSkillsWanted(updatedSkillsWanted);
-        toast.success("Skill Wanted Added Successfully!");
+        toast.success("Wanted skill added successfully!");
       } else {
         throw new Error(response.error);
       }
     } catch (error) {
-      toast.error(error.message || "Failed to add skill wanted.");
+      toast.error(error.message || "Failed to add the wanted skill.");
     }
   };
 
@@ -77,12 +77,12 @@ const MyProfile = () => {
 
       if (response.success) {
         setSkillsWanted(updatedSkillsWanted);
-        toast.success("Skill Wanted Removed Successfully!");
+        toast.success("Wanted skill removed successfully!");
       } else {
         throw new Error(response.error);
       }
     } catch (error) {
-      toast.error(error.message || "Failed to remove skill wanted.");
+      toast.error(error.message || "Failed to remove the wanted skill.");
     }
   };
   
