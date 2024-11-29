@@ -17,15 +17,15 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (userInfo) => {
     setLoading(true);
     try {
+      // Gets all User Information
+      const accountDetails = await account.get();
+      const userDetails = await fetchUserData(accountDetails.$id);
+
       // Logs the User In
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
       );
-
-      // Gets all User Information
-      const accountDetails = await account.get();
-      const userDetails = await fetchUserData(accountDetails.$id);
 
       // Sets the User
       setUser({ ...accountDetails, ...userDetails });
