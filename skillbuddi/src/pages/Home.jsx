@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import "../styles/home.css";
 import UserCard from "../components/UserCard";
@@ -40,13 +39,50 @@ const Home = () => {
     }
   };
 
+  /*const fetchAllData = async () => {
+      console.log("started fetchalldata");
+      try {
+        console.log("got to try");
+        const userDataPromises = users.map((username) => fetchUserData(username));
+        const userDatas = await Promise.all(userDataPromises);
+        setProfiles(userDatas);
+        console.log("finished try");
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    if (users && users.length > 0) {
+      fetchAllData();
+      console.log("did fetchalldata");
+    }
+
+  setSearchedUsers(users);
+  console.log("did setsearchedusers"); */
+
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
   };
 
   const handleSearch = () => {
-   
-  }
+    /*const filteredUsers = matchingUsers.filter((user) =>
+      user.Skills.some((skill) =>
+        skill.toLowerCase().includes(searchValue.trim().toLowerCase())
+      )
+    );
+
+    setMatchingUsers(filteredUsers);
+    console.log(searchValue);
+    
+    if (searchValue == "") {
+      setSearchedUsers(users);
+    } else {
+      const searchCondition = (user) => user.Skills.includes(searchValue.trim());
+
+      const searchedUserDatas = profiles.filter(searchCondition);
+      setSearchedUsers(searchedUserDatas.map((searchedData) => searchedData.username));
+    }*/
+  };
 
   return (
     <div className="home-page">
@@ -73,9 +109,7 @@ const Home = () => {
           <div className="cards-section">
             {console.log(matchingUsers)}
             {matchingUsers.length > 0 ? (
-              matchingUsers.map((user) => (
-                <UserCard username={user.username} />
-              ))
+              matchingUsers.map((user) => <UserCard username={user.$id} />)
             ) : (
               <p>No matching users found.</p>
             )}
