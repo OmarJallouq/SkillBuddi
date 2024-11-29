@@ -30,11 +30,6 @@ const UserCard = ({ username }) => {
     return <div>Loading...</div>;
   }
 
-  const handleMessage = () => {
-    // Redirect to the Messaging page with the profile ID
-    navigate(`/messaging/${profile.$id}`);
-  };
-
   const handleProfileClick = () => {
     // Redirect to the user's profile page
     navigate(`/profile/${profile.$id}`);
@@ -56,10 +51,6 @@ const UserCard = ({ username }) => {
 
           <p>{profile.$id}</p>
         </div>
-
-        <button className="redirect-button" onClick={handleMessage}>
-          Send Message
-        </button>
       </div>
 
       <div className="bio-section">
