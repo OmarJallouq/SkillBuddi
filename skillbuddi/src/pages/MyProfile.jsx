@@ -16,8 +16,7 @@ const MyProfile = () => {
     setSkills(user.Skills);
   }, []);
 
-<<<<<<< HEAD
-=======
+
   useEffect(() => {
     setSkills(user.Skills || []);
     setSkillsWanted(user.Skills_wanted || []);
@@ -75,7 +74,6 @@ const MyProfile = () => {
       toast.error(error.message || "Failed to remove skill wanted.");
     }
   };
->>>>>>> ea20bc3 (skills wanted button)
   //check this I don't know if it's right
   const handleChangeField = async (field) => {
     const fieldName =
