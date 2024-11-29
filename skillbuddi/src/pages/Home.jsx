@@ -13,7 +13,16 @@ const Home = () => {
             Your Matches
           </p>
 
-          <div className="search"></div>
+          <div className="search">
+            <input
+              className="search-bar"
+              type="text"
+              placeholder="Search for a skill..."
+            />
+            <button className="search-button">
+              
+            </button>
+          </div>
         </div>
 
         <div className="cards-section">
