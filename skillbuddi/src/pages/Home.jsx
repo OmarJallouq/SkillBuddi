@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/home.css";
 import UserCard from "../components/UserCard";
 import { useDatabase } from "../utils/DatabaseContext";
@@ -6,26 +6,34 @@ import { useDatabase } from "../utils/DatabaseContext";
 const Home = () => {
   const [searchValue, setSearchValue] = useState("");
   const { fetchUserData } = useDatabase();
-  const [profile, setProfile] = useState(null);
-  const userDatas = [];
+  const [profiles, setProfiles] = useState([]);
+  const users = ["omarjallouq"];
+  const [searchedUsers, setSearchedUsers] = useState([]);
+  console.log("did all the consts");
 
   useEffect(() => {
-    const fetchData = async () => {
+    console.log("started useeffect");
+    const fetchAllData = async () => {
+      console.log("started fetchalldata");
       try {
-        const userData = await fetchUserData(username);
-        setProfile(userData);
+        console.log("got to try");
+        const userDataPromises = users.map((username) => fetchUserData(username));
+        const userDatas = await Promise.all(userDataPromises);
+        setProfiles(userDatas);
+        console.log("finished try");
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
-    if (username) {
-      fetchData();
+    if (users && users.length > 0) {
+      fetchAllData();
+      console.log("did fetchalldata");
     }
-  }, [username]);
+  }, [users]);
 
-  const users = ["omarjallouq", "fjanczak", "valentina12345", "cwelchuj123"];
-  const searchedUsers = users;
+  setSearchedUsers(users);
+  console.log("did setsearchedusers"); 
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -33,19 +41,21 @@ const Home = () => {
 
   const handleSearch = () => {
     console.log(searchValue);
-
-    const searchCondition = (user) => user.Skills.includes(searchValue.trim());
     
     if (searchValue == "") {
-      searchedUsers = users;
+      setSearchedUsers(users);
     } else {
-      searchedUsers = users.filter(searchCondition)
+      const searchCondition = (user) => user.Skills.includes(searchValue.trim());
+
+      const searchedUserDatas = profiles.filter(searchCondition);
+      setSearchedUsers(searchedUserDatas.map((searchedData) => searchedData.username));
     }
   };
 
   return (
     <div className="home-page">
-      <div className="main-content">
+      {console.log("started return of home page")}
+      {/*<div className="main-content">
         <div className="head-section">
           <p className="matching-title">
             Your Matches
@@ -70,9 +80,10 @@ const Home = () => {
             <UserCard username={username} />
           ))}
         </div>
-      </div>
+      </div>*/}
     </div>
   );
+  console.log("returned everything");
 };
 
 export default Home;
