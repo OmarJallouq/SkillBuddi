@@ -6,6 +6,30 @@ const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE; // Replace with you
 const MESSAGES_COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION; // Replace with your collection ID
 
 /**
+ * Fetch userId from the username.
+ * @param {string} username - The username to look up.
+ * @returns {string} - The corresponding userId.
+ */
+const fetchUserIdByUsername = async (username) => {
+  try {
+    // Assuming you have a 'users' collection or using Appwrite authentication
+    const userResponse = await databases.listDocuments(
+      DATABASE_ID,
+      "users", // Replace with your users collection ID
+      [
+        `username=${username}` // Query using username to fetch userId
+      ]
+    );
+
+    // Check if the user exists and return userId
+    return userResponse.documents.length > 0 ? userResponse.documents[0].$id : null;
+  } catch (error) {
+    console.error("Error fetching user ID:", error);
+    return null;
+  }
+};
+
+/**
  * Fetch messages between two users by their usernames.
  * @param {string} loggedInUsername - The username of the logged-in user.
  * @param {string} partnerUsername - The username of the conversation partner.
@@ -13,11 +37,14 @@ const MESSAGES_COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION; // Rep
  */
 export const fetchMessages = async (loggedInUsername, partnerUsername) => {
   try {
+    const loggedInUserId = await fetchUserIdByUsername(loggedInUsername); // Convert username to userId
+    const partnerUserId = await fetchUserIdByUsername(partnerUsername); // Convert username to userId
+
     const response = await databases.listDocuments(
       DATABASE_ID,
       MESSAGES_COLLECTION_ID,
       [
-        `participants=${loggedInUsername},${partnerUsername}`, // Query using usernames
+        `participants=${loggedInUserId},${partnerUserId}`, // Query using user IDs
       ]
     );
 
@@ -37,17 +64,21 @@ export const fetchMessages = async (loggedInUsername, partnerUsername) => {
  * @param {string} senderUsername - The username of the sender.
  * @param {string} recipientUsername - The username of the recipient.
  * @param {string} text - The message text.
- * @returns {void}
+ * @returns {string|null} - The conversationId if message was sent, null if error.
  */
 export const sendMessage = async (senderUsername, recipientUsername, text) => {
-  if (!text.trim()) return; // Prevent sending empty messages
+  if (!text.trim()) return null; // Prevent sending empty messages
 
   try {
+    const senderId = await fetchUserIdByUsername(senderUsername); // Convert sender username to userId
+    const receiverId = await fetchUserIdByUsername(recipientUsername); // Convert recipient username to userId
+
+    // Fetch conversation by participant userIds
     const response = await databases.listDocuments(
       DATABASE_ID,
       MESSAGES_COLLECTION_ID,
       [
-        `participants=${senderUsername},${recipientUsername}`, // Query using usernames
+        `participants=${senderId},${receiverId}`, // Query using user IDs
       ]
     );
 
@@ -59,7 +90,7 @@ export const sendMessage = async (senderUsername, recipientUsername, text) => {
       conversationId = response.documents[0].$id;
       updatedMessages = [
         ...response.documents[0].messages,
-        { sender: senderUsername, text, timestamp: new Date().toISOString() },
+        { senderId, receiverId, text, timestamp: new Date().toISOString() }, // Use user IDs here
       ];
 
       await databases.updateDocument(
@@ -70,14 +101,14 @@ export const sendMessage = async (senderUsername, recipientUsername, text) => {
       );
     } else {
       // No conversation exists, create a new one
-      updatedMessages = [{ sender: senderUsername, text, timestamp: new Date().toISOString() }];
+      updatedMessages = [{ senderId, receiverId, text, timestamp: new Date().toISOString() }];
 
       const newConversation = await databases.createDocument(
         DATABASE_ID,
         MESSAGES_COLLECTION_ID,
         ID.unique(),
         {
-          participants: [senderUsername, recipientUsername],
+          participants: [senderId, receiverId], // Store user IDs in participants
           messages: updatedMessages,
         }
       );
@@ -88,6 +119,7 @@ export const sendMessage = async (senderUsername, recipientUsername, text) => {
     return conversationId;
   } catch (error) {
     console.error("Error sending message:", error);
+    return null;
   }
 };
 
@@ -98,11 +130,13 @@ export const sendMessage = async (senderUsername, recipientUsername, text) => {
  */
 export const fetchConversations = async (loggedInUsername) => {
   try {
+    const loggedInUserId = await fetchUserIdByUsername(loggedInUsername); // Convert username to userId
+
     const response = await databases.listDocuments(
       DATABASE_ID,
       MESSAGES_COLLECTION_ID,
       [
-        `participants=${loggedInUsername}`, // Query conversations involving the logged-in user
+        `participants=${loggedInUserId}`, // Query conversations involving the logged-in user ID
       ]
     );
 

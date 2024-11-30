@@ -31,7 +31,7 @@ const App = () => {
                 {/* Routes accessible only to logged-in users */}
                 <Route path="/" element={<Home />} />
                 <Route path="/conversations" element={<ConversationList />} />
-                <Route path="/messages/:username" element={<Chat />} />
+                <Route path="/messages/:username" element={<Messages />} />
                 <Route path="/messages" element={<Messages />} />
                 <Route path="/myProfile" element={<MyProfile />} />
                 <Route path="/profile/:id" element={<Profile />} />
