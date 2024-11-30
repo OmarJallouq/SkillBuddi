@@ -5,13 +5,13 @@ import { useAuth } from "../utils/AuthContext";
 
 const ConversationList = () => {
   const [conversations, setConversations] = useState([]);
-  const { user } = useAuth();
+  const { user } = useAuth(); // Assumes `user` has a `username` field
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadConversations = async () => {
       if (user) {
-        const response = await fetchConversations(user.$id);
+        const response = await fetchConversations(user.username); // Pass `username` to fetchConversations
         setConversations(response);
       }
     };
@@ -24,11 +24,11 @@ const ConversationList = () => {
       <ul>
         {conversations.map((conversation) => (
           <li
-            key={conversation.id}
-            onClick={() => navigate(`/chat/${conversation.partnerId}`)}
+            key={conversation.conversationId}
+            onClick={() => navigate(`/messages/${conversation.partnerUsername}`)} // Use `partnerUsername` in the URL
             style={{ cursor: "pointer" }}
           >
-            {conversation.partnerName}
+            {conversation.partnerUsername} {/* Display the partner's username */}
           </li>
         ))}
       </ul>

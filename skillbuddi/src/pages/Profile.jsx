@@ -36,10 +36,8 @@ const Profile = () => {
   }
 
   const handleMessage = () => {
-    // Redirect to the Messaging page with the profile ID
-    navigate(`/messaging/${profile.id}`);
+    navigate(`/messages/${profile.username}`);
   };
-
   
 
   return (

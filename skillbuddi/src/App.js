@@ -4,21 +4,16 @@ import Register from './pages/Register';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Messages from './pages/Messages';
-import Chat from './pages/Chat'
+import Chat from './pages/Chat'; // Use Chat from the pages folder
 import MyProfile from './pages/MyProfile';
-import Profile from './pages/Profile'
+import Profile from './pages/Profile';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthContext';
-import PrivateRoutes from './utils/PrivateRoutes'
+import PrivateRoutes from './utils/PrivateRoutes';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-//import Chat from "./components/Chat";
 import ConversationList from "./components/ConversationList";
-
 import { DatabaseProvider } from './utils/DatabaseContext';
-
-
-
 
 const App = () => {
   return (
@@ -33,10 +28,10 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route element={<PrivateRoutes />}>
-                {/* PUT THE ROUTES HERE THAT SHOULD ONLY BE ACCESSED IF THE USER IS LOGGED IN */}s
+                {/* Routes accessible only to logged-in users */}
                 <Route path="/" element={<Home />} />
                 <Route path="/conversations" element={<ConversationList />} />
-                <Route path="/messages/:partnerId" element={<Chat />} />
+                <Route path="/messages/:username" element={<Chat />} />
                 <Route path="/messages" element={<Messages />} />
                 <Route path="/myProfile" element={<MyProfile />} />
                 <Route path="/profile/:id" element={<Profile />} />
