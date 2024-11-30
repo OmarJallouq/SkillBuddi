@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchMessages, sendMessage } from "../utils/messageService";
 import { useAuth } from "../utils/AuthContext";
@@ -10,6 +10,7 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const scrollRef = useRef(null); //this is used to auto scroll the messages to the bottom
 
   useEffect(() => {
     const getMessages = async () => {
@@ -21,9 +22,20 @@ const Chat = () => {
     getMessages();
   }, [user.$id, username]);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleSendMessage();
+    }
+  };
+
+  const scrollToBottom = () => {
+    const scrollableDiv = scrollRef.current;
+    if (scrollableDiv) {
+      scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
     }
   };
 
@@ -45,7 +57,7 @@ const Chat = () => {
   return (
     <div className="chat-page">
       <h1>Chat with {username}</h1>
-      <div className="messages-container">
+      <div ref={scrollRef} className="messages-container">
         {messages.length > 0 ? (
           messages.map((message, index) => (
             <div
