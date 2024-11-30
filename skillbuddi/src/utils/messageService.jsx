@@ -1,23 +1,18 @@
 import { databases } from "../appwriteConfig"; // Import your Appwrite configuration
-import { ID } from "appwrite";
+import { ID, Query } from "appwrite";
 
 // Constants
 const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE; // Replace with your database ID
 const MESSAGES_COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION; // Replace with your collection ID
 
-/**
- * Fetch messages between two users by their usernames.
- * @param {string} loggedInUsername - The username of the logged-in user.
- * @param {string} partnerUsername - The username of the conversation partner.
- * @returns {Array} - List of messages.
- */
 export const fetchMessages = async (loggedInUserId, partnerUserId) => {
   try {
     const response = await databases.listDocuments(
       DATABASE_ID,
       MESSAGES_COLLECTION_ID,
       [
-        `participants=${loggedInUserId},${partnerUserId}`, // Query using user IDs
+        Query.contains("participants", loggedInUserId),
+        Query.contains("participants", partnerUserId),
       ]
     );
 
@@ -32,13 +27,6 @@ export const fetchMessages = async (loggedInUserId, partnerUserId) => {
   }
 };
 
-/**
- * Send a message between two users by their usernames.
- * @param {string} senderUsername - The username of the sender.
- * @param {string} recipientUsername - The username of the recipient.
- * @param {string} text - The message text.
- * @returns {string|null} - The conversationId if message was sent, null if error.
- */
 export const sendMessage = async (senderId, receiverId, text) => {
   if (!text.trim()) return null; // Prevent sending empty messages
 
@@ -95,11 +83,6 @@ export const sendMessage = async (senderId, receiverId, text) => {
   }
 };
 
-/**
- * Fetch a list of all conversations for a user by username.
- * @param {string} loggedInUsername - The username of the logged-in user.
- * @returns {Array} - List of conversations.
- */
 export const fetchConversations = async (loggedInUserId) => {
   try {
     const response = await databases.listDocuments(
