@@ -7,7 +7,7 @@ import "../styles/profile.css";
 const Profile = () => {
   const { username } = useParams(); // Extract the user ID from the URL
   const navigate = useNavigate(); // Hook for navigation
-  const { fetchUserData } = useDatabase();
+  const { fetchUserData, getImageUrl } = useDatabase();
   const [profile, setProfile] = useState(null);
   const [age, setAge] = useState(0);
 
@@ -61,7 +61,11 @@ const Profile = () => {
       <div className="profile-container">
         <div className="profile-avatar">
           <img
-            src={profile.profilePicture ? profile.profilePicture : defaultPfp}
+            src={
+              profile.profilePicture
+                ? getImageUrl(profile.profilePicture)
+                : defaultPfp
+            }
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
