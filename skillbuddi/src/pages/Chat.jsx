@@ -6,56 +6,49 @@ import "../styles/messages.css";
 
 const Chat = () => {
   const { user } = useAuth();
-  const { userid } = useParams(); // Get the other user's ID from URL
+  const { userid } = useParams(); // Get partner's user ID from the URL
   const [messages, setMessages] = useState([]);
-  const [messageText, setMessageText] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [newMessage, setNewMessage] = useState("");
 
+  // Fetch messages whenever user or recipient changes
   useEffect(() => {
-    const loadMessages = async () => {
-      const messagesData = await fetchMessages(user.$id, userid); // Fetch messages for the conversation
+    const getMessages = async () => {
+      const messagesData = await fetchMessages(user.$id, userid); // Fetch messages using user IDs
       setMessages(messagesData);
-      setLoading(false);
     };
 
-    loadMessages();
-  }, [user.$id, userid]);
+    getMessages();
+  }, [user.$id, userid]); // Reload when user or recipient changes
 
+  // Handle sending a message
   const handleSendMessage = async () => {
-    if (messageText.trim()) {
-      await sendMessage(user.$id, userid, messageText); // Send the message
-      setMessageText(""); // Clear input field
-      // Reload messages after sending
+    if (newMessage.trim()) {
+      await sendMessage(user.$id, userid, newMessage); // Send message
+      setNewMessage(""); // Clear input field
+
+      // Re-fetch messages to include the new message
       const updatedMessages = await fetchMessages(user.$id, userid);
-      setMessages(updatedMessages);
+      setMessages(updatedMessages); // Update the state with the new messages
     }
   };
 
-  if (loading) {
-    return <p>Loading messages...</p>;
-  }
-
   return (
-    <div className="chat-page">
-      <h1>Chat with {userid}</h1>
-      <div className="messages-container">
-        {messages.length > 0 ? (
-          <ul className="messages-list">
-            {messages.map((msg) => (
-              <li key={msg.timestamp} className="message-item">
-                <p>{msg.text}</p>
-                <span>{new Date(msg.timestamp).toLocaleString()}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No messages yet. Start the conversation!</p>
-        )}
+    <div className="messages-page">
+      <h1>Messages with {userid}</h1>
+      
+      <div className="messages-list">
+        {messages.map((msg, index) => (
+          <div key={index} className={`message ${msg.senderId === user.$id ? "sent" : "received"}`}>
+            <p>{msg.text}</p>
+            <span>{new Date(msg.timestamp).toLocaleTimeString()}</span>
+          </div>
+        ))}
       </div>
+
       <div className="message-input">
         <textarea
-          value={messageText}
-          onChange={(e) => setMessageText(e.target.value)}
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
         />
         <button onClick={handleSendMessage}>Send</button>
