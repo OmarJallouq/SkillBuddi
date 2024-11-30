@@ -1,90 +1,64 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../utils/AuthContext";
 import { useParams } from "react-router-dom";
 import { fetchMessages, sendMessage } from "../utils/messageService";
-import { useAuth } from "../utils/AuthContext";
-import "../styles/chat.css";
+import "../styles/messages.css";
 
 const Chat = () => {
-  const { username } = useParams();
   const { user } = useAuth();
+  const { userid } = useParams(); // Get the other user's ID from URL
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
+  const [messageText, setMessageText] = useState("");
   const [loading, setLoading] = useState(true);
-  const scrollRef = useRef(null); //this is used to auto scroll the messages to the bottom
 
   useEffect(() => {
-    const getMessages = async () => {
-      const data = await fetchMessages(user.$id, username);
-      setMessages(data);
+    const loadMessages = async () => {
+      const messagesData = await fetchMessages(user.$id, userid); // Fetch messages for the conversation
+      setMessages(messagesData);
       setLoading(false);
     };
 
-    getMessages();
-  }, [user.$id, username]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSendMessage();
-    }
-  };
-
-  const scrollToBottom = () => {
-    const scrollableDiv = scrollRef.current;
-    if (scrollableDiv) {
-      scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
-    }
-  };
+    loadMessages();
+  }, [user.$id, userid]);
 
   const handleSendMessage = async () => {
-    if (newMessage.trim()) {
-      await sendMessage(user.$id, username, newMessage);
-      setMessages((prev) => [
-        ...prev,
-        { senderId: user.$id, text: newMessage },
-      ]);
-      setNewMessage("");
+    if (messageText.trim()) {
+      await sendMessage(user.$id, userid, messageText); // Send the message
+      setMessageText(""); // Clear input field
+      // Reload messages after sending
+      const updatedMessages = await fetchMessages(user.$id, userid);
+      setMessages(updatedMessages);
     }
   };
 
   if (loading) {
-    return <p>Loading chat...</p>;
+    return <p>Loading messages...</p>;
   }
 
   return (
     <div className="chat-page">
-      <h1>Chat with {username}</h1>
-      <div ref={scrollRef} className="messages-container">
+      <h1>Chat with {userid}</h1>
+      <div className="messages-container">
         {messages.length > 0 ? (
-          messages.map((message, index) => (
-            <div
-              key={index}
-              className={`message ${
-                message.senderId === user.$id ? "sent" : "received"
-              }`}
-            >
-              {message.text}
-            </div>
-          ))
+          <ul className="messages-list">
+            {messages.map((msg) => (
+              <li key={msg.timestamp} className="message-item">
+                <p>{msg.text}</p>
+                <span>{new Date(msg.timestamp).toLocaleString()}</span>
+              </li>
+            ))}
+          </ul>
         ) : (
-          <div className="no-messages">
-            <p>No messages yet. Say hello to start the conversation!</p>
-          </div>
+          <p>No messages yet. Start the conversation!</p>
         )}
       </div>
-      <div className="message-input-container">
-        <input
-        className="message-typer"
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyPress={handleKeyPress}
+      <div className="message-input">
+        <textarea
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
           placeholder="Type a message..."
         />
-        <button className="send-button" onClick={handleSendMessage}>🢂</button>
+        <button onClick={handleSendMessage}>Send</button>
       </div>
     </div>
   );

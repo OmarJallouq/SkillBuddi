@@ -2,8 +2,8 @@ import { databases } from "../appwriteConfig"; // Import your Appwrite configura
 import { ID, Query } from "appwrite";
 
 // Constants
-const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE; // Replace with your database ID
-const MESSAGES_COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION; // Replace with your collection ID
+const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE;
+const MESSAGES_COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION;
 
 /**
  * Fetch messages between two users by their user IDs.
@@ -20,7 +20,7 @@ export const fetchMessages = async (loggedInUserId, partnerUserId) => {
       [
         Query.equal("senderId", loggedInUserId),
         Query.equal("receiverId", partnerUserId),
-        Query.orderAsc("timestamp"), // Order by timestamp (ascending)
+        Query.orderAsc("timestamp"),
       ]
     );
 
@@ -33,12 +33,13 @@ export const fetchMessages = async (loggedInUserId, partnerUserId) => {
       [
         Query.equal("senderId", partnerUserId),
         Query.equal("receiverId", loggedInUserId),
-        Query.orderAsc("timestamp"), // Order by timestamp (ascending)
+        Query.orderAsc("timestamp"),
       ]
     );
 
-    // Combine both message arrays and sort by timestamp to get all messages in chronological order
-    const allMessages = [...senderMessages, ...receiverMessages].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    const allMessages = [...senderMessages, ...receiverMessages].sort(
+      (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+    );
 
     return allMessages;
   } catch (error) {
@@ -58,7 +59,6 @@ export const sendMessage = async (senderId, receiverId, message) => {
   if (!message.trim()) return null; // Prevent sending empty messages
 
   try {
-    // Create a new message document
     const newMessage = {
       senderId,
       receiverId,
@@ -66,11 +66,10 @@ export const sendMessage = async (senderId, receiverId, message) => {
       timestamp: new Date().toISOString(),
     };
 
-    // Store the new message in the database
     const response = await databases.createDocument(
       DATABASE_ID,
       MESSAGES_COLLECTION_ID,
-      ID.unique(), // Unique document ID
+      ID.unique(),
       newMessage
     );
 
@@ -84,26 +83,41 @@ export const sendMessage = async (senderId, receiverId, message) => {
 };
 
 /**
- * Fetch a list of all conversations for a user by their user ID.
+ * Fetch all conversations for a user by user ID.
  * @param {string} loggedInUserId - The ID of the logged-in user.
  * @returns {Array} - List of conversations.
  */
 export const fetchConversations = async (loggedInUserId) => {
   try {
+    // Query the documents where the logged-in user is either the sender or receiver
     const response = await databases.listDocuments(
       DATABASE_ID,
       MESSAGES_COLLECTION_ID,
       [
-        Query.equal("senderId", loggedInUserId), // Query conversations where the logged-in user is the sender
-        Query.equal("receiverId", loggedInUserId), // Or where the logged-in user is the receiver
+        Query.equal("senderId", loggedInUserId),
+        Query.equal("receiverId", loggedInUserId),
+        Query.orderDesc("timestamp"), // Sort by the latest message
       ]
     );
 
-    return response.documents.map((doc) => ({
-      conversationId: doc.$id,
-      participants: [doc.senderId, doc.receiverId],
-      lastMessage: doc.messages?.[doc.messages.length - 1] || null,
-    }));
+    const conversations = [];
+    const uniqueParticipants = new Set();
+
+    // Iterate through all documents and organize them by conversation
+    response.documents.forEach((message) => {
+      const otherUserId = message.senderId === loggedInUserId ? message.receiverId : message.senderId;
+
+      if (!uniqueParticipants.has(otherUserId)) {
+        conversations.push({
+          conversationId: message.$id,
+          participants: [loggedInUserId, otherUserId],
+          lastMessage: message,
+        });
+        uniqueParticipants.add(otherUserId);
+      }
+    });
+
+    return conversations;
   } catch (error) {
     console.error("Error fetching conversations:", error);
     return [];
