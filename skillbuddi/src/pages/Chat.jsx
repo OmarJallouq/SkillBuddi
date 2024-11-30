@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchMessages, sendMessage } from "../utils/messageService";
 import { useAuth } from "../utils/AuthContext";
-//import "../styles/chat.css";
+import "../styles/chat.css";
 
 const Chat = () => {
   const { username } = useParams();
@@ -59,12 +59,13 @@ const Chat = () => {
       </div>
       <div className="message-input-container">
         <input
+        className="message-typer"
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
         />
-        <button onClick={handleSendMessage}>Send</button>
+        <button className="send-button" onClick={handleSendMessage}>🢂</button>
       </div>
     </div>
   );
