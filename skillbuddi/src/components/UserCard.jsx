@@ -41,7 +41,6 @@ const UserCard = ({ username }) => {
         <div className="pfp-container">
           <img
             src={profile.profilePicture ? profile.profilePicture : defaultPfp}
-            alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="pfp"
           />
         </div>
