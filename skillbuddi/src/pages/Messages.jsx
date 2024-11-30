@@ -5,19 +5,21 @@ import { Link } from "react-router-dom";
 import "../styles/messages.css";
 
 const Messages = () => {
-  const { user } = useAuth();
+  const { user } = useAuth(); // Assumes `user` has a `username` field
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getConversations = async () => {
-      const data = await fetchConversations(user.$id);
-      setConversations(data);
+      if (user) {
+        const data = await fetchConversations(user.username); // Pass `username` to fetchConversations
+        setConversations(data);
+      }
       setLoading(false);
     };
 
     getConversations();
-  }, [user.$id]);
+  }, [user]);
 
   if (loading) {
     return <p>Loading conversations...</p>;
@@ -29,9 +31,9 @@ const Messages = () => {
       {conversations.length > 0 ? (
         <ul className="conversations-list">
           {conversations.map((conversation) => (
-            <li key={conversation.id} className="conversation-item">
-              <Link to={`/message/${conversation.partnerName}`}>
-                Chat with {conversation.partnerName}
+            <li key={conversation.conversationId} className="conversation-item">
+              <Link to={`/messages/${conversation.partnerUsername}`}>
+                Chat with {conversation.partnerUsername}
               </Link>
             </li>
           ))}
