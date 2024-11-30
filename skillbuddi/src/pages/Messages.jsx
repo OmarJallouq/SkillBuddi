@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { fetchConversations } from "../utils/messageService";
 import { useAuth } from "../utils/AuthContext";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { fetchMessages } from "../utils/messageService";
 import "../styles/messages.css";
 
 const Messages = () => {
-  const { user } = useAuth(); // Assumes `user` has a `username` field
+  const { user } = useAuth();
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Get partnerUsername from the URL
+  const { partnerUsername } = useParams();
+
   useEffect(() => {
-    const getConversations = async () => {
-      if (user) {
-        const data = await fetchConversations(user.username); // Pass `username` to fetchConversations
-        setConversations(data);
-      }
+    const getMessages = async () => {
+      const messages = await fetchMessages(user.username, partnerUsername); // Use usernames
+      setConversations(messages);
       setLoading(false);
     };
 
-    getConversations();
-  }, [user]);
+    getMessages();
+  }, [user.username, partnerUsername]);
 
   if (loading) {
     return <p>Loading conversations...</p>;
@@ -27,24 +28,18 @@ const Messages = () => {
 
   return (
     <div className="messages-page">
-      <h1>Your Conversations</h1>
+      <h1>Messages with {partnerUsername}</h1>
       {conversations.length > 0 ? (
         <ul className="conversations-list">
           {conversations.map((conversation) => (
-            <li key={conversation.conversationId} className="conversation-item">
-              <Link to={`/messages/${conversation.partnerUsername}`}>
-                Chat with {conversation.partnerUsername}
-              </Link>
+            <li key={conversation.timestamp} className="conversation-item">
+              {conversation.text}
             </li>
           ))}
         </ul>
       ) : (
         <div className="no-conversations">
-          <p>You don’t have any conversations yet.</p>
-          <p>
-            Start a conversation by visiting a user's profile and clicking the
-            "Message" button.
-          </p>
+          <p>No messages yet. Start a conversation.</p>
         </div>
       )}
     </div>
