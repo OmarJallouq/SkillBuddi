@@ -26,45 +26,67 @@ const MyProfile = () => {
     setBio(user.Bio);
     setPfpLink(getImageUrl(user.profilePicture));
   }, [user]);
-  
-  //check this I don't know if it's right
-  const handleChangeField = async (field) => {
-    const fieldName = field === "location" ? "Location" : "Date of Birth";
-    const currentValue = user[field];
-    const newValue = prompt(`Enter your new ${fieldName}:`, currentValue);
 
-  
-    if (!newValue || newValue.trim() === "") {
-      toast.error(`${fieldName} cannot be empty!`);
+  const handleAddWantedSkill = async (newSkill) => {
+    if (!newSkill.trim()) {
+      toast.error("Skill cannot be empty!");
       return;
     }
 
-    if (field === "dateOfBirth") {
-      const birthDate = new Date(newValue);
+    const currentSkillsWanted = skillsWanted || [];
 
-      if (isNaN(birthDate.getTime())) {
-        toast.error("Invalid date format. Please enter a valid date.");
-        return;
-      }
-      
-      const today = new Date();
-  
-      // Calculate the age by comparing year, month, and day
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDifference = today.getMonth() - birthDate.getMonth();
-      const dayDifference = today.getDate() - birthDate.getDate();
-
-      // Adjust age if the birthday hasn't occurred yet this year
-      if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
-      age--;
-      }
-
-      if (age < 18) {
-      toast.error("You must be at least 18 years old!");
+    if (currentSkillsWanted.includes(newSkill)) {
+      toast.error("Skill already exists!");
       return;
-      }
     }
-  
+
+    const updatedSkillsWanted = [...currentSkillsWanted, newSkill];
+
+    try {
+      const response = await updateUserData(user.$id, {
+        Skills_wanted: updatedSkillsWanted,
+      });
+
+      if (response.success) {
+        setSkillsWanted(updatedSkillsWanted);
+        toast.success("Wanted skill added successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to add the wanted skill.");
+    }
+  };
+
+  const handleRemoveWantedSkill = async (skillToRemove) => {
+    const updatedSkillsWanted = skillsWanted.filter(
+      (skill) => skill !== skillToRemove
+    );
+
+    try {
+      const response = await updateUserData(user.$id, {
+        Skills_wanted: updatedSkillsWanted,
+      });
+
+      if (response.success) {
+        setSkillsWanted(updatedSkillsWanted);
+        toast.success("Wanted skill removed successfully!");
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast.error(error.message || "Failed to remove the wanted skill.");
+    }
+  };
+
+  const handleChangeLocation = async () => {
+    const newLocation = prompt("Enter a new location:");
+
+    if (!newLocation || newLocation.trim() === "") {
+      toast.error("Location cannot be empty!");
+      return;
+    }
+
     try {
       // Update the user's name in the database
       const response = await updateUserData(user.$id, {
@@ -81,8 +103,6 @@ const MyProfile = () => {
     } catch (error) {
       toast.error(error.message || "Failed to update location.");
     }
-
-    
   };
 
   const handleChangeName = async () => {
@@ -190,23 +210,19 @@ const MyProfile = () => {
   };
 
   const handleAddSkill = async (newSkill) => {
-    const normalizedNewSkill = newSkill.toLowerCase();
     if (!newSkill.trim()) {
       toast.error("Skill cannot be empty!");
       return;
     }
 
     const currentSkills = skills || [];
-    
 
-    if (currentSkills.some(skill => skill.toLowerCase() === normalizedNewSkill)) {
+    if (currentSkills.includes(newSkill)) {
       toast.error("Skill already exists!");
       return;
     }
-  
 
     const updatedSkills = [...currentSkills, newSkill];
-
 
     try {
       const response = await updateUserData(user.$id, {
@@ -220,116 +236,6 @@ const MyProfile = () => {
       }
     } catch (error) {
       toast.error(error.message || "Failed to add the skill.");
-    }
-  };
-  const handleAddWantedSkill = async (newSkill) => {
-
-    const normalizedNewSkill = newSkill.toLowerCase();
-
-    if (!newSkill.trim()) {
-      toast.error("Skill cannot be empty!");
-      return;
-    }
-
-    const currentSkillsWanted = skillsWanted || [];
-
-     if (currentSkillsWanted.some(skill => skill.toLowerCase() === normalizedNewSkill)) {
-    toast.error("Wanted skill already exists!");
-    return;
-    }
-
-    const updatedSkillsWanted = [...currentSkillsWanted, newSkill];
-
-    try {
-      const response = await updateUserData(user.$id, {
-        Skills_wanted: updatedSkillsWanted,
-      });
-
-      if (response.success) {
-        setSkillsWanted(updatedSkillsWanted);
-        toast.success("Wanted skill Added Successfully!");
-      } else {
-        throw new Error(response.error);
-      }
-    } catch (error) {
-      toast.error(error.message || "Failed to add wanted.");
-    }
-  };
-
-  // Remove a wanted skill
-  const handleRemoveWantedSkill = async (skillToRemove) => {
-    const updatedSkillsWanted = skillsWanted.filter(
-      (skill) => skill !== skillToRemove
-    );
-
-    try {
-      const response = await updateUserData(user.$id, {
-        Skills_wanted: updatedSkillsWanted,
-      });
-
-      if (response.success) {
-        setSkillsWanted(updatedSkillsWanted);
-        toast.success("Skill Wanted Removed Successfully!");
-      } else {
-        throw new Error(response.error);
-      }
-    } catch (error) {
-      toast.error(error.message || "Failed to remove skill wanted.");
-    }
-  };
-  const handleAddWantedSkill = async (newSkill) => {
-
-    const normalizedNewSkill = newSkill.toLowerCase();
-
-    if (!newSkill.trim()) {
-      toast.error("Skill cannot be empty!");
-      return;
-    }
-
-    const currentSkillsWanted = skillsWanted || [];
-
-     if (currentSkillsWanted.some(skill => skill.toLowerCase() === normalizedNewSkill)) {
-    toast.error("Wanted skill already exists!");
-    return;
-    }
-
-    const updatedSkillsWanted = [...currentSkillsWanted, newSkill];
-
-    try {
-      const response = await updateUserData(user.$id, {
-        Skills_wanted: updatedSkillsWanted,
-      });
-
-      if (response.success) {
-        setSkillsWanted(updatedSkillsWanted);
-        toast.success("Wanted skill Added Successfully!");
-      } else {
-        throw new Error(response.error);
-      }
-    } catch (error) {
-      toast.error(error.message || "Failed to add wanted.");
-    }
-  };
-
-  // Remove a wanted skill
-  const handleRemoveWantedSkill = async (skillToRemove) => {
-    const updatedSkillsWanted = skillsWanted.filter(
-      (skill) => skill !== skillToRemove
-    );
-
-    try {
-      const response = await updateUserData(user.$id, {
-        Skills_wanted: updatedSkillsWanted,
-      });
-
-      if (response.success) {
-        setSkillsWanted(updatedSkillsWanted);
-        toast.success("Skill Wanted Removed Successfully!");
-      } else {
-        throw new Error(response.error);
-      }
-    } catch (error) {
-      toast.error(error.message || "Failed to remove skill wanted.");
     }
   };
 
@@ -372,7 +278,6 @@ const MyProfile = () => {
       toast.error(error.message || "Failed to update profile picture.");
     }
   };
-  
 
   return (
     <div className="whole-thing">
@@ -400,9 +305,15 @@ const MyProfile = () => {
           </div>
           <div className="profile-info">
             <h1>
-              {user.name}
+              Name: {firstName} {lastName}
+              <button
+                onClick={() => handleChangeName()}
+                className="change-button"
+              >
+                ✎
+              </button>
             </h1>
-            <p>{user.username}</p>
+            <p>{user.$id}</p>
             <p>{user.email}</p>
             <p>
               Location: {location}
