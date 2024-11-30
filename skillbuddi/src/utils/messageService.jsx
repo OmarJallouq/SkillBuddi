@@ -5,97 +5,103 @@ import { ID, Query } from "appwrite";
 const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE; // Replace with your database ID
 const MESSAGES_COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION; // Replace with your collection ID
 
+/**
+ * Fetch messages between two users by their user IDs.
+ * @param {string} loggedInUserId - The ID of the logged-in user.
+ * @param {string} partnerUserId - The ID of the conversation partner.
+ * @returns {Array} - List of messages.
+ */
 export const fetchMessages = async (loggedInUserId, partnerUserId) => {
   try {
+    // Fetch messages where the logged-in user is the sender and the partner is the receiver
     const response = await databases.listDocuments(
       DATABASE_ID,
       MESSAGES_COLLECTION_ID,
       [
-        Query.contains("participants", loggedInUserId),
-        Query.contains("participants", partnerUserId),
+        Query.equal("senderId", loggedInUserId),
+        Query.equal("receiverId", partnerUserId),
+        Query.orderAsc("timestamp"), // Order by timestamp (ascending)
       ]
     );
 
-    if (response.documents.length > 0) {
-      return response.documents[0].messages || []; // Return messages if conversation exists
-    } else {
-      return []; // No conversation exists
-    }
+    const senderMessages = response.documents;
+
+    // Fetch messages where the partner is the sender and the logged-in user is the receiver
+    const receiverMessages = await databases.listDocuments(
+      DATABASE_ID,
+      MESSAGES_COLLECTION_ID,
+      [
+        Query.equal("senderId", partnerUserId),
+        Query.equal("receiverId", loggedInUserId),
+        Query.orderAsc("timestamp"), // Order by timestamp (ascending)
+      ]
+    );
+
+    // Combine both message arrays and sort by timestamp to get all messages in chronological order
+    const allMessages = [...senderMessages, ...receiverMessages].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+    return allMessages;
   } catch (error) {
     console.error("Error fetching messages:", error);
     return [];
   }
 };
 
-export const sendMessage = async (senderId, receiverId, text) => {
-  if (!text.trim()) return null; // Prevent sending empty messages
+/**
+ * Send a message between two users.
+ * @param {string} senderId - The ID of the sender.
+ * @param {string} receiverId - The ID of the receiver.
+ * @param {string} message - The message content.
+ * @returns {void}
+ */
+export const sendMessage = async (senderId, receiverId, message) => {
+  if (!message.trim()) return null; // Prevent sending empty messages
 
   try {
-    // Fetch conversation by participant userIds
-    const response = await databases.listDocuments(
+    // Create a new message document
+    const newMessage = {
+      senderId,
+      receiverId,
+      message,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Store the new message in the database
+    const response = await databases.createDocument(
       DATABASE_ID,
       MESSAGES_COLLECTION_ID,
-      [
-        `participants=${senderId},${receiverId}`, // Query using user IDs
-      ]
+      ID.unique(), // Unique document ID
+      newMessage
     );
 
-    let conversationId;
-    let updatedMessages;
+    console.log("Message sent:", response);
 
-    if (response.documents.length > 0) {
-      // Conversation exists, update it
-      conversationId = response.documents[0].$id;
-      updatedMessages = [
-        ...response.documents[0].messages,
-        { senderId, receiverId, text, timestamp: new Date().toISOString() }, // Use user IDs here
-      ];
-
-      await databases.updateDocument(
-        DATABASE_ID,
-        MESSAGES_COLLECTION_ID,
-        conversationId,
-        { messages: updatedMessages }
-      );
-    } else {
-      // No conversation exists, create a new one
-      updatedMessages = [
-        { senderId, receiverId, text, timestamp: new Date().toISOString() },
-      ];
-
-      const newConversation = await databases.createDocument(
-        DATABASE_ID,
-        MESSAGES_COLLECTION_ID,
-        ID.unique(),
-        {
-          participants: [senderId, receiverId], // Store user IDs in participants
-          messages: updatedMessages,
-        }
-      );
-
-      conversationId = newConversation.$id;
-    }
-
-    return conversationId;
+    return response; // Return the response, which is the new message document
   } catch (error) {
     console.error("Error sending message:", error);
     return null;
   }
 };
 
+/**
+ * Fetch a list of all conversations for a user by their user ID.
+ * @param {string} loggedInUserId - The ID of the logged-in user.
+ * @returns {Array} - List of conversations.
+ */
 export const fetchConversations = async (loggedInUserId) => {
   try {
     const response = await databases.listDocuments(
       DATABASE_ID,
       MESSAGES_COLLECTION_ID,
       [
-        `participants=${loggedInUserId}`, // Query conversations involving the logged-in user ID
+        Query.equal("senderId", loggedInUserId), // Query conversations where the logged-in user is the sender
+        Query.equal("receiverId", loggedInUserId), // Or where the logged-in user is the receiver
       ]
     );
 
     return response.documents.map((doc) => ({
       conversationId: doc.$id,
-      participants: doc.participants,
+      participants: [doc.senderId, doc.receiverId],
       lastMessage: doc.messages?.[doc.messages.length - 1] || null,
     }));
   } catch (error) {
