@@ -78,9 +78,17 @@ export const DatabaseProvider = ({ children }) => {
   const uploadProfilePicture = async (file) => {
     try {
       const response = await storage.createFile(BUCKET_ID, ID.unique(), file);
-      return response.$id; // Return the file ID
+      return { success: true, response: response.$id }; // Return the file ID
     } catch (error) {
-      console.error(error);
+      return { success: false, error: error.message };
+    }
+  };
+
+  const getImageUrl = (fileId) => {
+    try {
+      const url = storage.getFilePreview(BUCKET_ID, fileId);
+      return url; // This can be used directly in an <img> tag
+    } catch (error) {
       return null;
     }
   };
@@ -91,6 +99,7 @@ export const DatabaseProvider = ({ children }) => {
     createUserData,
     uploadProfilePicture,
     deleteUserData,
+    getImageUrl,
   };
 
   return (

@@ -8,13 +8,14 @@ import "../styles/myProfile.css";
 
 const MyProfile = () => {
   const { user } = useAuth();
-  const { updateUserData } = useDatabase();
+  const { updateUserData, uploadProfilePicture, getImageUrl } = useDatabase();
   const [skills, setSkills] = useState([]);
   const [skillsWanted, setSkillsWanted] = useState([]);
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [location, setLocation] = useState(user.location);
   const [bio, setBio] = useState(user.bio);
+  const [pfpLink, setPfpLink] = useState("");
 
   useEffect(() => {
     setFirstName(user.firstName);
@@ -23,6 +24,7 @@ const MyProfile = () => {
     setSkillsWanted(user.Skills_wanted || []);
     setLocation(user.location);
     setBio(user.Bio);
+    setPfpLink(getImageUrl(user.profilePicture));
   }, [user]);
 
   const handleAddWantedSkill = async (newSkill) => {
@@ -239,22 +241,40 @@ const MyProfile = () => {
 
   const handleProfilePictureChange = async (event) => {
     const file = event.target.files[0];
-    if (!file) return;
 
-    const formData = new FormData();
-    formData.append("profilePicture", file);
+    if (!file) {
+      toast.error("No file selected!");
+      return;
+    }
+
+    // Ensure the file is an image
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload a valid image file.");
+      return;
+    }
 
     try {
+      // Upload the profile picture to the Appwrite storage
+      const PictureResponse = await uploadProfilePicture(file);
+      if (!PictureResponse.success) {
+        throw new Error(PictureResponse.error);
+      }
+
+      // Update the user's profile picture in the database
       const response = await updateUserData(user.$id, {
-        profilePicture: URL.createObjectURL(file), // Store the URL for immediate preview
+        profilePicture: PictureResponse.response,
       });
 
       if (response.success) {
         toast.success("Profile picture updated successfully!");
+
+        // Update the local state for immediate UI feedback
+        setPfpLink(getImageUrl(PictureResponse.response));
       } else {
         throw new Error(response.error);
       }
     } catch (error) {
+      console.error("Error updating profile picture:", error);
       toast.error(error.message || "Failed to update profile picture.");
     }
   };
@@ -264,7 +284,7 @@ const MyProfile = () => {
       <div className="profile-container">
         <div className="profile-header">
           <img
-            src={user.profilePicture ? user.profilePicture : defaultPfp}
+            src={user.profilePicture ? pfpLink : defaultPfp}
             alt="Profile Avatar"
             className="avatar"
           />
