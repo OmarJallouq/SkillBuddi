@@ -3,8 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
 import Home from './pages/Home';
-import Messages from './pages/Messages';
-import Chat from './pages/Chat'; // Use Chat from the pages folder
+import Chat from './pages/Chat'; 
 import MyProfile from './pages/MyProfile';
 import Profile from './pages/Profile';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
