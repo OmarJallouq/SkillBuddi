@@ -14,7 +14,7 @@ const Messages = () => {
 
   useEffect(() => {
     const getMessages = async () => {
-      const messages = await fetchMessages(user.username, partnerUsername); // Use usernames
+      const messages = await fetchMessages(user.$id, partnerUsername); // Use usernames
       setConversations(messages);
       setLoading(false);
     };
