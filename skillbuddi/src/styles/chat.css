@@ -25,16 +25,34 @@
 }
 
 .messages-container {
-    width: 100vw;
+    width: 60vw;
+    overflow-y: scroll;
     
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: top;
+}
+
+.received {
+    width: fit-content;
+    height: 6vh;
+
+    display: inline-block;
+    padding: 1vw 1vw;
+
+    background-color: #e7e6dd;
 }
 
 .sent {
-    width: 60vw;
+    width: fit-content;
+    height: 6vh;
+    margin-left: auto;
+
+    display: inline-block;
+    padding: 1vw 1vw;
+
+    background-color: #e8c766;
 }
 
 .message-input-container {

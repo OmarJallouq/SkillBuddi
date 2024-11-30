@@ -21,6 +21,12 @@ const Chat = () => {
     getMessages();
   }, [user.$id, username]);
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSendMessage();
+    }
+  };
+
   const handleSendMessage = async () => {
     if (newMessage.trim()) {
       await sendMessage(user.$id, username, newMessage);
@@ -63,6 +69,7 @@ const Chat = () => {
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
           placeholder="Type a message..."
         />
         <button className="send-button" onClick={handleSendMessage}>🢂</button>
