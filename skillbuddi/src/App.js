@@ -32,7 +32,6 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/conversations" element={<ConversationList />} />
                 <Route path="/messages/:userid" element={<Chat />} />
-                <Route path="/messages" element={<Messages />} />
                 <Route path="/myProfile" element={<MyProfile />} />
                 <Route path="/profile/:id" element={<Profile />} />
               </Route>
