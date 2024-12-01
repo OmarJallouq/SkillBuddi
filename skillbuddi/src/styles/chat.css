@@ -38,6 +38,7 @@
 .received {
     width: fit-content;
     height: 6vh;
+    margin-top: 1vh;
 
     display: inline-block;
     padding: 1vw 1vw;
@@ -49,6 +50,7 @@
     width: fit-content;
     height: 6vh;
     margin-left: auto;
+    margin-top: 1vh;
 
     display: inline-block;
     padding: 1vw 1vw;
@@ -90,6 +92,7 @@
     justify-content: center;
     line-height: 8vh;
 
+    border: none;
     border-radius: 30%;
 
     background-color: #162f65;

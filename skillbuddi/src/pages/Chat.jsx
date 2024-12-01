@@ -1,62 +1,99 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../utils/AuthContext";
+import React, { useRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../utils/AuthContext";
 import { fetchMessages, sendMessage } from "../utils/messageService";
-import "../styles/messages.css";
+import "../styles/chat.css";
 
 const Chat = () => {
+  const { username } = useParams(); // Use username for display
   const { user } = useAuth();
-  const { userid } = useParams(); // Get partner's user ID from the URL
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const scrollRef = useRef(null);
 
-  // Fetch messages whenever the conversation changes
+  // Fetch messages when the component mounts or when username changes
   useEffect(() => {
     const getMessages = async () => {
-      const messagesData = await fetchMessages(user.$id, userid); // Fetch messages
+      const messagesData = await fetchMessages(user.$id, username);
       setMessages(messagesData);
+      setLoading(false);
     };
-
     getMessages();
-  }, [user.$id, userid]); // Refetch when user or partner changes
+  }, [user.$id, username]);
 
-  // Handle sending a message
-  const handleSendMessage = async () => {
-    if (newMessage.trim()) {
-      await sendMessage(user.$id, userid, newMessage); // Send the message
-      setNewMessage(""); // Clear the input field
+  // Scroll to the bottom of the message list when messages are updated
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
-      // Re-fetch messages after sending
-      const updatedMessages = await fetchMessages(user.$id, userid);
-      setMessages(updatedMessages);
+  const scrollToBottom = () => {
+    const scrollableDiv = scrollRef.current;
+    if (scrollableDiv) {
+      scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
     }
   };
 
+  const handleSendMessage = async () => {
+    if (newMessage.trim()) {
+      // Send the message to the backend
+      await sendMessage(user.$id, username, newMessage);
+
+      // Append the new message optimistically
+      setMessages((prev) => [
+        ...prev,
+        {
+          senderId: user.$id,
+          message: newMessage, // Match the new backend's structure
+          timestamp: new Date().toISOString(), // Add a timestamp for sorting
+        },
+      ]);
+
+      setNewMessage(""); // Clear the input field
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSendMessage();
+    }
+  };
+
+  if (loading) {
+    return <p>Loading chat...</p>;
+  }
+
   return (
-    <div className="messages-page">
-      <h1>Chat with {userid}</h1>
-
-      <div className="messages-list">
-        {messages.map((msg) => (
-          <div
-            key={msg.$id}
-            className={`message ${
-              msg.senderId === user.$id ? "sent" : "received"
-            }`}
-          >
-            <p>{msg.message}</p> {/* Use 'msg.message' for the text */}
-            <span>{new Date(msg.timestamp).toLocaleTimeString()}</span>
+    <div className="chat-page">
+      <h1>Chat with {username}</h1>
+      <div ref={scrollRef} className="messages-container">
+        {messages.length > 0 ? (
+          messages.map((message, index) => (
+            <div
+              key={index}
+              className={`message ${
+                message.senderId === user.$id ? "sent" : "received"
+              }`}
+            >
+              <p>{message.message}</p>
+            </div>
+          ))
+        ) : (
+          <div className="no-messages">
+            <p>No messages yet. Say hello to start the conversation!</p>
           </div>
-        ))}
+        )}
       </div>
-
-      <div className="message-input">
-        <textarea
+      <div className="message-input-container">
+        <input
+          className="message-typer"
+          type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
           placeholder="Type a message..."
         />
-        <button onClick={handleSendMessage}>Send</button>
+        <button className="send-button" onClick={handleSendMessage}>🢂</button>
       </div>
     </div>
   );
