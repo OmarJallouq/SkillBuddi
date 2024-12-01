@@ -2,7 +2,7 @@ import "../styles/profile.css";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../utils/AuthContext";
 import { useParams } from "react-router-dom";
-import { getUserProfile, addInterest, checkMutualInterest } from "../utils/profileService"; // Utility functions for profiles
+import { getUserProfile, addInterest, checkMutualInterest } from "../utils/internetservice"; // Utility functions for profiles
 import { toast } from "react-toastify";
 
 const Profile = () => {
