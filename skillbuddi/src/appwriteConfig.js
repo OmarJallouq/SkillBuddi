@@ -1,23 +1,16 @@
-import { Client, Account, Databases, Storage } from 'appwrite';
+import { Client, Account, Databases, Storage } from "appwrite";
 
+// Create a Client instance
 const client = new Client();
-client.setProject(`${process.env.REACT_APP_APPWRITE_AUTH}`);
+client.setEndpoint("https://cloud.appwrite.io/v1").setProject("673ba586000b18437b40"); // Replace with your endpoint and project ID
 
 export const account = new Account(client);
+export const databases = new Databases(client);
+export const storage = new Storage(client);
 
+// Export the client instance for real-time subscriptions
 export default client;
 
-const client2 = new Client();
-
-client2
-    .setEndpoint("https://cloud.appwrite.io/v1") // Replace with your Appwrite endpoint
-    .setProject("673ba586000b18437b40"); // Replace with your Project ID
-
-const account2 = new Account(client2);
-const databases = new Databases(client2);
-const storage = new Storage(client2);
-
-export const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE; // Replace with your database ID
-export const MESSAGES_COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION; // Replace with your messages collection ID
-
-export { client2, account2, databases, storage };
+// Export constants for database and collection IDs
+export const DATABASE_ID = process.env.REACT_APP_APPWRITE_DATABASE;
+export const MESSAGES_COLLECTION_ID = process.env.REACT_APP_MESSAGES_COLLECTION;
