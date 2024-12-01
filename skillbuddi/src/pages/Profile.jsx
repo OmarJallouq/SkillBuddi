@@ -10,6 +10,11 @@ const Profile = () => {
   const { fetchUserData, getImageUrl } = useDatabase();
   const [profile, setProfile] = useState(null);
   const [age, setAge] = useState(0);
+  
+
+  // Local state to track if both users are interested
+  const [userHasClicked, setUserHasClicked] = useState(false);  // Current user's interest status
+  const [otherUserHasClicked, setOtherUserHasClicked] = useState(false);  // Other user's interest status
 
   // fetch user data
   useEffect(() => {
@@ -53,6 +58,17 @@ const Profile = () => {
     navigate(`/messaging/${profile.id}`);
   };
 
+  // Handle current user's interest in learning the skill
+  const handleUserInterestClick = () => {
+    setUserHasClicked(true);
+  };
+
+  // Handle the other user's interest in learning the skill
+  const handleOtherUserInterestClick = () => {
+    setOtherUserHasClicked(true);
+  };
+
+
   return (
     <div className="whole-thing">
       <h1 className="profile-title">
@@ -90,6 +106,21 @@ const Profile = () => {
           <p>
             <strong>Bio:</strong> {profile.Bio}
           </p>
+          
+          {/* Conditionally display the email if both users have shown interest */}
+          {userHasClicked && otherUserHasClicked && (
+            <p><strong>Email:</strong> {profile.email}</p>
+          )}
+
+          {/* Button for current user to express interest */}
+          <button onClick={handleUserInterestClick} className="interest-button">
+            Interested in learning this skill
+          </button>
+
+          {/* Simulate the other user clicking the button */}
+          <button onClick={handleOtherUserInterestClick} className="interest-button">
+            Other User Interested in Learning
+          </button>
         </div>
       </div>
     </div>
