@@ -20,6 +20,7 @@ const Profile = () => {
 
   const [profile, setProfile] = useState(null);
   const [age, setAge] = useState(0);
+  const [pfpLink, setPfpLink] = useState("");
   const [sentRequestStatus, setSentRequestStatus] = useState("");
   const [receivedRequestStatus, setReceivedRequestStatus] = useState("");
   const [mutualAcceptance, setMutualAcceptance] = useState(false);
@@ -46,6 +47,7 @@ const Profile = () => {
       try {
         const userData = await fetchUserData(username);
         setProfile(userData);
+        setPfpLink(getImageUrl(userData.profilePicture));
         setAge(calculateAge(userData.dateOfBirth));
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -101,11 +103,7 @@ const Profile = () => {
       <div className="profile-container">
         <div className="profile-avatar">
           <img
-            src={
-              profile.profilePicture
-                ? getImageUrl(profile.profilePicture)
-                : defaultPfp
-            }
+            src={true ? pfpLink : defaultPfp}
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
@@ -122,9 +120,7 @@ const Profile = () => {
               <button className="button-accept" onClick={handleRequestClick}>
                 Accept Request
               </button>
-              <button className="button-deny" onClick={handleDenyRequest}>
-                Accept Request
-              </button>
+              <button className="button-deny">Accept Request</button>
             </div>
           ) : (
             <button className="button-request" onClick={handleRequestClick}>
