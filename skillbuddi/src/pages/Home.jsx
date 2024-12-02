@@ -69,6 +69,19 @@ const Home = () => {
         ) : error ? (
           <p>{error}</p>
         ) : (
+          <>
+          <div className="pending-requests">
+              <h3 className="requests-title">Pending Requests</h3>
+              <div className="requests-scroll">
+                {pendingUsers.length > 0 ? (
+                  pendingUsers.map((request) => (
+                    <UserCard key={request.$id} username={request.username} />
+                  ))
+                ) : (
+                  <p>No pending requests</p>
+                )}
+              </div>
+          </div>
           <div className="cards-section">
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user) => (
@@ -80,6 +93,7 @@ const Home = () => {
               </p>
             )}
           </div>
+          </>
         )}
       </div>
     </div>

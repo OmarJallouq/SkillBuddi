@@ -2,7 +2,7 @@
 
 .home-page {
     width: 100vw;
-    height: 94vh;
+    height: 100vh;
 
     background: linear-gradient(to right, #3361ac, #162f65);
 }
@@ -72,3 +72,34 @@
     padding: 3vw;
     gap: 3vw;
 }
+
+/* Scrollable container for pending requests */
+.pending-requests {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 5px solid #e8af30; /* Box border */
+    border-radius: 10px; /* Rounded corners */
+    background-color: #ffffff; /* Box background */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    height: 40vh;
+
+  }
+  
+  
+.requests-title {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+  
+.requests-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 10px 0;
+    height: 100px; /* Fixed height for the box */
+  }
+  
