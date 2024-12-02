@@ -18,6 +18,7 @@ const UserCard = ({ username }) => {
         const userData = await fetchUserData(username);
         setProfile(userData);
         setPfpLink(getImageUrl(userData.profilePicture));
+        console.log(userData);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

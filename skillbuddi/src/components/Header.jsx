@@ -27,7 +27,7 @@ const Header = () => {
             </Link>
           </div>
           <div className="links-container">
-            <Link className="header-link" to="/Matching">
+            <Link className="header-link" to="/">
               Matching
             </Link>
             <Link className="header-link" to="/myProfile">

@@ -34,7 +34,7 @@ const App = () => {
               <Route element={<PrivateRoutes />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/myProfile" element={<MyProfile />} />
-                <Route path="/profile:username" element={<Profile />} />
+                <Route path="/profile/:username" element={<Profile />} />
               </Route>
               <Route path="/logout" element={<Logout />} />
             </Routes>

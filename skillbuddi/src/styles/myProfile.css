@@ -16,7 +16,7 @@
 .my-profile-container {
   /* box that has everythin g */
   width: 80vw;
-  height: 143vh;
+  height: auto;
   margin-top: 10vh;
   padding: 2vh;
 

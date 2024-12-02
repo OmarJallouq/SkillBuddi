@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
 
 .home-page {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 
     background: linear-gradient(to right, #3361ac, #162f65);
 }
@@ -77,28 +77,33 @@
 .pending-requests {
     margin-bottom: 5px;
     padding: 15px;
-    border: 5px solid #e8af30; /* Box border */
-    border-radius: 10px; /* Rounded corners */
-    background-color: #ffffff; /* Box background */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border: 5px solid #e8af30;
+    /* Box border */
+    border-radius: 10px;
+    /* Rounded corners */
+    background-color: #ffffff;
+    /* Box background */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
     margin-top: 20px;
     margin-right: 20px;
     margin-left: 20px;
     height: 40vh;
-  }
-  
-  
+}
+
+
 .requests-title {
     margin-bottom: 10px;
     font-size: 18px;
     font-weight: bold;
 }
-  
+
 .requests-scroll {
     display: flex;
     gap: 10px;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    height:auto; /* Fixed height for the box */
+    overflow-x: auto;
+    /* Enable horizontal scrolling */
+    height: auto;
+    /* Fixed height for the box */
 
-  }
-  
+}
