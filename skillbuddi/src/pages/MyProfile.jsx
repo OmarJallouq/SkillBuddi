@@ -25,10 +25,9 @@ const MyProfile = () => {
     setLocation(user.location);
     setBio(user.Bio);
     setPfpLink(getImageUrl(user.profilePicture));
-  }, [user]);
+  }, [user, getImageUrl]);
 
   const handleAddWantedSkill = async (newSkill) => {
-
     const normalizedNewSkill = newSkill.toLowerCase();
 
     if (!newSkill.trim()) {
@@ -38,11 +37,14 @@ const MyProfile = () => {
 
     const currentSkillsWanted = skillsWanted || [];
 
-    if (currentSkillsWanted.some(skill => skill.toLowerCase() === normalizedNewSkill)) {
-    toast.error("Wanted skill already exists!");
-    return;
+    if (
+      currentSkillsWanted.some(
+        (skill) => skill.toLowerCase() === normalizedNewSkill
+      )
+    ) {
+      toast.error("Wanted skill already exists!");
+      return;
     }
-
 
     const updatedSkillsWanted = [...currentSkillsWanted, newSkill];
 
@@ -194,9 +196,8 @@ const MyProfile = () => {
   };
 
   const handleAddSkill = async (newSkill) => {
-
     const normalizedNewSkill = newSkill.toLowerCase();
-    
+
     if (!newSkill.trim()) {
       toast.error("Skill cannot be empty!");
       return;
@@ -204,11 +205,12 @@ const MyProfile = () => {
 
     const currentSkills = skills || [];
 
-    if (currentSkills.some(skill => skill.toLowerCase() === normalizedNewSkill)) {
+    if (
+      currentSkills.some((skill) => skill.toLowerCase() === normalizedNewSkill)
+    ) {
       toast.error("Skill already exists!");
       return;
     }
-
 
     const updatedSkills = [...currentSkills, newSkill];
 
