@@ -3,6 +3,7 @@ import "../styles/home.css";
 import UserCard from "../components/UserCard";
 import { useAuth } from "../utils/AuthContext";
 import { useDatabase } from "../utils/DatabaseContext";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const { user } = useAuth(); // Access the currently logged-in user
@@ -18,12 +19,14 @@ const Home = () => {
       const response = await fetchPending(user.$id);
       if (response.success) {
         setPendingUsers(response.response);
+        console.log(response.response);
       } else {
         toast.error("Error fetching pending requests");
       }
     };
 
     if (user) {
+      fetchPendingUsers();
       setLoading(true); // Set loading to true before fetching
       fetchMatchingUsers(user)
         .then((users) => {
@@ -35,8 +38,6 @@ const Home = () => {
         .finally(() => {
           setLoading(false); // Set loading to false after fetching is done
         });
-
-      fetchPendingUsers();
     }
   }, [user, fetchMatchingUsers]);
 
@@ -64,23 +65,18 @@ const Home = () => {
             />
           </div>
         </div>
-        {loading ? (
-          <p>Loading matches...</p>
-        ) : error ? (
-          <p>{error}</p>
-        ) : (
-          <>
+        <>
           <div className="pending-requests">
-              <h3 className="requests-title">Pending Requests</h3>
-              <div className="requests-scroll">
-                {pendingUsers.length > 0 ? (
-                  pendingUsers.map((request) => (
-                    <UserCard key={request.$id} username={request.username} />
-                  ))
-                ) : (
-                  <p>No pending requests</p>
-                )}
-              </div>
+            <h3 className="requests-title">Pending Requests</h3>
+            <div className="requests-scroll">
+              {pendingUsers.length > 0 ? (
+                pendingUsers.map((request) => (
+                  <UserCard key={request.$id} username={request.senderId} />
+                ))
+              ) : (
+                <p>No pending requests</p>
+              )}
+            </div>
           </div>
           <div className="cards-section">
             {filteredUsers.length > 0 ? (
@@ -93,8 +89,7 @@ const Home = () => {
               </p>
             )}
           </div>
-          </>
-        )}
+        </>
       </div>
     </div>
   );
