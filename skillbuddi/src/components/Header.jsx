@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
 import { toast } from "react-toastify";
@@ -7,6 +7,7 @@ import logo from "../logo.PNG";
 
 const Header = () => {
   const { user, logoutUser } = useAuth();
+
   const handleLogout = async () => {
     const response = await logoutUser();
     if (response.success) {
@@ -25,7 +26,6 @@ const Header = () => {
               <img className="logo-img" alt="logo" src={logo}></img>
             </Link>
           </div>
-
           <div className="links-container">
             <Link className="header-link" to="/Matching">
               Matching
