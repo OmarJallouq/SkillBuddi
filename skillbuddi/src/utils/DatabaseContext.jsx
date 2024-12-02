@@ -5,7 +5,7 @@ import { ID, Query } from "appwrite";
 const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
 const USER_COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_COLLECTION}`;
 const INTERESTS_COLLECTION = `${process.env.REACT_APP_REQUESTS_COLLECTION}`;
-const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
+const BUCKET_ID = `${process.env.REACT_APP_INTERESTS_COLLECTION}`;
 
 const DatabaseContext = createContext();
 
@@ -89,7 +89,6 @@ export const DatabaseProvider = ({ children }) => {
   const getImageUrl = (fileId) => {
     try {
       const url = storage.getFilePreview(BUCKET_ID, fileId);
-      console.log(url);
       return url; // This can be used directly in an <img> tag
     } catch (error) {
       return null;
