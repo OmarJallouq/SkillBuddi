@@ -85,12 +85,15 @@ const Profile = () => {
       const response = await sendRequest(user.$id, username);
       if (response.success) {
         setSentRequestStatus("pending");
+        toast.success("Request Sent Successfully");
       } else toast.error(response.error);
     } else if (sentRequestStatus === "pending") {
       // Cancel request
       const response = await cancelRequest(user.$id, username);
-      if (response.success) setSentRequestStatus(null);
-      else toast.error(response.error);
+      if (response.success) {
+        setSentRequestStatus(null);
+        toast.success("Request Cancelled Successfully");
+      } else toast.error(response.error);
     }
   };
 
@@ -106,10 +109,10 @@ const Profile = () => {
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
-          <button className="button">
+          <button className="button" onClick={handleRequestClick}>
             {!sentRequestStatus && !receivedRequestStatus
               ? "Send Request"
-              : sentRequestStatus
+              : receivedRequestStatus
               ? "Accept/Deny"
               : "Cancel Request"}
           </button>

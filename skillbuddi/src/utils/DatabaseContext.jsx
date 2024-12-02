@@ -107,6 +107,7 @@ export const DatabaseProvider = ({ children }) => {
           status: "pending",
         }
       );
+
       return { success: true };
     } catch (error) {
       setError(error.message);
