@@ -256,7 +256,7 @@
   }
 
   .upload-profile-picture-button {
-    height: 4vh; /* Slightly taller for better visual balance */
+    height: 5vh; /* Slightly taller for better visual balance */
     width: 12vw; /* Increase width for more spaciousness */
     margin: 20px auto;
     margin-top: 25vh; /* Slightly higher margin to give it a bit of space */
@@ -269,9 +269,10 @@
     font-family: 'Rubik', sans-serif; /* Consistent font */
     font-size: 20px; /* Adjusted for a more balanced text size */
     cursor: pointer; /* Pointer cursor for interaction */
-    display: block;
+    display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
   }
   

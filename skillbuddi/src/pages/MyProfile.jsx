@@ -89,6 +89,12 @@ const MyProfile = () => {
     if (!newLocation || newLocation.trim() === "") {
       toast.error("Location cannot be empty!");
       return;
+    } else {
+      const regex = /^[\p{L}\s]+$/u;
+      if (!regex.test(newLocation)) {
+        toast.error("Invalid location");
+        return;
+      }
     }
 
     try {
@@ -112,7 +118,7 @@ const MyProfile = () => {
   const handleChangeName = async () => {
     const newFirstName = prompt("Enter a new First Name:");
     if (!newFirstName || newFirstName.trim() === "") {
-      toast.error("Last name cannot be empty!");
+      toast.error("First name cannot be empty!");
       return;
     }
 
@@ -134,32 +140,6 @@ const MyProfile = () => {
         setFirstName(newFirstName);
         setLastName(newLastName);
         toast.success("Name updated successfully!");
-      } else {
-        throw new Error(response.error);
-      }
-    } catch (error) {
-      toast.error(error.message || "Failed to update last name.");
-    }
-  };
-
-  const handleChangeLastName = async () => {
-    const newLastName = prompt("Enter a new last name:");
-
-    if (!newLastName || newLastName.trim() === "") {
-      toast.error("Last name cannot be empty!");
-      return;
-    }
-
-    try {
-      // Update the user's name in the database
-      const response = await updateUserData(user.$id, {
-        lastName: newLastName,
-      });
-
-      if (response.success) {
-        // Update local state for immediate UI feedback
-        setLastName(newLastName);
-        toast.success("Last name updated successfully!");
       } else {
         throw new Error(response.error);
       }
