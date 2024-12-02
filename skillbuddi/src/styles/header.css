@@ -42,7 +42,8 @@
     border-radius: 6px;
 
     height: 2vw;
-    width: 5vw;
+    min-width: 5vw;
+    max-width: auto;
     margin: 1vw;
 
     align-items: center;
