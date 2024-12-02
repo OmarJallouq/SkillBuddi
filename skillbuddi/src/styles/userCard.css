@@ -11,6 +11,7 @@
 
     border: 5px solid #e8af30;
     border-radius: 15px;
+    flex: 0 0 40vh;
 }
 
 .top-section {

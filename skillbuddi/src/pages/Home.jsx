@@ -74,9 +74,8 @@ const Home = () => {
                 ))}
               </div>
             </div>
-          ) : (
-            <></>
-          )}
+          
+          </div>
           <div className="cards-section">
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user) => (
