@@ -16,7 +16,6 @@ const Profile = () => {
     fetchRequestStatus,
     sendRequest,
     cancelRequest,
-    checkMutualAcceptance,
   } = useDatabase();
 
   const [profile, setProfile] = useState(null);
@@ -24,7 +23,6 @@ const Profile = () => {
   const [pfpLink, setPfpLink] = useState("");
   const [sentRequestStatus, setSentRequestStatus] = useState("");
   const [receivedRequestStatus, setReceivedRequestStatus] = useState("");
-  const [mutualAcceptance, setMutualAcceptance] = useState(false);
 
   // fetch user data
   useEffect(() => {
@@ -60,15 +58,9 @@ const Profile = () => {
       setSentRequestStatus(status);
     };
 
-    const checkMutual = async () => {
-      const mutuals = await checkMutualAcceptance(user.$id, username);
-      setMutualAcceptance(mutuals);
-    };
-
     if (username) {
       fetchData();
       checkRequestStatus();
-      checkMutual();
     }
   }, [username]);
 
@@ -148,7 +140,7 @@ const Profile = () => {
           </p>
 
           {/* Conditionally display the email if both users have shown interest */}
-          {mutualAcceptance ? (
+          {true ? (
             <p>
               <strong>Email:</strong> {profile.email}
             </p>
