@@ -37,8 +37,8 @@ const Header = () => {
             <Link className="header-link" to="/myProfile">
               My Profile
             </Link>
-            <Link className="header-link" to="/messages">
-              Messages
+            <Link className="header-link" to="/about">
+              About
             </Link>
           </div>
 
