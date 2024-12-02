@@ -79,11 +79,6 @@ const Profile = () => {
     return <div>Loading...</div>;
   }
 
-  const handleMessage = () => {
-    // Redirect to the Messaging page with the profile ID
-    navigate(`/messaging/${profile.id}`);
-  };
-
   const handleRequestClick = async () => {
     if (!sentRequest && !receivedRequest) {
       // Send request
@@ -195,16 +190,12 @@ const Profile = () => {
           </p>
 
           {/* Conditionally display the email if both users have shown interest */}
-          {true ? (
-            <p>
-              <strong>Email:</strong>{" "}
-              {sentRequest?.status === "accepted" || receivedRequest
-                ? profile.email
-                : "Private"}
-            </p>
-          ) : (
-            <></>
-          )}
+          <p>
+            <strong>Email:</strong>{" "}
+            {sentRequest?.status === "accepted" || receivedRequest
+              ? profile.email
+              : "Private"}
+          </p>
         </div>
       </div>
     </div>

@@ -170,7 +170,6 @@ export const DatabaseProvider = ({ children }) => {
           ]),
         ]
       );
-      console.log(response.documents[0]);
       return response.documents[0] || null; // Return the first matching request or null
     } catch (error) {
       console.error("Error fetching request status:", error);
