@@ -20,7 +20,8 @@ const Profile = () => {
 
   const [profile, setProfile] = useState(null);
   const [age, setAge] = useState(0);
-  const [requestStatus, setRequestStatus] = useState("");
+  const [sentRequestStatus, setSentRequestStatus] = useState("");
+  const [receivedRequestStatus, setReceivedRequestStatus] = useState("");
   const [mutualAcceptance, setMutualAcceptance] = useState(false);
 
   // fetch user data
@@ -51,7 +52,7 @@ const Profile = () => {
       }
     };
 
-    const checkRequestStatus = async () => {
+    const checkSentRequestStatus = async () => {
       const status = await fetchRequestStatus(user.$id, username);
       setSentRequestStatus(status);
     };
@@ -78,16 +79,16 @@ const Profile = () => {
   };
 
   const handleRequestClick = async () => {
-    if (!requestStatus) {
+    if (!sentRequestStatus) {
       // Send request
       const response = await sendRequest(user.$id, username);
       if (response.success) {
-        setRequestStatus("pending");
+        setSentRequestStatus("pending");
       } else toast.error(response.error);
-    } else if (requestStatus === "pending") {
+    } else if (sentRequestStatus === "pending") {
       // Cancel request
       const response = await cancelRequest(user.$id, username);
-      if (response.success) setRequestStatus(null);
+      if (response.success) setSentRequestStatus(null);
       else toast.error(response.error);
     }
   };
@@ -108,36 +109,27 @@ const Profile = () => {
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
-          {(!sentRequestStatus && !receivedRequestStatus) ? (
-            <button
-              className="button-request"
-              onClick={handleRequestClick}
-            >Send Request</button>
+          {!sentRequestStatus && !receivedRequestStatus ? (
+            <button className="button-request" onClick={handleRequestClick}>
+              Send Request
+            </button>
+          ) : sentRequestStatus === "pending" && !receivedRequestStatus ? (
+            <button className="button-pending" onClick={handleRequestClick}>
+              Cancel Request
+            </button>
+          ) : !sentRequestStatus && receivedRequestStatus === "pending" ? (
+            <div>
+              <button className="button-accept" onClick={handleRequestClick}>
+                Accept Request
+              </button>
+              <button className="button-deny" onClick={handleDenyRequest}>
+                Accept Request
+              </button>
+            </div>
           ) : (
-            (sentRequestStatus === "pending" && !receivedRequestStatus) ? (
-              <button
-                className="button-pending"
-                onClick={handleRequestClick}
-              >Cancel Request</button>
-            ) : (
-              (!requestStatus && receivedRequestStatus === "pending") ? (
-                <div>
-                <button
-                  className="button-accept"
-                  onClick={handleRequestClick}
-                >Accept Request</button>
-                <button
-                  className="button-deny"
-                  onClick={handleDenyRequest}
-                >Accept Request</button>
-                </div>
-              ) : (
-                <button
-                  className="button-request"
-                  onClick={handleRequestClick}
-                >Request Match</button>
-              )
-            )
+            <button className="button-request" onClick={handleRequestClick}>
+              Request Match
+            </button>
           )}
         </div>
 
