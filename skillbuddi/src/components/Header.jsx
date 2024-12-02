@@ -7,24 +7,6 @@ import { useDatabase } from "../utils/DatabaseContext";
 
 const Header = () => {
   const { user, logoutUser } = useAuth();
-  const { fetchNotifications } = useDatabase();
-
-  const [notifications, setNotifications] = useState([]);
-
-  useEffect(() => {
-    const fetchNotifs = async () => {
-      try {
-        const notifications = await fetchNotifications(user.$id);
-        setNotifications(notifications);
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      }
-    };
-
-    if (user) {
-      fetchNotifs();
-    }
-  }, [user]);
 
   const handleLogout = async () => {
     const response = await logoutUser();
@@ -59,15 +41,7 @@ const Header = () => {
               Messages
             </Link>
           </div>
-          {/* TODO: This shit */}
-          {/* <div>
-            Notifications: {notifications.length}
-            {notifications.map((notification) => (
-              <div key={notification.$id}>
-                <p>{notification.senderId} sent you a request!</p>
-              </div>
-            ))}
-          </div> */}
+
           <button className="logout-button" onClick={handleLogout}>
             Log Out
           </button>
