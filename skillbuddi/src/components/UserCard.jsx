@@ -8,14 +8,16 @@ import defaultPfp from "../assets/Default_pfp.svg.png";
 
 const UserCard = ({ username }) => {
   const navigate = useNavigate(); // Hook for navigation
-  const { fetchUserData } = useDatabase();
+  const { fetchUserData, getImageUrl } = useDatabase();
   const [profile, setProfile] = useState(null);
+  const [pfpLink, setPfpLink] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const userData = await fetchUserData(username);
         setProfile(userData);
+        setPfpLink(getImageUrl(userData.profilePicture));
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -40,7 +42,7 @@ const UserCard = ({ username }) => {
       <div className="top-section" onClick={handleProfileClick}>
         <div className="pfp-container">
           <img
-            src={profile.profilePicture ? profile.profilePicture : defaultPfp}
+            src={profile.profilePicture ? pfpLink : defaultPfp}
             className="pfp"
           />
         </div>
