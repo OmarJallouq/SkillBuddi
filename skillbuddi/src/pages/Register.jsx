@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/register.css";
+import logo from "../logo.PNG";
 
 const Register = () => {
   const registerForm = useRef(null);
@@ -16,12 +17,14 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [location, setLocation] = useState("");
 
   useEffect(() => {
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user, navigate]);
 
   const [errors, setErrors] = useState({
     firstName: "",
@@ -30,6 +33,8 @@ const Register = () => {
     email: "",
     password: "",
     passwordConfirm: "",
+    dateOfBirth: "",
+    location: "",
   });
 
   const handleSubmit = async (e) => {
@@ -40,6 +45,8 @@ const Register = () => {
     const email = registerForm.current.email.value;
     const password = registerForm.current.password.value;
     const passwordConfirm = registerForm.current.password2.value;
+    const dateOfBirth = registerForm.current.dateOfBirth.value;
+    const location = registerForm.current.location.value;
 
     let isValid = true;
 
@@ -54,7 +61,6 @@ const Register = () => {
         ...prevErrors,
         firstName: "",
       }));
-      
     }
 
     if (lastName.trim() === "") {
@@ -68,7 +74,6 @@ const Register = () => {
         ...prevErrors,
         lastName: "",
       }));
-      
     }
 
     if (username.trim() === "") {
@@ -88,7 +93,6 @@ const Register = () => {
         ...prevErrors,
         username: "",
       }));
-      
     }
 
     if (!email.includes("@")) {
@@ -102,19 +106,18 @@ const Register = () => {
         ...prevErrors,
         email: "",
       }));
-      
     }
 
     if (password.length < 8) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        password: "Minimum 6 characters required.",
+        password: "Minimum 8 characters required.",
       }));
       isValid = false;
     } else if (
       !/[a-zA-z]/.test(password) ||
       !/\d/.test(password) ||
-      !/[!@#$%^&*(),.?":{}|<>]/.test(password)
+      !/[!@#$%^&*(),.?":_{}|<>]/.test(password)
     ) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -127,7 +130,6 @@ const Register = () => {
         ...prevErrors,
         password: "",
       }));
-      
     }
 
     if (password !== passwordConfirm) {
@@ -141,7 +143,48 @@ const Register = () => {
         ...prevErrors,
         passwordConfirm: "",
       }));
-      
+    }
+
+    if (!dateOfBirth) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        dateOfBirth: "Please select a date of birth.",
+      }));
+      isValid = false;
+    } else {
+      const today = new Date();
+      const thresholdDate = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+      );
+      const dateAsDate = new Date(dateOfBirth);
+      if (dateAsDate > thresholdDate) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          dateOfBirth: "You must be over 18 to use SkillBuddi",
+        }));
+        isValid = false;
+      } else {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          dateOfBirth: "",
+        }));
+      }
+    }
+
+    // Validate Location
+    if (location.trim() === "") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        location: "Please enter a location.",
+      }));
+      isValid = false;
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        location: "",
+      }));
     }
 
     if (!isValid) {
@@ -156,6 +199,8 @@ const Register = () => {
       email,
       password,
       passwordConfirm,
+      dateOfBirth,
+      location,
     };
 
     const response = await registerUser(userInfo);
@@ -260,6 +305,35 @@ const Register = () => {
             )}
           </div>
 
+          <div className="form-field">
+            <input
+              className="register-box"
+              type="date"
+              name="dateOfBirth"
+              onChange={(e) => {
+                setDateOfBirth(dateOfBirth);
+              }}
+              placeholder="Enter your date of birth"
+            />
+            {errors.dateOfBirth && (
+              <p className="registration-error">{errors.dateOfBirth}</p>
+            )}
+          </div>
+
+          <div className="form-field">
+            <input
+              className="register-box"
+              type="text"
+              name="location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Enter your location"
+            />
+            {errors.location && (
+              <p className="registration-error">{errors.location}</p>
+            )}
+          </div>
+
           <div className="stuff-container">
             {" "}
             {/* this div is to reduce the margin between the button and the link */}
@@ -274,11 +348,7 @@ const Register = () => {
           </div>
         </form>
         <div className="registration-img">
-          <img
-            className="registration-img"
-            alt="omars face"
-            src="https://i.ibb.co/Zdv59dK/omer.jpg"
-          ></img>
+          <img className="registration-img" alt="omars face" src={logo}></img>
         </div>
       </div>
     </div>

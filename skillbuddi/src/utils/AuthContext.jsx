@@ -17,12 +17,15 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = async (userInfo) => {
     setLoading(true);
+    let LoggedIn = false;
     try {
       // Logs the User In
       await account.createEmailPasswordSession(
         userInfo.email,
         userInfo.password
       );
+
+      LoggedIn = true;
 
       // Gets all User Information
       const accountDetails = await account.get();
@@ -33,6 +36,9 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true };
     } catch (error) {
+      if (LoggedIn) {
+        logoutUser();
+      }
       setError(error.message || "Something went wrong");
       return { success: false, error: error.message || "Something went wrong" };
     } finally {
@@ -55,7 +61,7 @@ export const AuthProvider = ({ children }) => {
   const registerUser = async (userInfo) => {
     setLoading(true);
     try {
-      const userId = ID.unique();
+      const userId = userInfo.username;
 
       // Makes the Auth Record
       await account.create(
