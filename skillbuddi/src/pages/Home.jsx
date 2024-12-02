@@ -64,30 +64,29 @@ const Home = () => {
             />
           </div>
         </div>
-        <>
-          {pendingUsers.length > 0 ? (
-            <div className="pending-requests">
-              <h3 className="requests-title">Pending Requests</h3>
-              <div className="requests-scroll">
-                {pendingUsers.map((request) => (
-                  <UserCard key={request.$id} username={request.senderId} />
-                ))}
-              </div>
+
+        {pendingUsers.length > 0 ? (
+          <div className="pending-requests">
+            <h3 className="requests-title">Pending Requests</h3>
+            <div className="requests-scroll">
+              {pendingUsers.map((request) => (
+                <UserCard key={request.$id} username={request.senderId} />
+              ))}
             </div>
-          
           </div>
-          <div className="cards-section">
-            {filteredUsers.length > 0 ? (
-              filteredUsers.map((user) => (
-                <UserCard key={user.$id} username={user.$id} />
-              ))
-            ) : (
-              <p>
-                No matching users found, try adding skills or wanted skills!
-              </p>
-            )}
-          </div>
-        </>
+        ) : (
+          <></>
+        )}
+
+        <div className="cards-section">
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map((user) => (
+              <UserCard key={user.$id} username={user.$id} />
+            ))
+          ) : (
+            <p>No matching users found, try adding skills or wanted skills!</p>
+          )}
+        </div>
       </div>
     </div>
   );
