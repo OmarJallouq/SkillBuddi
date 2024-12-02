@@ -16,6 +16,7 @@ const Profile = () => {
     fetchRequestStatus,
     sendRequest,
     cancelRequest,
+    checkMutualAcceptance,
   } = useDatabase();
 
   const [profile, setProfile] = useState(null);
@@ -54,20 +55,20 @@ const Profile = () => {
       }
     };
 
-    const checkSentRequestStatus = async () => {
+    const checkRequestStatus = async () => {
       const status = await fetchRequestStatus(user.$id, username);
-      setSentRequestStatus(status);
+      setRequestStatus(status);
     };
 
-    const checkReceivedRequestStatus = async () => {
-      const status = await fetchRequestStatus(username, user.$id);
-      setReceivedRequestStatus(status);
+    const checkMutual = async () => {
+      const mutuals = await checkMutualAcceptance(user.$id, username);
+      setMutualAcceptance(mutuals);
     };
 
     if (username) {
       fetchData();
-      checkSentRequestStatus();
-      checkReceivedRequestStatus();
+      checkRequestStatus();
+      checkMutual();
     }
   }, [username]);
 
@@ -81,16 +82,16 @@ const Profile = () => {
   };
 
   const handleRequestClick = async () => {
-    if (!sentRequestStatus) {
+    if (!requestStatus) {
       // Send request
       const response = await sendRequest(user.$id, username);
       if (response.success) {
-        setSentRequestStatus("pending");
+        setRequestStatus("pending");
       } else toast.error(response.error);
-    } else if (sentRequestStatus === "pending") {
+    } else if (requestStatus === "pending") {
       // Cancel request
       const response = await cancelRequest(user.$id, username);
-      if (response.success) setSentRequestStatus(null);
+      if (response.success) setRequestStatus(null);
       else toast.error(response.error);
     }
   };
@@ -102,6 +103,7 @@ const Profile = () => {
       </h1>
       <div className="profile-container">
         <div className="profile-avatar">
+
           <img
             src={true ? pfpLink : defaultPfp}
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
