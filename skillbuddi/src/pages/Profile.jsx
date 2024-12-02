@@ -106,7 +106,7 @@ const Profile = () => {
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
-          <button className="{buttonType}" onClick={handleRequestClick()}>
+          <button className="{buttonType}">
             {!sentRequestStatus && !receivedRequestStatus
               ? "Send Request"
               : sentRequestStatus
@@ -114,24 +114,16 @@ const Profile = () => {
               : "Cancel Request"}
           </button>
           {!sentRequestStatus && !receivedRequestStatus ? (
-            <button className="button-request" onClick={handleRequestClick()}>
-              Send Request
-            </button>
+            <button className="button-request">Send Request</button>
           ) : sentRequestStatus === "pending" && !receivedRequestStatus ? (
-            <button className="button-pending" onClick={handleRequestClick()}>
-              Cancel Request
-            </button>
+            <button className="button-pending">Cancel Request</button>
           ) : !sentRequestStatus && receivedRequestStatus === "pending" ? (
             <div>
-              <button className="button-accept" onClick={handleRequestClick()}>
-                Accept Request
-              </button>
+              <button className="button-accept">Accept Request</button>
               <button className="button-deny">Accept Request</button>
             </div>
           ) : (
-            <button className="button-request" onClick={handleRequestClick()}>
-              Request Match
-            </button>
+            <button className="button-request">Request Match</button>
           )}
         </div>
 
