@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
   const registerUser = async (userInfo) => {
     setLoading(true);
     try {
-      const userId = ID.unique();
+      const userId = userInfo.username;
 
       // Makes the Auth Record
       await account.create(
