@@ -95,7 +95,7 @@ const Profile = () => {
         setSentRequest(null);
         toast.success("Request Cancelled Successfully");
       } else toast.error(response.error);
-    } else if (receivedRequest.status === "pending") {
+    } else if (receivedRequest?.status === "pending") {
       //update status to accepted
       const response = await updateRequestStatus(receivedRequest.$id, {
         status: "accepted",
@@ -104,8 +104,25 @@ const Profile = () => {
         setReceivedRequest(response.response);
         toast.success("Request Accepted");
       } else toast.error(response.error);
-    } else if (receivedRequest === "accepted" || sentRequest === "accepted") {
-      //accepted
+    } else if (receivedRequest?.status === "accepted" || sentRequest?.status === "accepted") {
+      const removeConfirm = window.confirm("Would you like to remove your request?");
+        if (removeConfirm) {
+          if (receivedRequest) {
+            const response = await cancelRequest(username, user.$id);
+            if (response.success) {
+              setSentRequest(null);
+              toast.success("Removed Request Successfully");
+            } else toast.error(response.error);
+          } else {
+            const response = await cancelRequest(user.$id, username);
+            if (response.success) {
+              setSentRequest(null);
+              toast.success("Removed Request Successfully");
+            } else toast.error(response.error);
+          }
+        } else {
+          // do nothing since the user cancelled the unrequest
+        }
     }
   };
 
