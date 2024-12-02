@@ -19,7 +19,6 @@ const Home = () => {
       const response = await fetchPending(user.$id);
       if (response.success) {
         setPendingUsers(response.response);
-        console.log(response.response);
       } else {
         toast.error("Error fetching pending requests");
       }
@@ -66,18 +65,18 @@ const Home = () => {
           </div>
         </div>
         <>
-          <div className="pending-requests">
-            <h3 className="requests-title">Pending Requests</h3>
-            <div className="requests-scroll">
-              {pendingUsers.length > 0 ? (
-                pendingUsers.map((request) => (
+          {pendingUsers.length > 0 ? (
+            <div className="pending-requests">
+              <h3 className="requests-title">Pending Requests</h3>
+              <div className="requests-scroll">
+                {pendingUsers.map((request) => (
                   <UserCard key={request.$id} username={request.senderId} />
-                ))
-              ) : (
-                <p>No pending requests</p>
-              )}
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <></>
+          )}
           <div className="cards-section">
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user) => (
