@@ -111,7 +111,7 @@ const Register = () => {
     if (password.length < 8) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        password: "Minimum 6 characters required.",
+        password: "Minimum 8 characters required.",
       }));
       isValid = false;
     } else if (
