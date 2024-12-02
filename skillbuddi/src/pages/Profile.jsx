@@ -20,9 +20,9 @@ const Profile = () => {
 
   const [profile, setProfile] = useState(null);
   const [age, setAge] = useState(0);
+  const [pfpLink, setPfpLink] = useState("");
   const [sentRequestStatus, setSentRequestStatus] = useState("");
   const [receivedRequestStatus, setReceivedRequestStatus] = useState("");
-  const [mutualAcceptance, setMutualAcceptance] = useState(false);
 
   // fetch user data
   useEffect(() => {
@@ -46,26 +46,21 @@ const Profile = () => {
       try {
         const userData = await fetchUserData(username);
         setProfile(userData);
+        setPfpLink(getImageUrl(userData.profilePicture));
         setAge(calculateAge(userData.dateOfBirth));
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
-    const checkSentRequestStatus = async () => {
+    const checkRequestStatus = async () => {
       const status = await fetchRequestStatus(user.$id, username);
       setSentRequestStatus(status);
     };
 
-    const checkReceivedRequestStatus = async () => {
-      const status = await fetchRequestStatus(username, user.$id);
-      setReceivedRequestStatus(status);
-    };
-
     if (username) {
       fetchData();
-      checkSentRequestStatus();
-      checkReceivedRequestStatus();
+      checkRequestStatus();
     }
   }, [username]);
 
@@ -101,11 +96,7 @@ const Profile = () => {
       <div className="profile-container">
         <div className="profile-avatar">
           <img
-            src={
-              profile.profilePicture
-                ? getImageUrl(profile.profilePicture)
-                : defaultPfp
-            }
+            src={true ? pfpLink : defaultPfp}
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
@@ -151,7 +142,7 @@ const Profile = () => {
           </p>
 
           {/* Conditionally display the email if both users have shown interest */}
-          {mutualAcceptance ? (
+          {true ? (
             <p>
               <strong>Email:</strong> {profile.email}
             </p>
