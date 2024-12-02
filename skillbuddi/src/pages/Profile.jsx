@@ -57,7 +57,7 @@ const Profile = () => {
 
     const checkRequestStatus = async () => {
       const status = await fetchRequestStatus(user.$id, username);
-      setRequestStatus(status);
+      setSentRequestStatus(status);
     };
 
     const checkMutual = async () => {
@@ -82,16 +82,16 @@ const Profile = () => {
   };
 
   const handleRequestClick = async () => {
-    if (!requestStatus) {
+    if (!sentRequestStatus) {
       // Send request
       const response = await sendRequest(user.$id, username);
       if (response.success) {
-        setRequestStatus("pending");
+        setSentRequestStatus("pending");
       } else toast.error(response.error);
-    } else if (requestStatus === "pending") {
+    } else if (sentRequestStatus === "pending") {
       // Cancel request
       const response = await cancelRequest(user.$id, username);
-      if (response.success) setRequestStatus(null);
+      if (response.success) setSentRequestStatus(null);
       else toast.error(response.error);
     }
   };
@@ -103,7 +103,6 @@ const Profile = () => {
       </h1>
       <div className="profile-container">
         <div className="profile-avatar">
-
           <img
             src={true ? pfpLink : defaultPfp}
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
