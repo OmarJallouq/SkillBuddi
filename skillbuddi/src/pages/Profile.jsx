@@ -59,7 +59,7 @@ const Profile = () => {
     };
 
     const checkReceivedRequestStatus = async () => {
-      const status = await fetchReceivedRequestStatus(username, user.$id);
+      const status = await fetchRequestStatus(username, user.$id);
       setReceivedRequestStatus(status);
     };
 
