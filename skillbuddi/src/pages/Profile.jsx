@@ -192,7 +192,8 @@ const Profile = () => {
           {/* Conditionally display the email if both users have shown interest */}
           <p>
             <strong>Email:</strong>{" "}
-            {sentRequest?.status === "accepted" || receivedRequest
+            {sentRequest?.status === "accepted" ||
+            receivedRequest?.status === "accepted"
               ? profile.email
               : "Send a Request to see contact info."}
           </p>
