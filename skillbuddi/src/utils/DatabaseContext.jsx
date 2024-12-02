@@ -94,15 +94,6 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  const getImageUrl = (fileId) => {
-    try {
-      const url = storage.getFilePreview(BUCKET_ID, fileId);
-      return url; // This can be used directly in an <img> tag
-    } catch (error) {
-      return null;
-    }
-  };
-
   const sendRequest = async (senderId, receiverId) => {
     try {
       await databases.createDocument(

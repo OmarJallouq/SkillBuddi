@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../utils/AuthContext";
 import SkillTag from "../components/SkillTag";
-import { useAuth } from "../utils/AuthContext";
 import { useDatabase } from "../utils/DatabaseContext";
 import { toast } from "react-toastify";
 import defaultPfp from "../assets/Default_pfp.svg.png";
@@ -271,13 +270,13 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="whole-thing">
-      <div className="profile-container">
+    <div className="my-whole-thing">
+      <div className="my-profile-container">
         <div className="profile-header">
           <img
             src={user.profilePicture ? pfpLink : defaultPfp}
             alt="Profile Avatar"
-            className="avatar"
+            className="my-avatar"
           />
           <div>
             <input
