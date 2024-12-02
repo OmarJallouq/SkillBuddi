@@ -85,8 +85,8 @@ export const AuthProvider = ({ children }) => {
         email: userInfo.email,
         Bio: "",
         Skills: [],
-        location: "",
-        dateOfBirth: null, //TODO: default DOB
+        location: userInfo.location,
+        dateOfBirth: userInfo.dateOfBirth,
         profilePicture: null, //TODO: default pfp
       };
 
