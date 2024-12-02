@@ -109,18 +109,17 @@ const Profile = () => {
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
-          <button className="button" onClick={handleRequestClick}>
+          <button className="button-request" onClick={handleRequestClick}>
             {!sentRequestStatus && !receivedRequestStatus
               ? "Send Request"
               : receivedRequestStatus
-              ? "Accept/Deny"
+              ? "Accept Request"
               : "Cancel Request"}
           </button>
           <button
-            className="button-deny"
-            style={{ visibility: !receivedRequestStatus && sentRequestStatus }}
+            className={ (receivedRequestStatus && !sentRequestStatus) ? "button-request" : "button-hidden"}
           >
-            Deny
+            Deny Request
           </button>
         </div>
 

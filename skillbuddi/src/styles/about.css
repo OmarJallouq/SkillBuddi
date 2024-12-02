@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+.container {
+    margin-top: 6vh; /* this may be unnecessary after merging with the routing branch (in which the header is properly done) */
+
+    height: 100vh;
+    width: 100vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    font-family: 'Rubik', sans-serif;
+    line-height: 1.6;
+
+    background: linear-gradient(to right, #e7e6dd, #ffffff);
+}
+
+.header-section {
+    width: 100vw;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    text-align: center;
+    background-color: #162f65;
+    color: #fff;
+}
+
+.about-logo {
+    width: 11vw;
+    height: 8vw;
+}
+
+.hidden-logo {
+    /* invisible logo used to offset the title to the center of the header bar */
+    width: 8vw;
+    height: 8vw;
+
+    visibility: hidden;
+}
+
+.title {
+    margin-top: 4vh;
+
+    font-weight: 800;
+    font-size: 60px;
+    line-height: 1.0;
+}
+    
+.subtitle {
+    margin-bottom: 1.5vh;
+
+    color: #72726E;
+
+    font-size: 16px;
+}
+    
+.content-section {
+    height: 80vh;
+    width: 70vw;
+
+    text-align: center;
+}
+    
+.section-title {
+    margin-top: 1vh;
+    margin-bottom: 0.5vh;
+
+    font-size: 34px;
+    
+    color: #162f65;
+}
+
+.text-and-logos {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+    
+.text {
+    text-align: justify;
+    text-align-last: center;
+
+    font-size: 18px;
+    margin-bottom: 3vh;
+    color: #555;
+}
+
+.icon {
+    width: 15vh;
+    height: 13vh;
+
+    margin-left: 3vw;
+    margin-right: 3vw;
+}
+
+.icon-hidden {
+    width: 15vh;
+    height: 13vh;
+
+    margin-left: 3vw;
+    margin-right: 3vw;
+
+    visibility: hidden;
+}
