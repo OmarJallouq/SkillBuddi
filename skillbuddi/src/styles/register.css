@@ -36,14 +36,14 @@
     background-color: white;
     border-radius: 20px;
 
-    border:3px solid #0f2403;
+    border: 3px solid #0f2403;
 }
 
 .form-field {
     /* contains input box, error message, and (if someone enables it) a title */
     margin-left: 3vw;
 
-    display:flex;
+    display: flex;
     flex-direction: row;
     justify-content: left;
     align-items: center;
@@ -146,5 +146,4 @@
 .Bio-field {
     resize: none;
     height: 100px;
-  }
-  
+}

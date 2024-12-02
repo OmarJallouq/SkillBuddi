@@ -6,7 +6,8 @@ import Home from './pages/Home';
 import Messaging from './pages/Messaging';
 import MyProfile from './pages/MyProfile';
 import Profile from './pages/Profile';
-import PageNotFound from './pages/PageNotFound';
+import PageNotFound from './pages/PageNotFound';;
+import About from './pages/About';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './utils/AuthContext';
 import PrivateRoutes from './utils/PrivateRoutes'
@@ -29,8 +30,8 @@ const App = () => {
             <Header />
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              {/* 404 page */}
+              <Route path="/register" element={<Register />} />\
+              <Route path="/about" element={<About />} />
               <Route path="*" element={<PageNotFound />} />
               <Route element={<PrivateRoutes />}>
                 <Route path="/" element={<Home />} />

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
 import { toast } from "react-toastify";
 import "../styles/header.css";
-import logo from "../logo.PNG"
+import logo from "../logo.PNG";
 
 const Header = () => {
   const { user, logoutUser } = useAuth();
@@ -22,16 +22,12 @@ const Header = () => {
         <nav className="header-bar">
           <div className="header-logo">
             <Link to="/">
-              <img
-                className="logo-img"
-                alt="logo"
-                src={logo}
-              ></img>
+              <img className="logo-img" alt="logo" src={logo}></img>
             </Link>
           </div>
 
           <div className="links-container">
-            <Link className="header-link" to="/">
+            <Link className="header-link" to="/Matching">
               Matching
             </Link>
             <Link className="header-link" to="/myProfile">
@@ -39,6 +35,9 @@ const Header = () => {
             </Link>
             <Link className="header-link" to="/about">
               About
+            </Link>
+            <Link className="header-link" to="/About">
+              About Us
             </Link>
           </div>
 
