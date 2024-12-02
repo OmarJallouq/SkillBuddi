@@ -194,7 +194,7 @@ const Profile = () => {
             <strong>Email:</strong>{" "}
             {sentRequest?.status === "accepted" || receivedRequest
               ? profile.email
-              : "Private"}
+              : "Send a Request to see contact info."}
           </p>
         </div>
       </div>
