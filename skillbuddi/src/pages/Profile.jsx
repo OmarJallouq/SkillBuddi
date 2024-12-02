@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDatabase } from "../utils/DatabaseContext";
+import { useAuth } from "../utils/AuthContext";
 import defaultPfp from "../assets/Default_pfp.svg.png";
+import { toast } from "react-toastify";
 import "../styles/profile.css";
 
 const Profile = () => {
   const { username } = useParams(); // Extract the user ID from the URL
+  const { user } = useAuth();
   const navigate = useNavigate(); // Hook for navigation
-  const { fetchUserData, getImageUrl } = useDatabase();
+  const {
+    fetchUserData,
+    getImageUrl,
+    fetchRequestStatus,
+    sendRequest,
+    cancelRequest,
+    checkMutualAcceptance,
+  } = useDatabase();
+
   const [profile, setProfile] = useState(null);
   const [age, setAge] = useState(0);
-  
-
-  // Local state to track if both users are interested
-  const [userHasClicked, setUserHasClicked] = useState(false);  // Current user's interest status
-  const [otherUserHasClicked, setOtherUserHasClicked] = useState(false);  // Other user's interest status
-
-  
+  const [requestStatus, setRequestStatus] = useState("");
+  const [mutualAcceptance, setMutualAcceptance] = useState(false);
 
   // fetch user data
   useEffect(() => {
@@ -46,8 +52,20 @@ const Profile = () => {
       }
     };
 
+    const checkRequestStatus = async () => {
+      const status = await fetchRequestStatus(user.$id, username);
+      setRequestStatus(status);
+    };
+
+    const checkMutual = async () => {
+      const mutuals = await checkMutualAcceptance(user.$id, username);
+      setMutualAcceptance(mutuals);
+    };
+
     if (username) {
       fetchData();
+      checkRequestStatus();
+      checkMutual();
     }
   }, [username]);
 
@@ -60,16 +78,20 @@ const Profile = () => {
     navigate(`/messaging/${profile.id}`);
   };
 
-  // Handle current user's interest in learning the skill
-  const handleUserInterestClick = () => {
-    setUserHasClicked(true);
+  const handleRequestClick = async () => {
+    if (!requestStatus) {
+      // Send request
+      const response = await sendRequest(user.$id, username);
+      if (response.success) {
+        setRequestStatus("pending");
+      } else toast.error(response.error);
+    } else if (requestStatus === "pending") {
+      // Cancel request
+      const response = await cancelRequest(user.$id, username);
+      if (response.success) setRequestStatus(null);
+      else toast.error(response.error);
+    }
   };
-
-  // Handle the other user's interest in learning the skill
-  const handleOtherUserInterestClick = () => {
-    setOtherUserHasClicked(true);
-  };
-
 
   return (
     <div className="whole-thing">
@@ -88,7 +110,19 @@ const Profile = () => {
             className="avatar"
           />
           <button className="message-button" onClick={handleMessage}>
-            Message {profile.firstName}
+            Send Request
+          </button>
+          <button
+            onClick={handleRequestClick}
+            style={{
+              backgroundColor: requestStatus === "pending" ? "gray" : "blue",
+            }}
+          >
+            {requestStatus === "pending"
+              ? "Request Sent"
+              : requestStatus === "accepted"
+              ? "Already Friends"
+              : "Add Request"}
           </button>
         </div>
 
@@ -108,22 +142,15 @@ const Profile = () => {
           <p>
             <strong>Bio:</strong> {profile.Bio}
           </p>
-          
+
           {/* Conditionally display the email if both users have shown interest */}
-          {userHasClicked && otherUserHasClicked && (
-            <p><strong>Email:</strong> {profile.email}</p>
+          {mutualAcceptance ? (
+            <p>
+              <strong>Email:</strong> {profile.email}
+            </p>
+          ) : (
+            <></>
           )}
-
-          {/*Button for current user to express interest */}
-          <button onClick={handleUserInterestClick} className="interest-button">
-            Interested in learning this skill
-          </button>
-
-          {/*Simulate the other user clicking the button */}
-          <button onClick={handleOtherUserInterestClick} className="interest-button">
-            Other User Interested in Learning
-          </button>
-          
         </div>
       </div>
     </div>

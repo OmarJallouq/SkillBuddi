@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState } from "react";
 import { databases, storage } from "../appwriteConfig";
-import { ID } from "appwrite";
+import { ID, Query } from "appwrite";
 
 const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
 const USER_COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_COLLECTION}`;
-const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
+const INTERESTS_COLLECTION = `${process.env.REACT_APP_REQUESTS_COLLECTION}`;
+const BUCKET_ID = `${process.env.REACT_APP_INTERESTS_COLLECTION}`;
 
 const DatabaseContext = createContext();
 
@@ -94,6 +95,114 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
+  const sendRequest = async (senderId, receiverId) => {
+    try {
+      await databases.createDocument(
+        DATABASE_ID,
+        INTERESTS_COLLECTION,
+        ID.unique(),
+        {
+          senderId,
+          receiverId,
+          status: "pending",
+        }
+      );
+      return { success: true };
+    } catch (error) {
+      setError(error.message);
+      return { success: false, error: error.message };
+    }
+  };
+
+  const cancelRequest = async (senderId, receiverId) => {
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        INTERESTS_COLLECTION,
+        [
+          Query.equal("senderId", senderId),
+          Query.equal("receiverId", receiverId),
+        ]
+      );
+
+      if (response.documents.length > 0) {
+        await databases.deleteDocument(
+          DATABASE_ID,
+          INTERESTS_COLLECTION,
+          response.documents[0].$id
+        );
+      }
+      return { success: true };
+    } catch (error) {
+      setError(error.message);
+      console.error("Error cancelling request:", error);
+      return { success: false, error: error.message };
+    }
+  };
+
+  const fetchRequestStatus = async (senderId, receiverId) => {
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        INTERESTS_COLLECTION,
+        [
+          Query.and([
+            Query.equal("senderId", senderId),
+            Query.equal("receiverId", receiverId),
+          ]),
+        ]
+      );
+
+      return response.documents[0] || null; // Return the first matching request or null
+    } catch (error) {
+      console.error("Error fetching request status:", error);
+      return null;
+    }
+  };
+
+  const fetchNotifications = async (userId) => {
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        INTERESTS_COLLECTION,
+        [Query.equal("receiverId", userId), Query.equal("status", "pending")]
+      );
+      return response.documents;
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      return null;
+    }
+  };
+
+  const checkMutualAcceptance = async (userId1, userId2) => {
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        INTERESTS_COLLECTION,
+        [
+          Query.or([
+            Query.and([
+              Query.equal("senderId", userId1),
+              Query.equal("receiverId", userId2),
+              Query.equal("status", "accepted"),
+            ]),
+            Query.and([
+              Query.equal("senderId", userId2),
+              Query.equal("receiverId", userId1),
+              Query.equal("status", "accepted"),
+            ]),
+          ]),
+        ]
+      );
+
+      // If both have `accepted` statuses, return true
+      return response.documents.length;
+    } catch (error) {
+      console.error("Error checking mutual acceptance:", error);
+      return false;
+    }
+  };
+
   const contextData = {
     fetchUserData,
     updateUserData,
@@ -101,6 +210,11 @@ export const DatabaseProvider = ({ children }) => {
     uploadProfilePicture,
     deleteUserData,
     getImageUrl,
+    sendRequest,
+    fetchRequestStatus,
+    cancelRequest,
+    fetchNotifications,
+    checkMutualAcceptance,
   };
 
   return (
