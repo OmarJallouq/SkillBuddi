@@ -106,25 +106,19 @@ const Profile = () => {
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
-          <button className="{buttonType}">
+          <button className="button">
             {!sentRequestStatus && !receivedRequestStatus
               ? "Send Request"
               : sentRequestStatus
               ? "Accept/Deny"
               : "Cancel Request"}
           </button>
-          {!sentRequestStatus && !receivedRequestStatus ? (
-            <button className="button-request">Send Request</button>
-          ) : sentRequestStatus === "pending" && !receivedRequestStatus ? (
-            <button className="button-pending">Cancel Request</button>
-          ) : !sentRequestStatus && receivedRequestStatus === "pending" ? (
-            <div>
-              <button className="button-accept">Accept Request</button>
-              <button className="button-deny">Accept Request</button>
-            </div>
-          ) : (
-            <button className="button-request">Request Match</button>
-          )}
+          <button
+            className="button-deny"
+            style={{ visibility: !receivedRequestStatus && sentRequestStatus }}
+          >
+            Deny
+          </button>
         </div>
 
         <div className="profile-details">
