@@ -2,7 +2,7 @@
 
 .whole-card {
     width: 28vw;
-    height: 30vh;
+    height: 35vh;
 
     display: flex;
     flex-direction: column;
@@ -74,7 +74,7 @@
     height: 12vh;
     margin-left: 1vh;
     margin-right: 1vh;
-    margin-top: 0px;
+    margin-top: 3vh;
     margin-bottom: 0px;
 
     font-family: 'Rubik', sans-serif;
