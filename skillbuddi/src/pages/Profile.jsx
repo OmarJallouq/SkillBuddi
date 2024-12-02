@@ -146,7 +146,7 @@ const Profile = () => {
       <div className="profile-container">
         <div className="profile-avatar">
           <img
-            src={true ? pfpLink : defaultPfp}
+            src={profile.profilePicture ? pfpLink : defaultPfp}
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
