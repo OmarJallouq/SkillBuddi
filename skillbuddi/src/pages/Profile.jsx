@@ -21,7 +21,8 @@ const Profile = () => {
 
   const [profile, setProfile] = useState(null);
   const [age, setAge] = useState(0);
-  const [requestStatus, setRequestStatus] = useState("");
+  const [sentRequestStatus, setSentRequestStatus] = useState("");
+  const [receivedRequestStatus, setReceivedRequestStatus] = useState("");
   const [mutualAcceptance, setMutualAcceptance] = useState(false);
 
   // fetch user data
@@ -52,9 +53,14 @@ const Profile = () => {
       }
     };
 
-    const checkRequestStatus = async () => {
+    const checkSentRequestStatus = async () => {
       const status = await fetchRequestStatus(user.$id, username);
-      setRequestStatus(status);
+      setSentRequestStatus(status);
+    };
+
+    const checkReceivedRequestStatus = async () => {
+      const status = await fetchReceivedRequestStatus(username, user.$id);
+      setReceivedRequestStatus(status);
     };
 
     const checkMutual = async () => {
@@ -64,7 +70,8 @@ const Profile = () => {
 
     if (username) {
       fetchData();
-      checkRequestStatus();
+      checkSentRequestStatus();
+      checkReceivedRequestStatus();
       checkMutual();
     }
   }, [username]);
@@ -79,16 +86,16 @@ const Profile = () => {
   };
 
   const handleRequestClick = async () => {
-    if (!requestStatus) {
+    if (!sentRequestStatus) {
       // Send request
       const response = await sendRequest(user.$id, username);
       if (response.success) {
-        setRequestStatus("pending");
+        setSentRequestStatus("pending");
       } else toast.error(response.error);
-    } else if (requestStatus === "pending") {
+    } else if (sentRequestStatus === "pending") {
       // Cancel request
       const response = await cancelRequest(user.$id, username);
-      if (response.success) setRequestStatus(null);
+      if (response.success) setSentRequestStatus(null);
       else toast.error(response.error);
     }
   };
@@ -115,12 +122,13 @@ const Profile = () => {
           <button
             onClick={handleRequestClick}
             style={{
-              backgroundColor: requestStatus === "pending" ? "gray" : "blue",
+              backgroundColor:
+                sentRequestStatus === "pending" ? "gray" : "blue",
             }}
           >
-            {requestStatus === "pending"
+            {sentRequestStatus === "pending"
               ? "Request Sent"
-              : requestStatus === "accepted"
+              : sentRequestStatus === "accepted"
               ? "Already Friends"
               : "Add Request"}
           </button>
