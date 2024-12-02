@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap');
+
+.whole-card {
+    width: 28vw;
+    height: 30vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: #e7e6dd;
+
+    border: 5px solid #e8af30;
+    border-radius: 15px;
+    flex: 0 0 40vh;
+}
+
+.top-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: top;
+
+    margin-top: 1vh;
+}
+
+.pfp {
+    width: 6vh;
+    height: 6vh;
+    border-radius: 50%;
+
+    margin-left: 1vh;
+}
+
+.top-text {
+    margin-left: 1vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: top;
+
+    font-family: 'Rubik', sans-serif;
+    /*font-weight: 500;*/
+}
+
+.top-text h1 {
+    font-size: 24px;
+}
+
+.top-text p {
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    color: #72726E;
+}
+
+.redirect-button {
+    height: 6vh;
+    width: 6vw;
+    margin: auto;
+
+    background-color: #e8c766;
+    color: #0f2043;
+
+    border: 4px solid #3361ac;
+    border-radius: 10px;
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+.bio-section {
+    height: 12vh;
+    margin-left: 1vh;
+    margin-right: 1vh;
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    font-family: 'Rubik', sans-serif;
+}
+
+.skills-section {
+    margin-left: 1vh;
+    margin-right: 1vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+
+    font-family: 'Rubik', sans-serif;
+}
