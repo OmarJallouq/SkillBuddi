@@ -4,6 +4,7 @@ import { ID, Query } from "appwrite";
 
 const DATABASE_ID = `${process.env.REACT_APP_APPWRITE_DATABASE}`;
 const USER_COLLECTION_ID = `${process.env.REACT_APP_APPWRITE_COLLECTION}`;
+const INTERESTS_COLLECTION = `${process.env.REACT_APP_REQUESTS_COLLECTION}`;
 const BUCKET_ID = `${process.env.REACT_APP_APPWRITE_STORAGE}`;
 
 const DatabaseContext = createContext();
