@@ -130,9 +130,10 @@ const Profile = () => {
             className="avatar"
           />
           <button className="button-request" onClick={handleRequestClick}>
-            {(sentRequest.status==="accepted" || receivedRequest.status==="accepted")
+            {sentRequest?.status === "accepted" ||
+            receivedRequest?.status === "accepted"
               ? "Request Accepted"
-              : (!sentRequest && !receivedRequest)
+              : !sentRequest && !receivedRequest
               ? "Send Request"
               : receivedRequest
               ? "Accept Request"
@@ -140,7 +141,7 @@ const Profile = () => {
           </button>
           <button
             className={
-              receivedRequest && !sentRequest
+              receivedRequest?.status === "pending" && !sentRequest
                 ? "button-request"
                 : "button-hidden"
             }
