@@ -6,7 +6,7 @@ import { useDatabase } from "../utils/DatabaseContext";
 
 const Home = () => {
   const { user } = useAuth(); // Access the currently logged-in user
-  const { fetchMatchingUsers } = useDatabase();
+  const { fetchMatchingUsers, fetchPending } = useDatabase();
   const [searchValue, setSearchValue] = useState("");
   const [matchingUsers, setMatchingUsers] = useState([]); // Initialize as an empty array
   const [loading, setLoading] = useState(false);
@@ -25,6 +25,8 @@ const Home = () => {
         .finally(() => {
           setLoading(false); // Set loading to false after fetching is done
         });
+
+      fetchPending();
     }
   }, [user, fetchMatchingUsers]);
 

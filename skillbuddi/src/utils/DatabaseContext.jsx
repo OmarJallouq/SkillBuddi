@@ -35,32 +35,36 @@ export const DatabaseProvider = ({ children }) => {
         DATABASE_ID,
         USER_COLLECTION_ID
       );
-      const currentUserSkills = currentUser.Skills.map(skill => skill.toLowerCase());
-      const currentUserWantedSkills = currentUser.Skills_wanted.map(skill => skill.toLowerCase());
-
+      const currentUserSkills = currentUser.Skills.map((skill) =>
+        skill.toLowerCase()
+      );
+      const currentUserWantedSkills = currentUser.Skills_wanted.map((skill) =>
+        skill.toLowerCase()
+      );
 
       // Now, filter the users based on matching skills and wanted skills
       const filteredUsers = response.documents.filter((user) => {
-
         // Skip the current user
         if (user.$id === currentUser.$id) return false;
 
-        const userSkills = user.Skills.map(skill => skill.toLowerCase());
-        const userWantedSkills = user.Skills_wanted.map(skill => skill.toLowerCase());
+        const userSkills = user.Skills.map((skill) => skill.toLowerCase());
+        const userWantedSkills = user.Skills_wanted.map((skill) =>
+          skill.toLowerCase()
+        );
 
-       // Check if any of the user's skills match the current user's wanted skills
-      const hasMatchingSkills = currentUserWantedSkills.some(wantedSkill =>
-        userSkills.includes(wantedSkill)
-      );
+        // Check if any of the user's skills match the current user's wanted skills
+        const hasMatchingSkills = currentUserWantedSkills.some((wantedSkill) =>
+          userSkills.includes(wantedSkill)
+        );
 
-      // Check if any of the user's wanted skills match the current user's skills
-      const hasMatchingWantedSkills = userWantedSkills.some(wantedSkill =>
-        currentUserSkills.includes(wantedSkill)
-      );
+        // Check if any of the user's wanted skills match the current user's skills
+        const hasMatchingWantedSkills = userWantedSkills.some((wantedSkill) =>
+          currentUserSkills.includes(wantedSkill)
+        );
 
-      // Return true if there's a match in both directions simultaneously
-      return hasMatchingSkills && hasMatchingWantedSkills;
-    });
+        // Return true if there's a match in both directions simultaneously
+        return hasMatchingSkills && hasMatchingWantedSkills;
+      });
 
       return filteredUsers;
     } catch (err) {
@@ -126,6 +130,20 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
+  const fetchPending = async (userId) => {
+    try {
+      const response = await databases.listDocuments(
+        DATABASE_ID,
+        INTERESTS_COLLECTION,
+        [Query.equal("receiverId", userId), Query.equal("status", "pending")]
+      );
+      return response.documents;
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      return null;
+    }
+  };
+
   const contextData = {
     fetchUserData,
     fetchMatchingUsers,
@@ -133,6 +151,7 @@ export const DatabaseProvider = ({ children }) => {
     createUserData,
     uploadProfilePicture,
     deleteUserData,
+    fetchPending,
   };
 
   return (
