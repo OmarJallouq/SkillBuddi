@@ -121,15 +121,15 @@ const Profile = () => {
             className="avatar"
           />
           <button className="button-request" onClick={handleRequestClick}>
-            {!sentRequestStatus && !receivedRequestStatus
+            {!sentRequest && !receivedRequest
               ? "Send Request"
-              : receivedRequestStatus
+              : receivedRequest
               ? "Accept Request"
               : "Cancel Request"}
           </button>
           <button
             className={
-              receivedRequestStatus && !sentRequestStatus
+              receivedRequest && !sentRequest
                 ? "button-request"
                 : "button-hidden"
             }
