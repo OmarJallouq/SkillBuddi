@@ -155,7 +155,6 @@
 
   text-align: center;
   line-height: normal;
-
   color: #72726E;
   background: none;
 
@@ -165,6 +164,10 @@
   cursor: pointer;
 
   font-size: 14px;
+  
+  justify-content: center;
+  padding:0;
+  
 }
 
 
