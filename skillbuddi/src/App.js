@@ -34,7 +34,6 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/myProfile" element={<MyProfile />} />
                 <Route path="/profile:username" element={<Profile />} />
-                <Route path="/about" element={<About />} />
               </Route>
             </Routes>
           </AuthProvider>
