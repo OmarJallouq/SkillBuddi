@@ -73,7 +73,7 @@ const Profile = () => {
       checkSentRequestStatus();
       checkReceivedRequestStatus();
     }
-  }, [username]);
+  }, [username, fetchRequestStatus, fetchUserData, getImageUrl, navigate]);
 
   if (!profile) {
     return <div>Loading...</div>;
@@ -119,7 +119,7 @@ const Profile = () => {
         if (receivedRequest) {
           const response = await cancelRequest(username, user.$id);
           if (response.success) {
-            setSentRequest(null);
+            setReceivedRequest(null);
             toast.success("Removed Request Successfully");
           } else toast.error(response.error);
         } else {
@@ -138,7 +138,7 @@ const Profile = () => {
   const handleDenyClick = async () => {
     const response = await cancelRequest(username, user.$id);
     if (response.success) {
-      setSentRequest(null);
+      setReceivedRequest(null);
       toast.success("Request Denied Successfully");
     } else toast.error(response.error);
   };
