@@ -16,13 +16,14 @@ const Profile = () => {
     fetchRequestStatus,
     sendRequest,
     cancelRequest,
+    updateRequestStatus,
   } = useDatabase();
 
   const [profile, setProfile] = useState(null);
   const [age, setAge] = useState(0);
   const [pfpLink, setPfpLink] = useState("");
-  const [sentRequestStatus, setSentRequestStatus] = useState("");
-  const [receivedRequestStatus, setReceivedRequestStatus] = useState("");
+  const [sentRequest, setSentRequest] = useState({});
+  const [receivedRequest, setReceivedRequest] = useState({});
 
   // fetch user data
   useEffect(() => {
@@ -55,12 +56,12 @@ const Profile = () => {
 
     const checkSentRequestStatus = async () => {
       const status = await fetchRequestStatus(user.$id, username);
-      setSentRequestStatus(status);
+      setSentRequest(status);
     };
 
     const checkReceivedRequestStatus = async () => {
       const status = await fetchRequestStatus(username, user.$id);
-      setReceivedRequestStatus(status);
+      setReceivedRequest(status);
     };
 
     if (username) {
@@ -80,20 +81,30 @@ const Profile = () => {
   };
 
   const handleRequestClick = async () => {
-    if (!sentRequestStatus) {
+    if (!sentRequest && !receivedRequest) {
       // Send request
       const response = await sendRequest(user.$id, username);
       if (response.success) {
-        setSentRequestStatus("pending");
+        setSentRequest("pending");
         toast.success("Request Sent Successfully");
       } else toast.error(response.error);
-    } else if (sentRequestStatus === "pending") {
+    } else if (sentRequest.status === "pending") {
       // Cancel request
       const response = await cancelRequest(user.$id, username);
       if (response.success) {
-        setSentRequestStatus(null);
+        setSentRequest(null);
         toast.success("Request Cancelled Successfully");
       } else toast.error(response.error);
+    } else if (receivedRequest.status === "pending") {
+      //update status to accepted
+      const response = await updateRequestStatus(receivedRequest.$id, {
+        status: "accepted",
+      });
+      if (response.success) {
+        setReceivedRequest(response.response);
+      } else toast.error(response.error);
+    } else if (receivedRequest === "accepted" || sentRequest === "accepted") {
+      //accepted
     }
   };
 
@@ -117,7 +128,11 @@ const Profile = () => {
               : "Cancel Request"}
           </button>
           <button
-            className={ (receivedRequestStatus && !sentRequestStatus) ? "button-request" : "button-hidden"}
+            className={
+              receivedRequestStatus && !sentRequestStatus
+                ? "button-request"
+                : "button-hidden"
+            }
           >
             Deny Request
           </button>

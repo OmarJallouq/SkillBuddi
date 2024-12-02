@@ -141,6 +141,23 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
+  const updateRequestStatus = async (requestId, data) => {
+    try {
+      const response = await databases.updateDocument(
+        DATABASE_ID,
+        INTERESTS_COLLECTION,
+        requestId,
+        data
+      );
+
+      return { success: true, response: response };
+    } catch (error) {
+      setError(error.message);
+      console.error("Error updating user data:", error);
+      return { success: false, error: error.message };
+    }
+  };
+
   const fetchRequestStatus = async (senderId, receiverId) => {
     try {
       const response = await databases.listDocuments(
@@ -153,7 +170,7 @@ export const DatabaseProvider = ({ children }) => {
           ]),
         ]
       );
-
+      console.log(response.documents[0]);
       return response.documents[0] || null; // Return the first matching request or null
     } catch (error) {
       console.error("Error fetching request status:", error);
@@ -186,6 +203,7 @@ export const DatabaseProvider = ({ children }) => {
     fetchRequestStatus,
     cancelRequest,
     fetchNotifications,
+    updateRequestStatus,
   };
 
   return (
