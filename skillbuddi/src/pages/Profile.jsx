@@ -88,7 +88,7 @@ const Profile = () => {
         setSentRequest("pending");
         toast.success("Request Sent Successfully");
       } else toast.error(response.error);
-    } else if (sentRequest.status === "pending") {
+    } else if (sentRequest?.status === "pending") {
       // Cancel request
       const response = await cancelRequest(user.$id, username);
       if (response.success) {
@@ -102,10 +102,19 @@ const Profile = () => {
       });
       if (response.success) {
         setReceivedRequest(response.response);
+        toast.success("Request Accepted");
       } else toast.error(response.error);
     } else if (receivedRequest === "accepted" || sentRequest === "accepted") {
       //accepted
     }
+  };
+
+  const handleDenyClick = async () => {
+    const response = await cancelRequest(username, user.$id);
+    if (response.success) {
+      setSentRequest(null);
+      toast.success("Request Denied Successfully");
+    } else toast.error(response.error);
   };
 
   return (
@@ -133,6 +142,7 @@ const Profile = () => {
                 ? "button-request"
                 : "button-hidden"
             }
+            onClick={handleDenyClick}
           >
             Deny Request
           </button>
