@@ -9,10 +9,20 @@ const Home = () => {
   const { fetchMatchingUsers, fetchPending } = useDatabase();
   const [searchValue, setSearchValue] = useState("");
   const [matchingUsers, setMatchingUsers] = useState([]); // Initialize as an empty array
+  const [pendingUsers, setPendingUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const fetchPendingUsers = async () => {
+      const response = await fetchPending(user.$id);
+      if (response.success) {
+        setPendingUsers(response.response);
+      } else {
+        toast.error("Error fetching pending requests");
+      }
+    };
+
     if (user) {
       setLoading(true); // Set loading to true before fetching
       fetchMatchingUsers(user)
@@ -26,7 +36,7 @@ const Home = () => {
           setLoading(false); // Set loading to false after fetching is done
         });
 
-      fetchPending();
+      fetchPendingUsers();
     }
   }, [user, fetchMatchingUsers]);
 

@@ -137,10 +137,10 @@ export const DatabaseProvider = ({ children }) => {
         INTERESTS_COLLECTION,
         [Query.equal("receiverId", userId), Query.equal("status", "pending")]
       );
-      return response.documents;
+      return { success: true, response: response.documents };
     } catch (error) {
       console.error("Error fetching notifications:", error);
-      return null;
+      return { success: false };
     }
   };
 
