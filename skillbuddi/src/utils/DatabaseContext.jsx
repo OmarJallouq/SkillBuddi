@@ -174,35 +174,6 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  const checkMutualAcceptance = async (userId1, userId2) => {
-    try {
-      const response = await databases.listDocuments(
-        DATABASE_ID,
-        INTERESTS_COLLECTION,
-        [
-          Query.or([
-            Query.and([
-              Query.equal("senderId", userId1),
-              Query.equal("receiverId", userId2),
-              Query.equal("status", "accepted"),
-            ]),
-            Query.and([
-              Query.equal("senderId", userId2),
-              Query.equal("receiverId", userId1),
-              Query.equal("status", "accepted"),
-            ]),
-          ]),
-        ]
-      );
-
-      // If both have `accepted` statuses, return true
-      return response.documents.length;
-    } catch (error) {
-      console.error("Error checking mutual acceptance:", error);
-      return false;
-    }
-  };
-
   const contextData = {
     fetchUserData,
     updateUserData,
@@ -214,7 +185,6 @@ export const DatabaseProvider = ({ children }) => {
     fetchRequestStatus,
     cancelRequest,
     fetchNotifications,
-    checkMutualAcceptance,
   };
 
   return (

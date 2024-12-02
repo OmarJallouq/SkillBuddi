@@ -16,7 +16,6 @@ const Profile = () => {
     fetchRequestStatus,
     sendRequest,
     cancelRequest,
-    checkMutualAcceptance,
   } = useDatabase();
 
   const [profile, setProfile] = useState(null);
@@ -63,16 +62,10 @@ const Profile = () => {
       setReceivedRequestStatus(status);
     };
 
-    const checkMutual = async () => {
-      const mutuals = await checkMutualAcceptance(user.$id, username);
-      setMutualAcceptance(mutuals);
-    };
-
     if (username) {
       fetchData();
       checkSentRequestStatus();
       checkReceivedRequestStatus();
-      checkMutual();
     }
   }, [username]);
 
