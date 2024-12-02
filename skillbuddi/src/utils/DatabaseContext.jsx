@@ -178,7 +178,7 @@ export const DatabaseProvider = ({ children }) => {
     }
   };
 
-  const fetchNotifications = async (userId) => {
+  const fetchPending = async (userId) => {
     try {
       const response = await databases.listDocuments(
         DATABASE_ID,
@@ -202,7 +202,7 @@ export const DatabaseProvider = ({ children }) => {
     sendRequest,
     fetchRequestStatus,
     cancelRequest,
-    fetchNotifications,
+    fetchPending,
     updateRequestStatus,
   };
 
