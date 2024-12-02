@@ -21,8 +21,7 @@ const Profile = () => {
 
   const [profile, setProfile] = useState(null);
   const [age, setAge] = useState(0);
-  const [sentRequestStatus, setSentRequestStatus] = useState("");
-  const [receivedRequestStatus, setReceivedRequestStatus] = useState("");
+  const [requestStatus, setRequestStatus] = useState("");
   const [mutualAcceptance, setMutualAcceptance] = useState(false);
 
   // fetch user data
@@ -53,14 +52,9 @@ const Profile = () => {
       }
     };
 
-    const checkSentRequestStatus = async () => {
+    const checkRequestStatus = async () => {
       const status = await fetchRequestStatus(user.$id, username);
-      setSentRequestStatus(status);
-    };
-
-    const checkReceivedRequestStatus = async () => {
-      const status = await fetchRequestStatus(username, user.$id);
-      setReceivedRequestStatus(status);
+      setRequestStatus(status);
     };
 
     const checkMutual = async () => {
@@ -70,8 +64,7 @@ const Profile = () => {
 
     if (username) {
       fetchData();
-      checkSentRequestStatus();
-      checkReceivedRequestStatus();
+      checkRequestStatus();
       checkMutual();
     }
   }, [username]);
@@ -86,16 +79,16 @@ const Profile = () => {
   };
 
   const handleRequestClick = async () => {
-    if (!sentRequestStatus) {
+    if (!requestStatus) {
       // Send request
       const response = await sendRequest(user.$id, username);
       if (response.success) {
-        setSentRequestStatus("pending");
+        setRequestStatus("pending");
       } else toast.error(response.error);
-    } else if (sentRequestStatus === "pending") {
+    } else if (requestStatus === "pending") {
       // Cancel request
       const response = await cancelRequest(user.$id, username);
-      if (response.success) setSentRequestStatus(null);
+      if (response.success) setRequestStatus(null);
       else toast.error(response.error);
     }
   };
@@ -116,22 +109,37 @@ const Profile = () => {
             alt={`${profile.firstName + " " + profile.lastName}'s profile`}
             className="avatar"
           />
-          <button className="message-button" onClick={handleMessage}>
-            Send Request
-          </button>
-          <button
-            onClick={handleRequestClick}
-            style={{
-              backgroundColor:
-                sentRequestStatus === "pending" ? "gray" : "blue",
-            }}
-          >
-            {sentRequestStatus === "pending"
-              ? "Request Sent"
-              : sentRequestStatus === "accepted"
-              ? "Already Friends"
-              : "Add Request"}
-          </button>
+          {(!sentRequestStatus && !receivedRequestStatus) ? (
+            <button
+              className="button-request"
+              onClick={handleRequestClick}
+            >Send Request</button>
+          ) : (
+            (sentRequestStatus === "pending" && !receivedRequestStatus) ? (
+              <button
+                className="button-pending"
+                onClick={handleRequestClick}
+              >Cancel Request</button>
+            ) : (
+              (!requestStatus && receivedRequestStatus === "pending") ? (
+                <div>
+                <button
+                  className="button-accept"
+                  onClick={handleRequestClick}
+                >Accept Request</button>
+                <button
+                  className="button-deny"
+                  onClick={handleDenyRequest}
+                >Accept Request</button>
+                </div>
+              ) : (
+                <button
+                  className="button-request"
+                  onClick={handleRequestClick}
+                >Request Match</button>
+              )
+            )
+          )}
         </div>
 
         <div className="profile-details">
