@@ -27,9 +27,8 @@ const Profile = () => {
 
   // fetch user data
   useEffect(() => {
-
-    if (username === user?.username) {
-      navigate("/myprofile");
+    if (username === user.$id) {
+      navigate("/myProfile");
       return;
     }
     const calculateAge = (dobString) => {
@@ -109,25 +108,30 @@ const Profile = () => {
         setReceivedRequest(response.response);
         toast.success("Request Accepted");
       } else toast.error(response.error);
-    } else if (receivedRequest?.status === "accepted" || sentRequest?.status === "accepted") {
-      const removeConfirm = window.confirm("Would you like to remove your request?");
-        if (removeConfirm) {
-          if (receivedRequest) {
-            const response = await cancelRequest(username, user.$id);
-            if (response.success) {
-              setSentRequest(null);
-              toast.success("Removed Request Successfully");
-            } else toast.error(response.error);
-          } else {
-            const response = await cancelRequest(user.$id, username);
-            if (response.success) {
-              setSentRequest(null);
-              toast.success("Removed Request Successfully");
-            } else toast.error(response.error);
-          }
+    } else if (
+      receivedRequest?.status === "accepted" ||
+      sentRequest?.status === "accepted"
+    ) {
+      const removeConfirm = window.confirm(
+        "Would you like to remove your request?"
+      );
+      if (removeConfirm) {
+        if (receivedRequest) {
+          const response = await cancelRequest(username, user.$id);
+          if (response.success) {
+            setSentRequest(null);
+            toast.success("Removed Request Successfully");
+          } else toast.error(response.error);
         } else {
-          // do nothing since the user cancelled the unrequest
+          const response = await cancelRequest(user.$id, username);
+          if (response.success) {
+            setSentRequest(null);
+            toast.success("Removed Request Successfully");
+          } else toast.error(response.error);
         }
+      } else {
+        // do nothing since the user cancelled the unrequest
+      }
     }
   };
 
