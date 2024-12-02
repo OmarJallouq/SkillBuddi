@@ -14,8 +14,13 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Messaging from './pages/Messaging';
 import MyProfile from './pages/MyProfile';
-import Profile from './pages/Profile';
-import PageNotFound from './pages/PageNotFound';;
+import Profile from './pages/Profile'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './utils/AuthContext';
+import PrivateRoutes from './utils/PrivateRoutes'
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { DatabaseProvider } from './utils/DatabaseContext';
 
 
 

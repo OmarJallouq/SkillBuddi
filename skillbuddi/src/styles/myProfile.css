@@ -2,7 +2,7 @@
 
 .whole-thing {
   width: 100vw;
-  height: 95vh;
+  height: 180vh;
 
   display: flex;
   flex-direction: column;
@@ -16,10 +16,10 @@
 .profile-container {
   /* box that has everythin g */
     width: 80vw;
-    height: 80vh; 
+    height:143vh; 
     margin-top: 10vh;
     padding: 2vh;
-
+    
     background-color: #e7e6dd;
 
     border-radius: 8px;
@@ -36,23 +36,37 @@
   }
   
   .avatar {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    margin-right: 20px;
+    margin-left: 30px;
+    margin-bottom: 50px;
   }
   
   .profile-info h1 {
     /* first name and last name of account */
-    font-size: 24px;
-    margin: 0;
+    font-size: 22px;
+    margin: 5px 0;
+    margin-left: 30px;
+    color: black;
 
     font-family: 'Rubik', sans-serif;
   }
-  
+
   .profile-info p {
     /* username and email of account */
+    font-size: 22px;
     margin: 5px 0;
+    
+    margin-left: 30px;
+    color: #72726E;
+    font-family: 'Rubik', sans-serif;
+  }
+
+  .bio-input {
+    background: none;
+    border: none;
+
     color: #72726E;
 
     font-family: 'Rubik', sans-serif;
@@ -60,7 +74,7 @@
   
   .skills-section {
     /* everything in the box apart from the pfp and info */
-    height: 63vh;
+    height: 40vh;
 
     display: flex;
     flex-direction: column;
@@ -79,6 +93,15 @@
 
     font-family: 'Rubik', sans-serif;
     font-size: 35px;
+    margin-top: 35px;
+  }
+
+  .skills-section p {
+    /* message that shows up when no skills are added */
+    color: #72726E;
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 20px;
   }
   
   .skills-list {
@@ -94,6 +117,7 @@
     height: 10vh;
     width: 17vw;
     margin: 0 auto;
+    margin-bottom: 2vh;
 
     background-color: #e8c766;
     color: #0f2043;
@@ -110,3 +134,165 @@
   .add-skill-button:hover {
     background-color: #e8af30;
   }
+
+  
+  .Bio p {
+    color: #72726E;
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 20px;
+  }
+
+  .Bio {
+     margin-bottom: 5vh;
+     
+}
+
+  .change-button {
+    width: 1.5vw;
+    height: 1.5vw;
+    margin-left: 0.5vw;
+
+    text-align: center;
+    line-height: normal;
+
+    color: #72726E;
+    background: none;
+
+    border: 3px solid #72726E;
+
+    border-radius: 5px;
+    cursor: pointer;
+
+    font-size: 14px;
+  }
+  
+
+  .bio-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    font-size: 20px;
+
+    font-family: 'Rubik', sans-serif;
+    font-size: 35px;
+  }
+  
+  .change-field-button:hover {
+    background-color: #0056b3;
+  }
+
+  .skills-section {
+    margin-bottom: 2vh; /* Reduce space below Skills section */
+  }
+  
+  
+  .skills-wanted-section {
+    /* Same styling as skills-section */
+    height: 40vh;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 0vh; /* Reduce space above Skills Wanted section */
+  }
+  
+  .title-skills-wanted-container {
+    /* Keeps heading above the skills wanted list */
+    border: 0px;
+  }
+  
+  .skills-wanted-section h2 {
+    /* Heading for skills wanted section */ 
+    text-align: center;
+    font-size: 20px;
+  
+    font-family: 'Rubik', sans-serif;
+    font-size: 35px;
+    margin-top: 35px;
+  }
+  
+  .skills-wanted-section p {
+    /* Message that shows up when no skills are added */
+    color: #72726E;
+  
+    font-family: 'Rubik', sans-serif;
+    font-size: 20px;
+  }
+  
+  .skills-wanted-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .add-skill-wanted-button {
+    /* Add skill wanted button */
+    height: 10vh;
+    width: 17vw;
+    margin: 0 auto;
+    margin-bottom: 18vh;
+  
+    background-color: #e8c766;
+    color: #0f2043;
+  
+    border: 4px solid #3361ac;
+    border-radius: 10px;
+  
+    font-family: 'Rubik', sans-serif;
+    font-size: 25px;
+  
+    cursor: pointer;
+  }
+  
+  .add-skill-wanted-button:hover {
+    background-color: #e8af30;
+  }
+
+  .upload-profile-picture-button {
+    height: 5vh; /* Slightly taller for better visual balance */
+    width: 12vw; /* Increase width for more spaciousness */
+    margin: 20px auto;
+    margin-top: 25vh; /* Slightly higher margin to give it a bit of space */
+    margin-bottom: 4vh; /* Reduce space to make it more consistent */
+    margin-left: -17vh;
+    background-color: #e8c766; /* Consistent button color */
+    color: #0f2043; /* Dark text for contrast */
+    border: 4px solid #3361ac; /* Border matches profile container */
+    border-radius: 12px; /* Rounded corners for consistency */
+    font-family: 'Rubik', sans-serif; /* Consistent font */
+    font-size: 20px; /* Adjusted for a more balanced text size */
+    cursor: pointer; /* Pointer cursor for interaction */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effect */
+  }
+  
+  .upload-profile-picture-button:hover {
+    background-color: #e8af30; /* Darker shade on hover */
+    transform: scale(1.05); /* Subtle scaling effect for interaction */
+  }
+  
+  .upload-profile-picture-button input[type="file"] {
+    display: none; /* Hide the file input */
+  }
+  
+  .upload-profile-picture-button span {
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+    font-size: 14px; /* Slightly smaller font size for better alignment */
+    padding: 10px; /* Add horizontal padding to the text */
+    font-weight: 500;
+    
+  }
+  
+
+  
