@@ -27,6 +27,11 @@ const Profile = () => {
 
   // fetch user data
   useEffect(() => {
+
+    if (username === user?.username) {
+      navigate("/myprofile");
+      return;
+    }
     const calculateAge = (dobString) => {
       const today = new Date();
       const dob = new Date(dobString);
