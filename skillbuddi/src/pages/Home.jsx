@@ -38,7 +38,7 @@ const Home = () => {
           setLoading(false); // Set loading to false after fetching is done
         });
     }
-  }, [user, fetchMatchingUsers]);
+  }, [user, fetchMatchingUsers, fetchPending]);
 
   // This filters matching users based on search value, if any
   const filteredUsers = matchingUsers.filter(

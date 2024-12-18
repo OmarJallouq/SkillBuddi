@@ -1,8 +1,6 @@
-import { useAuth } from "../utils/AuthContext";
-import { toast } from "react-toastify";
 import "../styles/userCard.css";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDatabase } from "../utils/DatabaseContext";
 import defaultPfp from "../assets/Default_pfp.svg.png";
 
@@ -26,7 +24,7 @@ const UserCard = ({ username }) => {
     if (username) {
       fetchData();
     }
-  }, [username]);
+  }, [username, fetchUserData, getImageUrl]);
 
   if (!profile) {
     return <div>Loading...</div>;
@@ -44,6 +42,7 @@ const UserCard = ({ username }) => {
           <img
             src={profile.profilePicture ? pfpLink : defaultPfp}
             className="pfp"
+            alt="Profile Picture"
           />
         </div>
 

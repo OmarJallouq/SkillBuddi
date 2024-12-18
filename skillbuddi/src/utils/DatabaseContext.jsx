@@ -243,7 +243,6 @@ export const DatabaseProvider = ({ children }) => {
     getImageUrl,
     uploadProfilePicture,
     deleteUserData,
-    getImageUrl,
     sendRequest,
     fetchRequestStatus,
     cancelRequest,

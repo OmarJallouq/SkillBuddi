@@ -73,7 +73,14 @@ const Profile = () => {
       checkSentRequestStatus();
       checkReceivedRequestStatus();
     }
-  }, [username, fetchRequestStatus, fetchUserData, getImageUrl, navigate]);
+  }, [
+    username,
+    fetchRequestStatus,
+    fetchUserData,
+    getImageUrl,
+    navigate,
+    user.$id,
+  ]);
 
   if (!profile) {
     return <div>Loading...</div>;
