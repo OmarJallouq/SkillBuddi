@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkUserStatus();
-  }, [checkUserStatus]);
+  }, []);
 
   const loginUser = async (userInfo) => {
     setLoading(true);
