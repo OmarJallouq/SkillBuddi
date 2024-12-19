@@ -41,7 +41,7 @@ const Home = () => {
   }, [user, fetchMatchingUsers, fetchPending]);
 
   // This filters matching users based on search value, if any
-  const filteredUsers = matchingUsers.filter(
+  const filteredUsers = matchingUsers?.filter(
     (user) =>
       searchValue.trim() === "" ||
       user.Skills.some((skill) =>
@@ -79,7 +79,7 @@ const Home = () => {
         )}
 
         <div className="cards-section">
-          {filteredUsers.length > 0 ? (
+          {filteredUsers?.length > 0 ? (
             filteredUsers.map((user) => (
               <UserCard key={user.$id} username={user.$id} />
             ))

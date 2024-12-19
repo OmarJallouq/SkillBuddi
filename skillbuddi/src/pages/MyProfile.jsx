@@ -252,7 +252,7 @@ const MyProfile = () => {
 
       // Update the user's profile picture in the database
       const response = await updateUserData(user.$id, {
-        profilePicture: PictureResponse.response,
+        profilePicture: getImageUrl(PictureResponse.response),
       });
 
       if (response.success) {

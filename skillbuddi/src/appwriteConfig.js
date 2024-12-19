@@ -11,7 +11,7 @@ const client2 = new Client();
 
 client2
     .setEndpoint("https://cloud.appwrite.io/v1") // Replace with your Appwrite endpoint
-    .setProject("673ba586000b18437b40"); // Replace with your Project ID
+    .setProject("6735c8df0037f3bbaec4"); // Replace with your Project ID
 
 const account2 = new Account(client2);
 const databases = new Databases(client2);
